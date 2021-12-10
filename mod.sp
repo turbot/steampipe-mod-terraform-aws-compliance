@@ -1,16 +1,16 @@
-mod "terraform_sherlock" {
+mod "terraform_aws_compliance" {
   # Hub metadata
-  title         = "Terraform Sherlock"
-  description   = "Interrogate your Terraform resources with the help of the world's greatest detectives: Steampipe + Sherlock."
+  title         = "Terraform AWS Compliance"
+  description   = "Run individual controls or full compliance benchmarks for CIS, PCI, NIST, HIPAA and more across all of your Terraform AWS resources using Steampipe."
   color         = "#844FBA"
   documentation = file("./docs/index.md")
-  icon          = "/images/mods/turbot/terraform-sherlock.svg"
-  categories    = ["best practices", "terraform", "sherlock", "software development"]
+  icon          = "/images/mods/turbot/terraform-aws-compliance.svg"
+  categories    = ["terraform", "aws", "cis", "compliance", "public cloud", "security"]
 
   opengraph {
-    title        = "Steampipe Mod to Analyze Terraform"
-    description  = "Interrogate your Terraform resources with the help of the world's greatest detectives: Steampipe + Sherlock."
-    image        = "/images/mods/turbot/terraform-sherlock-social-graphic.png"
+    title        = "Steampipe Mod for Terraform AWS Compliance"
+    description  = "Run individual controls or full compliance benchmarks for CIS, PCI, NIST, HIPAA and more across all of your Terraform AWS resources using Steampipe."
+    image        = "/images/mods/turbot/terraform-aws-compliance-social-graphic.png"
   }
 
   requires {
