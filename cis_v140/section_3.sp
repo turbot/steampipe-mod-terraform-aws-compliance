@@ -1,27 +1,27 @@
-# locals {
-#   cis_v140_3_common_tags = merge(local.cis_v140_common_tags, {
-#     cis_section_id = "3"
-#   })
-# }
+locals {
+  cis_v140_3_common_tags = merge(local.cis_v140_common_tags, {
+    cis_section_id = "3"
+  })
+}
 
-# benchmark "cis_v140_3" {
-#   title = "3 Logging"
-#   documentation = file("./cis_v140/docs/cis_v140_3.md")
-#   children = [
-#     control.cis_v140_3_1,
-#     control.cis_v140_3_2,
-#     control.cis_v140_3_3,
-#     control.cis_v140_3_4,
-#     control.cis_v140_3_5,
-#     control.cis_v140_3_6,
-#     control.cis_v140_3_7,
-#     control.cis_v140_3_8,
-#     control.cis_v140_3_9,
-#     control.cis_v140_3_10,
-#     control.cis_v140_3_11
-#   ]
-#   tags = local.cis_v140_3_common_tags
-# }
+benchmark "cis_v140_3" {
+  title = "3 Logging"
+  documentation = file("./cis_v140/docs/cis_v140_3.md")
+  children = [
+    # control.cis_v140_3_1,
+    # control.cis_v140_3_2,
+    # control.cis_v140_3_3,
+    # control.cis_v140_3_4,
+    # control.cis_v140_3_5,
+    control.cis_v140_3_6,
+    control.cis_v140_3_7,
+    # control.cis_v140_3_8,
+    # control.cis_v140_3_9,
+    # control.cis_v140_3_10,
+    # control.cis_v140_3_11
+  ]
+  tags = local.cis_v140_3_common_tags
+}
 
 # control "cis_v140_3_1" {
 #   title         = "3.1 Ensure CloudTrail is enabled in all regions"

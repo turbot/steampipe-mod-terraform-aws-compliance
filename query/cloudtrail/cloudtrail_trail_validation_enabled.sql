@@ -17,4 +17,3 @@ from
   terraform_resource
 where 
   type = 'aws_cloudtrail';
---   region = home_region;
