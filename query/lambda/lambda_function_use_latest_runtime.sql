@@ -1,16 +1,17 @@
 select
-  -- Required Columns
-  arn as resource,
+  type || ' ' || name as resource,
   case
-    when runtime in ('nodejs14.x', 'nodejs12.x', 'nodejs10.x', 'python3.8', 'python3.7', 'python3.6', 'ruby2.5', 'ruby2.7', 'java11', 'java8', 'go1.x', 'dotnetcore2.1', 'dotnetcore3.1') then 'ok'
+    when (arguments ->> 'runtime') is null then 'skip'
+    when (arguments ->> 'runtime') in ('nodejs14.x', 'nodejs12.x', 'nodejs10.x', 'python3.8', 'python3.7', 'python3.6', 'ruby2.5', 'ruby2.7', 'java11', 'java8', 'go1.x', 'dotnetcore2.1', 'dotnetcore3.1') then 'ok'
     else 'alarm'
   end as status,
-  case
-    when runtime in ('nodejs14.x', 'nodejs12.x', 'nodejs10.x', 'python3.8', 'python3.7', 'python3.6', 'ruby2.5', 'ruby2.7', 'java11', 'java8', 'go1.x', 'dotnetcore2.1', 'dotnetcore3.1') then title || ' uses latest runtime - ' || runtime || '.'
-    else title || ' uses ' || runtime || ' which is not the latest version.'
+  name || case
+    when (arguments ->> 'runtime') is null then ' runtime not set'
+    when (arguments ->> 'runtime') in ('nodejs14.x', 'nodejs12.x', 'nodejs10.x', 'python3.8', 'python3.7', 'python3.6', 'ruby2.5', 'ruby2.7', 'java11', 'java8', 'go1.x', 'dotnetcore2.1', 'dotnetcore3.1') then ' uses latest runtime - ' || (arguments ->> 'runtime') || '.'
+    else ' uses ' || (arguments ->> 'runtime')|| ' which is not the latest version.'
   end as reason,
-  -- Additional Dimensions
-  region,
-  account_id
+  path
 from
-  aws_lambda_function;
+  terraform_resource
+where
+  type = 'aws_lambda_function';

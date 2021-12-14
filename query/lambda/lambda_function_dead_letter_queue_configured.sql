@@ -1,16 +1,15 @@
 select
-  -- Required Columns
-  arn as resource,
+  type || ' ' || name as resource,
   case
-    when dead_letter_config_target_arn is null then 'alarm'
+    when (arguments -> 'dead_letter_config') is null then 'alarm'
     else 'ok'
   end as status,
-  case
-    when dead_letter_config_target_arn is null then title || ' configured with dead-letter queue.'
-    else title || ' not configured with dead-letter queue.'
+  name || case
+    when (arguments -> 'dead_letter_config') is null then ' not configured with dead-letter queue.'
+    else  ' configured with dead-letter queue.'
   end as reason,
-  -- Additional Columns
-  region,
-  account_id
+  path
 from
-  aws_lambda_function;
+  terraform_resource
+where
+  type = 'aws_lambda_function';
