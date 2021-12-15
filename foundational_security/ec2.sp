@@ -9,77 +9,75 @@ benchmark "foundational_security_ec2" {
   documentation = file("./foundational_security/docs/foundational_security_ec2.md")
   children = [
     # control.foundational_security_ec2_1,
-    # control.foundational_security_ec2_2,
-    # control.foundational_security_ec2_3,
+    control.foundational_security_ec2_2,
+    control.foundational_security_ec2_3,
     # control.foundational_security_ec2_4,
     # control.foundational_security_ec2_6,
-    # control.foundational_security_ec2_7,
-    # control.foundational_security_ec2_8,
+    control.foundational_security_ec2_7,
+    control.foundational_security_ec2_8,
     control.foundational_security_ec2_9,
-    -- control.foundational_security_ec2_10,
+    control.foundational_security_ec2_10,
     control.foundational_security_ec2_15,
     control.foundational_security_ec2_16,
     control.foundational_security_ec2_17,
-    -- control.foundational_security_ec2_18,
-    -- control.foundational_security_ec2_19
+    # control.foundational_security_ec2_18,
+    # control.foundational_security_ec2_19
   ]
   tags          = local.foundational_security_ec2_common_tags
 }
 
--- Parameter not available in terraform
--- control "foundational_security_ec2_1" {
---   title         = "1 Amazon EBS snapshots should not be public, determined by the ability to be restorable by anyone"
---   description   = "Amazon EBS snapshots should not be public, determined by the ability to be restorable by anyone. EBS snapshots are used to back up the data on your EBS volumes to Amazon S3 at a specific point in time. You can use the snapshots to restore previous states of EBS volumes. It is rarely acceptable to share a snapshot with the public. Typically the decision to share a snapshot publicly was made in error or without a complete understanding of the implications. This check helps ensure that all such sharing was fully planned and intentional."
---   severity      = "critical"
---   sql           = query.ebs_snapshot_not_publicly_restorable.sql
---   documentation = file("./foundational_security/docs/foundational_security_ec2_1.md")
-
---   tags = merge(local.foundational_security_ec2_common_tags, {
---     foundational_security_item_id  = "ec2_1"
---     foundational_security_category = "secure_network_configuration"
---   })
--- }
-
-#  Add them in
-# control "foundational_security_ec2_2" {
-#   title         = "2 The VPC default security group should not allow inbound and outbound traffic"
-#   description   = "This control checks that the default security group of a VPC does not allow inbound or outbound traffic. The rules for the default security group allow all outbound and inbound traffic from network interfaces (and their associated instances) that are assigned to the same security group."
-#   severity      = "high"
-#   sql           = query.vpc_default_security_group_restricts_all_traffic.sql
-#   documentation = file("./foundational_security/docs/foundational_security_ec2_2.md")
-
+Parameter not available in terraform
+# control "foundational_security_ec2_1" {
+#   title         = "1 Amazon EBS snapshots should not be public, determined by the ability to be restorable by anyone"
+#   description   = "Amazon EBS snapshots should not be public, determined by the ability to be restorable by anyone. EBS snapshots are used to back up the data on your EBS volumes to Amazon S3 at a specific point in time. You can use the snapshots to restore previous states of EBS volumes. It is rarely acceptable to share a snapshot with the public. Typically the decision to share a snapshot publicly was made in error or without a complete understanding of the implications. This check helps ensure that all such sharing was fully planned and intentional."
+#   severity      = "critical"
+#   sql           = query.ebs_snapshot_not_publicly_restorable.sql
+#   documentation = file("./foundational_security/docs/foundational_security_ec2_1.md
 #   tags = merge(local.foundational_security_ec2_common_tags, {
-#     foundational_security_item_id  = "ec2_2"
+#     foundational_security_item_id  = "ec2_1"
 #     foundational_security_category = "secure_network_configuration"
 #   })
 # }
 
-# control "foundational_security_ec2_3" {
-#   title         = "3 Attached EBS volumes should be encrypted at rest"
-#   description   = "This control checks whether the EBS volumes that are in an attached state are encrypted. To pass this check, EBS volumes must be in use and encrypted. If the EBS volume is not attached, then it is not subject to this check."
-#   severity      = "medium"
-#   sql           = query.ebs_attached_volume_encryption_enabled.sql
-#   documentation = file("./foundational_security/docs/foundational_security_ec2_3.md")
 
+control "foundational_security_ec2_2" {
+  title         = "2 The VPC default security group should not allow inbound and outbound traffic"
+  description   = "This control checks that the default security group of a VPC does not allow inbound or outbound traffic. The rules for the default security group allow all outbound and inbound traffic from network interfaces (and their associated instances) that are assigned to the same security group."
+  severity      = "high"
+  sql           = query.vpc_default_security_group_restricts_all_traffic.sql
+  documentation = file("./foundational_security/docs/foundational_security_ec2_2.md")
+
+  tags = merge(local.foundational_security_ec2_common_tags, {
+    foundational_security_item_id  = "ec2_2"
+    foundational_security_category = "secure_network_configuration"
+  })
+}
+
+control "foundational_security_ec2_3" {
+  title         = "3 Attached EBS volumes should be encrypted at rest"
+  description   = "This control checks whether the EBS volumes that are in an attached state are encrypted. To pass this check, EBS volumes must be in use and encrypted. If the EBS volume is not attached, then it is not subject to this check."
+  severity      = "medium"
+  sql           = query.ebs_attached_volume_encryption_enabled.sql
+  documentation = file("./foundational_security/docs/foundational_security_ec2_3.md")
+
+  tags = merge(local.foundational_security_ec2_common_tags, {
+    foundational_security_item_id  = "ec2_3"
+    foundational_security_category = "encryption_of_data_at_rest"
+  })
+}
+
+#  Terraform insufficiency (no property to determine if it is stopped)
+# control "foundational_security_ec2_4" {
+#   title         = "4 Stopped EC2 instances should be removed after a specified time period"
+#   description   = "This control checks whether any EC2 instances have been stopped for more than the allowed number of days. An EC2 instance fails this check if it is stopped for longer than the maximum allowed time period, which by default is 30 days."
+#   severity      = "medium"
+#   sql           = query.ec2_stopped_instance_30_days.sql
+#   documentation = file("./foundational_security/docs/foundational_security_ec2_4.md
 #   tags = merge(local.foundational_security_ec2_common_tags, {
-#     foundational_security_item_id  = "ec2_3"
-#     foundational_security_category = "encryption_of_data_at_rest"
+#     foundational_security_item_id  = "ec2_4"
+#     foundational_security_category = "inventory"
 #   })
 # }
-
---  Terraform insufficiency (no property to determine if it is stopped)
--- control "foundational_security_ec2_4" {
---   title         = "4 Stopped EC2 instances should be removed after a specified time period"
---   description   = "This control checks whether any EC2 instances have been stopped for more than the allowed number of days. An EC2 instance fails this check if it is stopped for longer than the maximum allowed time period, which by default is 30 days."
---   severity      = "medium"
---   sql           = query.ec2_stopped_instance_30_days.sql
---   documentation = file("./foundational_security/docs/foundational_security_ec2_4.md")
-
---   tags = merge(local.foundational_security_ec2_common_tags, {
---     foundational_security_item_id  = "ec2_4"
---     foundational_security_category = "inventory"
---   })
--- }
 
 # Terraform invalid
 # control "foundational_security_ec2_6" {
@@ -95,33 +93,31 @@ benchmark "foundational_security_ec2" {
 #   })
 # }
 
-# Add this in
-# control "foundational_security_ec2_7" {
-#   title         = "7 EBS default encryption should be enabled"
-#   description   = "This control checks whether account-level encryption is enabled by default for Amazon Elastic Block Store(Amazon EBS). The control fails if the account level encryption is not enabled."
-#   severity      = "medium"
-#   sql           = query.ec2_ebs_default_encryption_enabled.sql
-#   documentation = file("./foundational_security/docs/foundational_security_ec2_7.md")
+control "foundational_security_ec2_7" {
+  title         = "7 EBS default encryption should be enabled"
+  description   = "This control checks whether account-level encryption is enabled by default for Amazon Elastic Block Store(Amazon EBS). The control fails if the account level encryption is not enabled."
+  severity      = "medium"
+  sql           = query.ec2_ebs_default_encryption_enabled.sql
+  documentation = file("./foundational_security/docs/foundational_security_ec2_7.md")
 
-#   tags = merge(local.foundational_security_ec2_common_tags, {
-#     foundational_security_item_id  = "ec2_7"
-#     foundational_security_category = "encryption_of_data_at_rest"
-#   })
-# }
+  tags = merge(local.foundational_security_ec2_common_tags, {
+    foundational_security_item_id  = "ec2_7"
+    foundational_security_category = "encryption_of_data_at_rest"
+  })
+}
 
-# Add this in
-# control "foundational_security_ec2_8" {
-#   title         = "8 EC2 instances should use IMDSv2"
-#   description   = "This control checks whether your EC2 instance metadata version is configured with Instance Metadata Service Version 2 (IMDSv2). The control passes if HttpTokens is set to required for IMDSv2. The control fails if HttpTokens is set to optional."
-#   severity      = "high"
-#   sql           = query.ec2_instance_uses_imdsv2.sql
-#   documentation = file("./foundational_security/docs/foundational_security_ec2_8.md")
+control "foundational_security_ec2_8" {
+  title         = "8 EC2 instances should use IMDSv2"
+  description   = "This control checks whether your EC2 instance metadata version is configured with Instance Metadata Service Version 2 (IMDSv2). The control passes if HttpTokens is set to required for IMDSv2. The control fails if HttpTokens is set to optional."
+  severity      = "high"
+  sql           = query.ec2_instance_uses_imdsv2.sql
+  documentation = file("./foundational_security/docs/foundational_security_ec2_8.md")
 
-#   tags = merge(local.foundational_security_ec2_common_tags, {
-#     foundational_security_item_id  = "ec2_8"
-#     foundational_security_category = "network_security"
-#   })
-# }
+  tags = merge(local.foundational_security_ec2_common_tags, {
+    foundational_security_item_id  = "ec2_8"
+    foundational_security_category = "network_security"
+  })
+}
 
 control "foundational_security_ec2_9" {
   title         = "9 EC2 instances should not have a public IP address"

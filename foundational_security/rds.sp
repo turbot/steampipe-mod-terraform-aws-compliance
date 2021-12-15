@@ -245,7 +245,7 @@ control "foundational_security_rds_17" {
   })
 }
 
-# TODO - DB instance by default will always be created inside a vpc
+# TODO - DB instance by default will always be created inside a vpc, no terraform field
 # control "foundational_security_rds_18" {
 #   title         = "18 RDS instances should be deployed in a VPC"
 #   description   = "This control checks whether an RDS instance is deployed in a VPC (EC2-VPC)."
