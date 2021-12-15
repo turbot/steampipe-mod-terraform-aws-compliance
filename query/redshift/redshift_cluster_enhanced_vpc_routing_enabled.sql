@@ -8,8 +8,8 @@ select
   name || case
     when (arguments -> 'enhanced_vpc_routing') is null then ' ''enhanced_vpc_routing'' set to false by default'
     when (arguments -> 'enhanced_vpc_routing')::bool then '  ''enhanced_vpc_routing'' set to true'
-    else '  ''allow_version_upgrade'' set to false'
-  end || '.' reason,
+    else ' ''allow_version_upgrade'' set to false'
+  end || '.' as reason,
   path
 from
   terraform_resource

@@ -8,8 +8,8 @@ select
   name || case
     when (arguments -> 'iam_database_authentication_enabled') is null then ' ''iam_database_authentication_enabled'' disabled'
     when (arguments -> 'iam_database_authentication_enabled')::bool then ' ''iam_database_authentication_enabled'' enabled'
-    else '  ''iam_database_authentication_enabled'' disabled'
-  end || '.' reason,
+    else ' ''iam_database_authentication_enabled'' disabled'
+  end || '.' as reason,
   path
 from
   terraform_resource

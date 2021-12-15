@@ -8,7 +8,7 @@ select
   name || case
     when (arguments -> 'copy_tags_to_snapshot') is null then ' ''copy_tags_to_snapshot'' disabled'
     when (arguments -> 'copy_tags_to_snapshot')::bool then ' ''copy_tags_to_snapshot'' enabled'
-    else '  ''copy_tags_to_snapshot'' disabled'
+    else ' ''copy_tags_to_snapshot'' disabled'
   end || '.' as reason,
   path
 from

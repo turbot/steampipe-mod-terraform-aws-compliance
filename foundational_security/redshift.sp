@@ -31,7 +31,7 @@ control "foundational_security_redshift_1" {
   })
 }
 
-# Try to do it
+# No direct parameter in tf config file
 # control "foundational_security_redshift_2" {
 #   title         = "2 Connections to Amazon Redshift clusters should be encrypted in transit"
 #   description   = "This control checks whether connections to Amazon Redshift clusters are required to use encryption in transit. The check fails if the Amazon Redshift cluster parameter require_SSL is not set to 1. TLS can be used to help prevent potential attackers from using person-in-the-middle or similar attacks to eavesdrop on or manipulate network traffic. Only encrypted connections over TLS should be allowed. Encrypting data in transit can affect performance. You should test your application with this feature to understand the performance profile and the impact of TLS."

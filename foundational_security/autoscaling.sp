@@ -6,7 +6,7 @@ locals {
 
 benchmark "foundational_security_autoscaling" {
   title         = "Auto Scaling"
-  documentation = file("./foundational_security/docs/foundational_security_autoscaling.md")
+  # documentation = file("./foundational_security/docs/foundational_security_autoscaling.md")
   children = [
     control.foundational_security_autoscaling_1
   ]

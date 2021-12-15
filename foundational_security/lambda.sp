@@ -15,6 +15,7 @@ benchmark "foundational_security_lambda" {
   tags          = local.foundational_security_lambda_common_tags
 }
 
+# IAM policy check
 # control "foundational_security_lambda_1" {
 #   title         = "1 Lambda function policies should prohibit public access"
 #   description   = "This control checks whether the Lambda function resource-based policy prohibits public access outside of your account. The Lambda function should not be publicly accessible, as this may allow unintended access to your code stored in the function."
