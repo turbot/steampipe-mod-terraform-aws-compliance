@@ -16,7 +16,7 @@ benchmark "foundational_security_ec2" {
     control.foundational_security_ec2_7,
     control.foundational_security_ec2_8,
     control.foundational_security_ec2_9,
-    control.foundational_security_ec2_10,
+    # control.foundational_security_ec2_10,
     control.foundational_security_ec2_15,
     control.foundational_security_ec2_16,
     control.foundational_security_ec2_17,
@@ -26,7 +26,7 @@ benchmark "foundational_security_ec2" {
   tags          = local.foundational_security_ec2_common_tags
 }
 
-Parameter not available in terraform
+# Parameter not available in terraform
 # control "foundational_security_ec2_1" {
 #   title         = "1 Amazon EBS snapshots should not be public, determined by the ability to be restorable by anyone"
 #   description   = "Amazon EBS snapshots should not be public, determined by the ability to be restorable by anyone. EBS snapshots are used to back up the data on your EBS volumes to Amazon S3 at a specific point in time. You can use the snapshots to restore previous states of EBS volumes. It is rarely acceptable to share a snapshot with the public. Typically the decision to share a snapshot publicly was made in error or without a complete understanding of the implications. This check helps ensure that all such sharing was fully planned and intentional."
@@ -132,19 +132,18 @@ control "foundational_security_ec2_9" {
   })
 }
 
--- Terraform limitation (do not get vpc_id as an argument to check against the endpoint table)
--- control "foundational_security_ec2_10" {
---   title         = "10 Amazon EC2 should be configured to use VPC endpoints"
---   description   = "This control checks whether a service endpoint for Amazon EC2 is created for each VPC. The control fails if a VPC does not have a VPC endpoint created for the Amazon EC2 service."
---   severity      = "medium"
---   sql           = query.vpc_configured_to_use_ec2_endpoints.sql
---   documentation = file("./foundational_security/docs/foundational_security_ec2_10.md")
-
---   tags = merge(local.foundational_security_ec2_common_tags, {
---     foundational_security_item_id  = "ec2_10"
---     foundational_security_category = "api_private_access"
---   })
--- }
+# Terraform limitation (do not get vpc_id as an argument to check against the endpoint table)
+# control "foundational_security_ec2_10" {
+#   title         = "10 Amazon EC2 should be configured to use VPC endpoints"
+#   description   = "This control checks whether a service endpoint for Amazon EC2 is created for each VPC. The control fails if a VPC does not have a VPC endpoint created for the Amazon EC2 service."
+#   severity      = "medium"
+#   sql           = query.vpc_configured_to_use_ec2_endpoints.sql
+#   documentation = file("./foundational_security/docs/foundational_security_ec2_10.md
+#   tags = merge(local.foundational_security_ec2_common_tags, {
+#     foundational_security_item_id  = "ec2_10"
+#     foundational_security_category = "api_private_access"
+#   })
+# }
 
 control "foundational_security_ec2_15" {
   title         = "15 EC2 subnets should not automatically assign public IP addresses"
@@ -185,29 +184,25 @@ control "foundational_security_ec2_17" {
   })
 }
 
--- Below controls include parameters that are not available in the terraform configs
--- control "foundational_security_ec2_18" {
---   title         = "18 Security groups should only allow unrestricted incoming traffic for authorized ports"
---   description   = "This control checks whether the security groups that are in use allow unrestricted incoming traffic. Optionally the rule checks whether the port numbers are listed in the authorizedTcpPorts parameter. The default values for authorizedTcpPorts are 80 and 443."
---   severity      = "high"
---   sql           = query.vpc_security_group_allows_ingress_authorized_ports.sql
---   documentation = file("./foundational_security/docs/foundational_security_ec2_18.md")
+# Below controls include parameters that are not available in the terraform configs
+# control "foundational_security_ec2_18" {
+#   title         = "18 Security groups should only allow unrestricted incoming traffic for authorized ports"
+#   description   = "This control checks whether the security groups that are in use allow unrestricted incoming traffic. Optionally the rule checks whether the port numbers are listed in the authorizedTcpPorts parameter. The default values for authorizedTcpPorts are 80 and 443."
+#   severity      = "high"
+#   sql           = query.vpc_security_group_allows_ingress_authorized_ports.sql
+#   documentation = file("./foundational_security/docs/foundational_security_ec2_18.md
+#   tags = merge(local.foundational_security_ec2_common_tags, {
+#     foundational_security_item_id  = "ec2_18"
+#     foundational_security_category = "security_group_configuration"
+#   })
 
---   tags = merge(local.foundational_security_ec2_common_tags, {
---     foundational_security_item_id  = "ec2_18"
---     foundational_security_category = "security_group_configuration"
---   })
--- }
-
--- control "foundational_security_ec2_19" {
---   title         = "19 Security groups should not allow unrestricted access to ports with high risk"
---   description   = "This control checks whether unrestricted incoming traffic for the security groups is accessible to the specified ports that have the highest risk. This control passes when none of the rules in a security group allow ingress traffic from 0.0.0.0/0 for those ports."
---   severity      = "medium"
---   sql           = query.vpc_security_group_restricted_common_ports.sql
---   documentation = file("./foundational_security/docs/foundational_security_ec2_19.md")
-
---   tags = merge(local.foundational_security_ec2_common_tags, {
---     foundational_security_item_id  = "ec2_19"
---     foundational_security_category = "security_group_configuration"
---   })
--- }
+# control "foundational_security_ec2_19" {
+#   title         = "19 Security groups should not allow unrestricted access to ports with high risk"
+#   description   = "This control checks whether unrestricted incoming traffic for the security groups is accessible to the specified ports that have the highest risk. This control passes when none of the rules in a security group allow ingress traffic from 0.0.0.0/0 for those ports."
+#   severity      = "medium"
+#   sql           = query.vpc_security_group_restricted_common_ports.sql
+#   documentation = file("./foundational_security/docs/foundational_security_ec2_19.md
+#   tags = merge(local.foundational_security_ec2_common_tags, {
+#     foundational_security_item_id  = "ec2_19"
+#     foundational_security_category = "security_group_configuration"
+#   })

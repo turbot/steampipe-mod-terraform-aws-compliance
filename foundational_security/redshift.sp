@@ -6,7 +6,7 @@ locals {
 
 benchmark "foundational_security_redshift" {
   title         = "Redshift"
-#   documentation = file("./foundational_security/docs/foundational_security_redshift.md")
+  documentation = file("./foundational_security/docs/foundational_security_redshift.md")
   children = [
     control.foundational_security_redshift_1,
     # control.foundational_security_redshift_2,

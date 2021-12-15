@@ -6,7 +6,7 @@ locals {
 
 benchmark "foundational_security_lambda" {
   title         = "Lambda"
-#   documentation = file("./foundational_security/docs/foundational_security_lambda.md")
+  documentation = file("./foundational_security/docs/foundational_security_lambda.md")
   children = [
     # control.foundational_security_lambda_1,
     control.foundational_security_lambda_2,
