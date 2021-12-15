@@ -9,7 +9,7 @@ select
     when (arguments -> 'enable_deletion_protection') is null then ' ''enable_deletion_protection'' disabled'
     when (arguments -> 'enable_deletion_protection')::bool then ' ''enable_deletion_protection'' enabled'
     else ' ''enable_deletion_protection'' disabled'
-  end || '.' reason,
+  end || '.' as reason,
   path
 from
   terraform_resource
