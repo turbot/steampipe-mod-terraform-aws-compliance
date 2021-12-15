@@ -9,7 +9,7 @@ select
     when (arguments -> 'automated_snapshot_retention_period') is null then ' ''automated_snapshot_retention_period'' set to 1 day by default'
     when (arguments -> 'automated_snapshot_retention_period')::integer > 0 then ' ''automated_snapshot_retention_period'' set to ' || (arguments ->> 'automated_snapshot_retention_period')::integer || ' day(s)'
     else ' ''automated_snapshot_retention_period'' set to 0 days'
-  end || '.' reason,
+  end || '.' as reason,
   path
 from
   terraform_resource

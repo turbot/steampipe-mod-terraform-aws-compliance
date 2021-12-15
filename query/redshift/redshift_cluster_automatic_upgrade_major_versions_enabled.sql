@@ -8,8 +8,8 @@ select
   name || case
     when (arguments -> 'allow_version_upgrade') is null then ' ''allow_version_upgrade'' set to true by default'
     when (arguments -> 'allow_version_upgrade')::bool then '  ''allow_version_upgrade'' set to true'
-    else '  ''allow_version_upgrade'' set to false'
-  end || '.' reason,
+    else ' ''allow_version_upgrade'' set to false'
+  end || '.' as reason,
   path
 from
   terraform_resource

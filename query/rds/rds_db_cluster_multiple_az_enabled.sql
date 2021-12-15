@@ -8,8 +8,8 @@ select
   name || case
     when (arguments -> 'multi_az') is null then ' ''multi_az'' disabled'
     when (arguments -> 'multi_az')::bool then ' ''multi_az'' enabled'
-    else '  ''multi_az'' disabled'
-  end || '.' reason,
+    else ' ''multi_az'' disabled'
+  end || '.' as reason,
   path
 from
   terraform_resource

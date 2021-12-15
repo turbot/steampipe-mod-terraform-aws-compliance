@@ -10,7 +10,7 @@ select
     when (arguments -> 'logging') is null then ' audit logging disabled'
     when (arguments -> 'logging' ->> 'enabled')::bool then ' audit logging enabled'
     else ' audit logging disabled'
-  end || '.' reason,
+  end || '.' as reason,
   path
 from
   terraform_resource

@@ -9,7 +9,7 @@ select
     when (arguments -> 'publicly_accessible') is null then ' publicly accessible'
     when (arguments -> 'publicly_accessible')::bool then ' publicly accessible'
     else ' not publicly accessible'
-  end || '.' reason,
+  end || '.' as reason,
   path
 from
   terraform_resource

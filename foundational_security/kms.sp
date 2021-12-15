@@ -1,19 +1,19 @@
-locals {
-  foundational_security_kms_common_tags = merge(local.foundational_security_common_tags, {
-    service = "kms"
-  })
-}
+# locals {
+#   foundational_security_kms_common_tags = merge(local.foundational_security_common_tags, {
+#     service = "kms"
+#   })
+# }
 
-benchmark "foundational_security_kms" {
-  title         = "KMS"
+# benchmark "foundational_security_kms" {
+#   title         = "KMS"
 #   documentation = file("./foundational_security/docs/foundational_security_kms.md")
-  children = [
-    # control.foundational_security_kms_1,
-    # control.foundational_security_kms_2,
-    # control.foundational_security_kms_3
-  ]
-  tags          = local.foundational_security_kms_common_tags
-}
+#   children = [
+#     control.foundational_security_kms_1,
+#     control.foundational_security_kms_2,
+#     control.foundational_security_kms_3
+#   ]
+#   tags          = local.foundational_security_kms_common_tags
+# }
 
 # control "foundational_security_kms_1" {
 #   title         = "1 IAM customer managed policies should not allow decryption actions on all KMS keys"

@@ -24,7 +24,7 @@ benchmark "foundational_security_rds" {
     control.foundational_security_rds_15,
     control.foundational_security_rds_16,
     control.foundational_security_rds_17,
-    control.foundational_security_rds_18,
+    # control.foundational_security_rds_18,
     control.foundational_security_rds_19,
     control.foundational_security_rds_20,
     control.foundational_security_rds_21,
