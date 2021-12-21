@@ -13,7 +13,7 @@ mod "terraform_sherlock" {
     image        = "/images/mods/turbot/terraform-sherlock-social-graphic.png"
   }
 
-  requires {
+  require {
     plugin "terraform" {
       version = "0.0.1"
     }
