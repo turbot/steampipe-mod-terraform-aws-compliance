@@ -1,20 +1,20 @@
 select
   type || ' ' || name as resource,
 case
-  when 
-    coalesce(trim(arguments ->> 'direct_internet_access'), '') in ('', 'Enabled')
-  then 'alarm'
-  else 'ok'
+  when
+    arguments -> 'direct_internet_access' is null or arguments ->> 'direct_internet_access' = 'Disabled'
+  then 'ok'
+  else 'alarm'
 end as status,
 name || case
   when
-    coalesce(trim(arguments ->> 'direct_internet_access'), '') = ''
+    trim(arguments ->> 'direct_internet_access') = ''
   then 
     ' ''direct_internet_access'' is not defined.'
   when 
-    trim(arguments ->> 'direct_internet_access') = 'Enabled'
-  then ' direct internet access enabled.'
-  else ' direct internet access disabled.'
+    arguments -> 'direct_internet_access' is null or arguments ->> 'direct_internet_access' = 'Disabled'
+  then ' direct internet access disabled.'
+  else ' direct internet access enabled.'
 end as reason,
 path
 from

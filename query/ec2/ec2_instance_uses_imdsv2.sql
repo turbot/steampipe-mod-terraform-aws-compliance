@@ -8,11 +8,12 @@ case
 end as status,
 name || case
   when
-    coalesce(trim(arguments -> 'metadata_options' ->> 'http_tokens'), '') = ''
+    trim(arguments -> 'metadata_options' ->> 'http_tokens') = ''
   then 
     ' ''http_tokens'' is not defined.'
   when 
-    trim(arguments -> 'metadata_options' ->> 'http_tokens') <> 'required'
+    arguments -> 'metadata_options' -> 'http_tokens' is null 
+    or arguments -> 'metadata_options' ->> 'http_tokens' = 'optional'
   then ' not configured to use Instance Metadata Service Version 2 (IMDSv2).'
   else ' configured to use Instance Metadata Service Version 2 (IMDSv2).'
 end as reason,
