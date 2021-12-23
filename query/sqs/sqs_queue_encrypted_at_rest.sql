@@ -6,8 +6,9 @@ select
     else 'ok'
   end as status,
   name || case
-    when coalesce(trim(arguments ->> 'kms_master_key_id'), '') = '' then ' ''kms_master_key_id'' is not defined.'
-    when trim(arguments ->> 'kms_master_key_id') <> '' then ' encryption at rest enabled.'
+    when arguments -> 'kms_master_key_id' is null then ' ''kms_master_key_id'' is not defined.'
+    when coalesce(trim(arguments ->> 'kms_master_key_id'), '') <> '' then ' encryption at rest enabled.'
+    else ' encryption at rest disabled.'
   end as reason,
   path
 from
