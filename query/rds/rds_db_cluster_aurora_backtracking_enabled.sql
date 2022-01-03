@@ -15,3 +15,4 @@ from
   terraform_resource
 where
   type = 'aws_rds_cluster';
+  
