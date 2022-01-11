@@ -8,15 +8,15 @@ select
     else 'alarm'
   end as status,
   case
-    when 
+    when
       arguments -> 'ingress' is not null and arguments -> 'egress' is not null
     then
       'Default security group ' || name || ' has inbound and outbound rules.'
-    when 
+    when
       arguments -> 'ingress' is not null and arguments -> 'egress' is null
     then
       'Default security group ' || name || ' has inbound rules.'
-    when 
+    when
       arguments -> 'ingress' is null and arguments -> 'egress' is not null
     then
       'Default security group ' || name || ' has outbound rules.'
