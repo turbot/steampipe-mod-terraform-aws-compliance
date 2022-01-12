@@ -28,14 +28,6 @@ control "lambda_function_in_vpc" {
   tags = local.conformance_pack_lambda_common_tags
 }
 
-control "lambda_function_log_groups_enabled" {
-  title       = "to sos"
-  description = "to dod"
-  sql           = query.lambda_function_log_groups_enabled.sql
-
-  tags = local.conformance_pack_lambda_common_tags
-}
-
 control "lambda_function_use_latest_runtime" {
   title         = "Lambda functions should use latest runtimes"
   description   = "This control checks that the Lambda function settings for runtimes match the expected values set for the latest runtimes for each supported language. This control checks for the following runtimes: nodejs14.x, nodejs12.x, nodejs10.x, python3.8, python3.7, python3.6, ruby2.7, ruby2.5,java11, java8, go1.x, dotnetcore3.1, dotnetcore2.1."

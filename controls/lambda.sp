@@ -12,7 +12,6 @@ benchmark "lambda" {
     control.lambda_function_in_vpc,
     control.lambda_function_use_latest_runtime,
     control.lambda_function_xray_tracing_enabled,
-    control.lambda_function_log_groups_enabled
   ]
   tags          = local.kms_compliance_common_tags
 }
