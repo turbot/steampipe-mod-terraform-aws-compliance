@@ -13,9 +13,9 @@ mod "Terraform_aws_compliance" {
     image        = "/images/mods/turbot/terraform-sherlock-social-graphic.png"
   }
 
-  requires {
-    plugin "terraform" {
-      version = "0.0.1"
-    }
-  }
+  # requires {
+  #   plugin "terraform" {
+  #     version = "0.0.1"
+  #   }
+  # }
 }
