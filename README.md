@@ -1,4 +1,4 @@
-# Terraform Sherlock
+# Terraform AWS Compliance
 
 Interrogate your Terraform resources with the help of the World's greatest
 detectives: Steampipe + Sherlock. Terraform Sherlock allows you to perform
@@ -7,7 +7,7 @@ security best practices.
 
 ![image](https://github.com/turbot/steampipe-mod-terraform-sherlock/blob/main/docs/terraform_sherlock_session.png?raw=true)
 
-## Current Sherlock Checks
+## Current Compliance Checks
 
 TBD
 

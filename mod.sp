@@ -1,7 +1,7 @@
-mod "terraform_sherlock" {
+mod "Terraform_aws_compliance" {
   # Hub metadata
-  title         = "Terraform Sherlock"
-  description   = "Interrogate your Terraform resources with the help of the world's greatest detectives: Steampipe + Sherlock."
+  title         = "Terraform AWS Compliance"
+  description   = "Interrogate your AWS Terraform resources with the help of the world's greatest detectives: Steampipe + Sherlock."
   color         = "#844FBA"
   documentation = file("./docs/index.md")
   icon          = "/images/mods/turbot/terraform-sherlock.svg"

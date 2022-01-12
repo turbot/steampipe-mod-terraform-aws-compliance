@@ -1,0 +1,21 @@
+locals {
+  conformance_pack_ecr_common_tags = {
+    service = "ecr"
+  }
+}
+
+control "ecr_repository_tags_immutable" {
+  title         = "ECR repository tags should be immutable"
+  description   = "AWS ECR should have all tags be immutable - once a container is published, another image cannot assume the same tag."
+  sql           = query.ecr_repository_tags_immutable.sql
+
+  tags = local.conformance_pack_ecr_common_tags
+}
+
+control "ecr_repository_use_image_scanning" {
+  title         = "ECR repository should use image scanning"
+  description   = "One of the best practices when making containers available through AWS ECR is to scan them for vulnerabilities before sharing or using them."
+  sql           = query.ecr_repository_use_image_scanning.sql
+
+  tags = local.conformance_pack_ecr_common_tags
+}
