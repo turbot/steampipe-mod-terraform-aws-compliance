@@ -53,8 +53,8 @@ control "redshift_cluster_kms_enabled" {
 }
 
 control "redshift_cluster_logging_enabled" {
-  title         = "to dod"
-  description   = "."
+  title         = "Amazon Redshift clusters should have logging enabled"
+  description   = "Ensure that Amazon Redshift clusters have logging enabled."
   sql           = query.redshift_cluster_logging_enabled.sql
 
   tags = local.conformance_pack_redshift_common_tags
