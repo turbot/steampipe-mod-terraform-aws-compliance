@@ -5,7 +5,7 @@ locals {
 }
 
 benchmark "cloudfront" {
-  title         = "Cloudfront"
+  title         = "CloudFront"
   children = [
     control.cloudfront_distribution_configured_with_origin_failover,
     control.cloudfront_distribution_default_root_object_configured,

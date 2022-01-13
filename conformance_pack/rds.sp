@@ -149,7 +149,7 @@ control "rds_db_instance_prohibit_public_access" {
 }
 
 control "rds_db_parameter_group_events_subscription" {
-  title         = "21 An RDS event notifications subscription should be configured for critical database parameter group events"
+  title         = "An RDS event notifications subscription should be configured for critical database parameter group events"
   description   = "This control checks whether an Amazon RDS event subscription exists with notifications enabled for the following source type, event category key-value pairs."
   sql           = query.rds_db_parameter_group_events_subscription.sql
 

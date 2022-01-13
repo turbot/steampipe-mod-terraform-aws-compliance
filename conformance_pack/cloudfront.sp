@@ -46,7 +46,7 @@ control "cloudfront_distribution_origin_access_identity_enabled" {
 
 control "cloudfront_distribution_waf_enabled" {
   title         = "CloudFront distributions should have AWS WAF enabled"
-  description   = "TThis control checks whether CloudFront distributions are associated with either AWS WAF or AWS WAFv2 web ACLs. The control fails if the distribution is not associated with a web ACL."
+  description   = "This control checks whether CloudFront distributions are associated with either AWS WAF or AWS WAFv2 web ACLs. The control fails if the distribution is not associated with a web ACL."
   sql           = query.cloudfront_distribution_waf_enabled.sql
 
   tags = local.conformance_pack_cloudfront_common_tags

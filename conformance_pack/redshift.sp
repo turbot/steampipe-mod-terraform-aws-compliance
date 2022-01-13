@@ -1,6 +1,6 @@
 locals {
   conformance_pack_redshift_common_tags = {
-    service = "rds"
+    service = "redshift"
   }
 }
 
@@ -21,8 +21,8 @@ control "redshift_cluster_automatic_upgrade_major_versions_enabled" {
 }
 
 control "redshift_cluster_deployed_in_ec2_classic_mode" {
-  title         = "to dod"
-  description   = "to dod"
+  title         = "Redshift clusters should not be using EC2 classic mode"
+  description   = "Ensure EC2-Classic mode is not used for the deployment of redshift clusters"
   sql           = query.redshift_cluster_deployed_in_ec2_classic_mode.sql
 
   tags = local.conformance_pack_redshift_common_tags
@@ -37,7 +37,7 @@ control "redshift_cluster_encryption_logging_enabled" {
 }
 
 control "redshift_cluster_enhanced_vpc_routing_enabled" {
-  title         = "7 Amazon Redshift clusters should use enhanced VPC routing"
+  title         = "Amazon Redshift clusters should use enhanced VPC routing"
   description   = "This control checks whether an Amazon Redshift cluster has EnhancedVpcRouting enabled."
   sql           = query.redshift_cluster_enhanced_vpc_routing_enabled.sql
 

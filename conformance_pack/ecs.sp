@@ -14,7 +14,7 @@ control "ecs_cluster_container_insights_enabled" {
 
 control "ecs_task_definition_encryption_in_transit_enabled" {
   title         = "ECS task definition encryption in transit should be enabled"
-  description   = "Ensure Encryption in transit is enabled for EFS volumes in ECS Task definitions."
+  description   = "Ensure encryption in transit is enabled for EFS volumes in ECS Task definitions."
   sql           = query.ecs_task_definition_encryption_in_transit_enabled.sql
 
   tags = local.conformance_pack_ecs_common_tags

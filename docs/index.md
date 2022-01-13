@@ -31,8 +31,8 @@ steampipe plugin install terraform
 Clone:
 
 ```sh
-git clone https://github.com/turbot/steampipe-mod-terraform-sherlock.git
-cd steampipe-mod-terraform-sherlock
+git clone https://github.com/turbot/steampipe-mod-terraform-aws-compliance.git
+cd steampipe-mod-terraform-aws-compliance
 ```
 
 Run all benchmarks:
@@ -44,13 +44,13 @@ steampipe check all
 Run a benchmark:
 
 ```shell
-steampipe check benchmark.TBD
+steampipe check benchmark.s3
 ```
 
 Run a specific control:
 
 ```shell
-steampipe check control.TBD
+steampipe check control.s3_bucket_cross_region_replication_enabled
 ```
 
 ### Credentials

@@ -14,7 +14,7 @@ control "es_domain_audit_logging_enabled" {
 
 control "es_domain_data_nodes_min_3" {
   title         = "Elasticsearch domains should have at least three data nodes"
-  description   = "This control checks whether Elasticsearch domains are configured with at least three data nodes and zoneAwarenessEnabled is true."
+  description   = "This control checks whether Elasticsearch domains are configured with at least three data nodes and zoneAwarenessEnabled is set to true."
   sql           = query.es_domain_data_nodes_min_3.sql
 
   tags = local.conformance_pack_es_common_tags
@@ -54,7 +54,7 @@ control "es_domain_error_logging_enabled" {
 
 control "es_domain_in_vpc" {
   title         = "Amazon Elasticsearch Service domains should be in a VPC"
-  description   = "This control checks whether Amazon Elasticsearch Service domains are in a VPC. It does not evaluate the VPC subnet routing configuration to determine public access. You should ensure that Amazon ES domains are not attached to public subnets."
+  description   = "This control checks whether Amazon Elasticsearch Service domains are in a VPC. It does not evaluate the VPC subnet routing configuration to determine public access. You should ensure that Amazon Elasticsearch domains are not attached to public subnets."
   sql           = query.es_domain_in_vpc.sql
 
   tags = local.conformance_pack_es_common_tags

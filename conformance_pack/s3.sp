@@ -14,7 +14,7 @@ control "s3_bucket_cross_region_replication_enabled" {
 
 control "s3_bucket_default_encryption_enabled_kms" {
   title       = "S3 bucket default encryption should be enabled with KMS"
-  description = "To help protect data at rest, ensure encryption is enabled for your Amazon Simple Storage Service (Amazon S3) buckets."
+  description = "To help protect data at rest, ensure encryption is enabled for your Amazon Simple Storage Service (Amazon S3) buckets using KMS."
   sql           = query.s3_bucket_default_encryption_enabled_kms.sql
 
   tags = local.conformance_pack_s3_common_tags
@@ -22,7 +22,7 @@ control "s3_bucket_default_encryption_enabled_kms" {
 
 control "s3_bucket_default_encryption_enabled" {
   title       = "S3 bucket default encryption should be enabled"
-  description = "To help protect data at rest, ensure encryption is enabled for your Amazon Simple Storage Service (Amazon S3) buckets."
+  description = "To help protect data at rest, ensure default encryption is enabled for your Amazon Simple Storage Service (Amazon S3) buckets."
   sql           = query.s3_bucket_default_encryption_enabled.sql
 
   tags = local.conformance_pack_s3_common_tags
@@ -38,7 +38,7 @@ control "s3_bucket_logging_enabled" {
 
 control "s3_bucket_mfa_delete_enabled" {
   title         = "Ensure MFA Delete is enabled on S3 buckets"
-  description   = "Once MFA Delete is enabled on your sensitive and classified S3 bucket it requires the user to have two forms of authentication."
+  description   = "Once MFA delete is enabled on your sensitive and classified S3 bucket it requires the user to have two forms of authentication."
   sql           = query.s3_bucket_mfa_delete_enabled.sql
 
   tags = local.conformance_pack_s3_common_tags

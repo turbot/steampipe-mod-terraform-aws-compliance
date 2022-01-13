@@ -14,7 +14,7 @@ control "eks_cluster_endpoint_restrict_public_access" {
 
 control "eks_cluster_log_types_enabled" {
   title         = "EKS cluster log types should be enabled"
-  description   = "Ensure Amazon EKS cluster logging enabled for all log types"
+  description   = "Ensure Amazon EKS cluster logging is enabled for all log types"
   sql           = query.eks_cluster_log_types_enabled.sql
 
   tags = local.conformance_pack_eks_common_tags

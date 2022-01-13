@@ -38,7 +38,7 @@ control "elb_application_lb_waf_enabled" {
 
 control "elb_classic_lb_cross_zone_load_balancing_enabled" {
   title         = "ELB classic load balancers should have cross-zone load balancing enabled"
-  description   = "Enable cross-zone load balancing for your Elastic Load Balancers (ELBs) to help maintain adequate capacity and availability. The cross-zone load balancing reduces the need to maintain equivalent numbers of instances in each enabled availability zone."
+  description   = "Enable cross-zone load balancing for your Elastic Load Balancers (ELBs) to help maintain adequate capacity and availability. The cross-zone load balancing reduces the need to maintain equivalent number of instances in each enabled availability zone."
   sql           = query.elb_classic_lb_cross_zone_load_balancing_enabled.sql
 
   tags = local.conformance_pack_elb_common_tags

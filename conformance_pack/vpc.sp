@@ -55,7 +55,7 @@ control "vpc_security_group_associated_to_eni" {
 
 control "vpc_security_group_description_for_rules" {
   title         = "VPC security group should have description for rules"
-  description   = "One of the best practices when creating security groups in AWS is to add a description to the group and each of its rules for better clarity."
+  description   = "One of the best practices when creating security groups in AWS is to add a description to the group for better clarity."
   sql           = query.vpc_security_group_description_for_rules.sql
 
   tags = local.conformance_pack_vpc_common_tags
@@ -70,8 +70,8 @@ control "vpc_security_group_rule_description_for_rules" {
 }
 
 control "vpc_subnet_auto_assign_public_ip_disabled" {
-  title       = "VPC subnet auto assign public ip should be disabled"
-  description = "Ensure if Amazon Virtual Private Cloud (Amazon VPC) subnets are assigned a public IP address. The control is complaint if Amazon VPC does not have subnets that are assigned a public IP address. The control. is non complaint if Amazon VPC has subnets that are assigned a public IP address."
+  title       = "VPC subnet auto assign public IP should be disabled"
+  description = "Ensure if Amazon Virtual Private Cloud (Amazon VPC) subnets are assigned a public IP address. The control is complaint if Amazon VPC does not have subnets that are assigned a public IP address."
   sql           = query.vpc_subnet_auto_assign_public_ip_disabled.sql
 
   tags = local.conformance_pack_vpc_common_tags
