@@ -1,4 +1,4 @@
-mod "Terraform_aws_compliance" {
+mod "terraform_aws_compliance" {
   # Hub metadata
   title         = "Terraform AWS Compliance"
   description   = "Interrogate your AWS Terraform resources with the help of the world's greatest detectives: Steampipe + Sherlock."
