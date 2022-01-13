@@ -2,7 +2,7 @@
 repository: "https://.com/turbot/steampipe-mod-terraform-sherlock"
 ---
 
-# Terraform Sherlock Mod
+# Terraform AWS Compliance
 
 Interrogate your Terraform resources with the help of the world's greatest detectives: Steampipe + Sherlock.
 
