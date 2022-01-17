@@ -1,6 +1,7 @@
 select
   type || ' ' || name as resource,
   case
+    when arguments -> 'minimum_password_length' is null then 'alarm'
     when (arguments -> 'minimum_password_length')::integer >= 14 then 'ok'
     else 'alarm'
   end as status,

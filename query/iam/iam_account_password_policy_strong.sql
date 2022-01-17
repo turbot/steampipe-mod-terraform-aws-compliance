@@ -12,7 +12,6 @@ select
     else 'alarm'
   end as status,
   name || case
-    when (arguments -> 'minimum_password_length') is null then ' No password policy set'
     when
       (arguments -> 'minimum_password_length')::integer >= 14 
       and (arguments -> 'require_lowercase_characters')::bool
