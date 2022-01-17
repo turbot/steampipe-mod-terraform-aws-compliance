@@ -53,7 +53,7 @@ control "iam_account_password_policy_reuse_24" {
 }
 
 control "iam_account_password_policy_strong_min_length_8" {
-  title         = "Password policies for IAM users should have strong configurations"
+  title         = "Ensure IAM password policy requires a minimum length of 8 or greater"
   description   = "This control checks whether the account password policy for IAM users uses the recommended configurations."
   severity      = "medium"
   sql           = query.iam_account_password_policy_strong_min_length_8.sql
