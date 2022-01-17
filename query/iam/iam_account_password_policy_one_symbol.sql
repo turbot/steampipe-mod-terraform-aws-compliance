@@ -6,7 +6,7 @@ select
     else 'alarm'
   end as status,
   name || case
-    when (arguments -> 'minimum_password_length') is null then ' symbol not set to required'
+    when (arguments -> 'require_symbols') is null then ' symbol not set to required'
     when (arguments -> 'require_symbols')::bool then ' symbol set to required'
     else ' symbol not set to required'
   end || '.' as reason,
