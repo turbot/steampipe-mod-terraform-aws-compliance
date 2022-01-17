@@ -6,6 +6,7 @@ locals {
 
 benchmark "autoscaling" {
   title         = "Auto Scaling"
+    description = "AWS Auto Scaling monitors your applications and automatically adjusts capacity to maintain steady, predictable performance at the lowest possible cost. This benchmark provides a set of controls that detect your Terraform resources deviating from security best practices prior to deployment in your AWS accounts."
   children = [
     control.autoscaling_group_with_lb_use_health_check,
     control.autoscaling_launch_config_public_ip_disabled
