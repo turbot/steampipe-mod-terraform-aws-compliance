@@ -1,10 +1,12 @@
 ---
-repository: "https://.com/turbot/steampipe-mod-terraform-sherlock"
+repository: "https://github.com/turbot/steampipe-mod-terraform-aws-compliance"
 ---
 
 # Terraform AWS Compliance
 
-Interrogate your Terraform resources with the help of the world's greatest detectives: Steampipe + Sherlock.
+Lightweight, security and compliance-focused framework for Terraform. Run individual configuration, compliance and security controls for individual AWS services across all your AWS accounts using Steampipe.
+
+<!-- ![image](https://raw.githubusercontent.com/turbot/steampipe-mod-aws-compliance/main/docs/aws_cis_v140_console.png) -->
 
 ## References
 
@@ -17,8 +19,8 @@ Interrogate your Terraform resources with the help of the world's greatest detec
 
 ## Documentation
 
-- **[Benchmarks and controls →](https://hub.steampipe.io/mods/turbot/_sherlock/controls)**
-- **[Named queries →](https://hub.steampipe.io/mods/turbot/_sherlock/queries)**
+- **[Benchmarks and controls →](https://hub.steampipe.io/mods/turbot/terraform_aws_compliance/controls)**
+- **[Named queries →](https://hub.steampipe.io/mods/turbot/terraform_aws_compliance/queries)**
 
 ## Get started
 
@@ -44,13 +46,13 @@ steampipe check all
 Run a benchmark:
 
 ```shell
-steampipe check benchmark.s3
+steampipe check terraform_aws_compliance.benchmark.s3
 ```
 
 Run a specific control:
 
 ```shell
-steampipe check control.s3_bucket_cross_region_replication_enabled
+steampipe check terraform_aws_compliance.control.s3_bucket_default_encryption_enabled
 ```
 
 ### Credentials
@@ -63,5 +65,5 @@ No extra configuration is required.
 
 ## Get involved
 
-* Contribute: [Terraform Repo](https://github.com/turbot/steampipe-mod-terraform-sherlock)
+* Contribute: [Terraform Repo](https://github.com/turbot/steampipe-mod-terraform-aws-compliance)
 * Community: [Slack Channel](https://steampipe.io/community/join)

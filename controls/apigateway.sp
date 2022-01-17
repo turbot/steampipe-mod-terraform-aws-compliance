@@ -6,6 +6,7 @@ locals {
 
 benchmark "apigateway" {
   title         = "API Gateway"
+  description = "Amazon API Gateway is an AWS service for creating, publishing, maintaining, monitoring, and securing REST, HTTP, and WebSocket APIs at any scale. This benchmark provides a set of controls that detect your Terraform resources deviating from security best practices prior to deployment in your AWS accounts."
   children = [
     control.apigateway_rest_api_stage_use_ssl_certificate,
     control.apigateway_rest_api_stage_xray_tracing_enabled,
