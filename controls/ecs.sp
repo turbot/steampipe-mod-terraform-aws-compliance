@@ -5,7 +5,9 @@ locals {
 }
 
 benchmark "ecs" {
-  title         = "ECS"
+  title       = "ECS"
+  description = "This benchmark provides a set of controls that detect Terraform AWS ECS resources deviating from security best practices."
+
   children = [
     control.ecs_cluster_container_insights_enabled,
     control.ecs_task_definition_encryption_in_transit_enabled,

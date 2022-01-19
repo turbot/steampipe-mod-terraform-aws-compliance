@@ -5,7 +5,9 @@ locals {
 }
 
 benchmark "ebs" {
-  title         = "EBS"
+  title       = "EBS"
+  description = "This benchmark provides a set of controls that detect Terraform AWS EBS resources deviating from security best practices."
+
   children = [
     control.ebs_attached_volume_encryption_enabled,
     control.ebs_volume_encryption_at_rest_enabled
@@ -18,7 +20,15 @@ control "ebs_attached_volume_encryption_enabled" {
   description   = "Because sensitive data can exist and to help protect data at rest, ensure encryption is enabled for your Amazon Elastic Block Store (Amazon EBS) volumes."
   sql           = query.ebs_attached_volume_encryption_enabled.sql
 
-  tags = local.ebs_compliance_common_tags
+  tags = merge(local.ebs_compliance_common_tags, {
+    aws_foundational_security   = "true"
+    audit_manager_control_tower = "true"
+    gdpr                        = "true"
+    hipaa                       = "true"
+    nist_800_53_rev_4           = "true"
+    nist_csf                    = "true"
+    rbi_cyber_security          = "true"
+  })
 }
 
 control "ebs_volume_encryption_at_rest_enabled" {
@@ -26,5 +36,10 @@ control "ebs_volume_encryption_at_rest_enabled" {
   description   = "Because sensitive data can exist and to help protect data at rest, ensure encryption is enabled for your Amazon Elastic Block Store (Amazon EBS) volumes."
   sql           = query.ebs_attached_volume_encryption_enabled.sql
 
-  tags = local.ebs_compliance_common_tags
+  tags = merge(local.ebs_compliance_common_tags, {
+    cis                = "true"
+    gdpr               = "true"
+    hipaa              = "true"
+    rbi_cyber_security = "true"
+  })
 }

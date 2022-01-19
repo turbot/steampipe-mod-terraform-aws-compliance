@@ -1,11 +1,13 @@
 locals {
   neptune_compliance_common_tags = merge(local.compliance_common_tags, {
-    service = "emr"
+    service = "neptune"
   })
 }
 
 benchmark "neptune" {
-  title    = "Neptune"
+  title       = "Neptune"
+  description = "This benchmark provides a set of controls that detect Terraform AWS Neptune resources deviating from security best practices."
+
   children = [
     control.neptune_cluster_logging_enabled
   ]

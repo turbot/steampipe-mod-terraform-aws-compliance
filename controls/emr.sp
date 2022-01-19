@@ -5,7 +5,9 @@ locals {
 }
 
 benchmark "emr" {
-  title    = "EMR"
+  title       = "EMR"
+  description = "This benchmark provides a set of controls that detect Terraform AWS EMR resources deviating from security best practices."
+
   children = [
     control.emr_cluster_kerberos_enabled
   ]
@@ -17,5 +19,9 @@ control "emr_cluster_kerberos_enabled" {
   description   = "The access permissions and authorizations can be managed and incorporated with the principles of least privilege and separation of duties, by enabling Kerberos for Amazon EMR clusters."
   sql           = query.emr_cluster_kerberos_enabled.sql
 
-  tags = local.emr_compliance_common_tags
+  tags = merge(local.emr_compliance_common_tags, {
+    hipaa             = "true"
+    nist_800_53_rev_4 = "true"
+    nist_csf          = "true"
+  })
 }

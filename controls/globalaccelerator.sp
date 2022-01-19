@@ -5,7 +5,9 @@ locals {
 }
 
 benchmark "globalaccelerator" {
-  title    = "Global Accelerator"
+  title       = "Global Accelerator"
+  description = "This benchmark provides a set of controls that detect Terraform AWS Global Accelerator resources deviating from security best practices."
+
   children = [
     control.globalaccelerator_flow_logs_enabled
   ]

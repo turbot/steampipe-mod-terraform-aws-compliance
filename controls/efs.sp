@@ -5,7 +5,9 @@ locals {
 }
 
 benchmark "efs" {
-  title         = "EFS"
+  title       = "EFS"
+  description = "This benchmark provides a set of controls that detect Terraform AWS EFS resources deviating from security best practices."
+
   children = [
     control.efs_file_system_automatic_backups_enabled,
     control.efs_file_system_encrypt_data_at_rest,
@@ -18,7 +20,14 @@ control "efs_file_system_automatic_backups_enabled" {
   description   = "To help with data back-up processes, ensure your Amazon Elastic File System (Amazon EFS) file systems are a part of an AWS Backup plan."
   sql           = query.efs_file_system_automatic_backups_enabled.sql
 
-  tags = local.efs_compliance_common_tags
+  tags = merge(local.efs_compliance_common_tags, {
+    aws_foundational_security = "true"
+    hipaa                     = "true"
+    nist_800_53_rev_4         = "true"
+    nist_csf                  = "true"
+    rbi_cyber_security        = "true"
+    soc_2                     = "true"
+  })
 }
 
 control "efs_file_system_encrypt_data_at_rest" {
@@ -26,5 +35,12 @@ control "efs_file_system_encrypt_data_at_rest" {
   description   = "Because sensitive data can exist and to help protect data at rest, ensure encryption is enabled for your Amazon Elastic File System (EFS)."
   sql           = query.efs_file_system_encrypt_data_at_rest.sql
 
-  tags = local.efs_compliance_common_tags
+  tags = merge(local.efs_compliance_common_tags, {
+    aws_foundational_security = "true"
+    gdpr                      = "true"
+    hipaa                     = "true"
+    nist_800_53_rev_4         = "true"
+    nist_csf                  = "true"
+    rbi_cyber_security        = "true"
+  })
 }

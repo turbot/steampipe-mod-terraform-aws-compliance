@@ -5,7 +5,9 @@ locals {
 }
 
 benchmark "docdb" {
-  title         = "DocumentDB"
+  title       = "DocumentDB"
+  description = "This benchmark provides a set of controls that detect Terraform AWS DocumentDB resources deviating from security best practices."
+
   children = [
     control.docdb_cluster_audit_logs_enabled
   ]

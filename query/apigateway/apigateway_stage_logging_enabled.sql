@@ -1,7 +1,17 @@
 with stages_v1 as (
-  select * from terraform_resource where type = 'aws_api_gateway_stage'
+  select
+    *
+  from
+    terraform_resource
+  where
+    type = 'aws_api_gateway_stage'
 ), method_settings as (
-    select * from terraform_resource where type = 'aws_api_gateway_method_settings'
+    select
+      *
+    from
+      terraform_resource
+    where
+      type = 'aws_api_gateway_method_settings'
 ), all_v1 as (
     select
       m.arguments -> 'settings' ->> 'logging_level' as log_level,
@@ -11,7 +21,10 @@ with stages_v1 as (
       a.path
     from stages_v1 as a left join method_settings as m on (m.arguments ->> 'rest_api_id') = (a.arguments ->> 'rest_api_id')
 ), all_stages as (
-    select log_level, stage_name, type, name, path from all_v1
+    select
+      log_level, stage_name, type, name, path
+    from
+      all_v1
     union
     select
       arguments -> 'default_route_settings' ->> 'logging_level' as log_level,

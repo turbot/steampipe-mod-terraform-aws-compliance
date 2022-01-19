@@ -5,7 +5,9 @@ locals {
 }
 
 benchmark "redshift" {
-  title    = "Redshift"
+  title       = "Redshift"
+  description = "This benchmark provides a set of controls that detect Terraform AWS Redshift resources deviating from security best practices."
+
   children = [
     control.redshift_cluster_automatic_snapshots_min_7_days,
     control.redshift_cluster_automatic_upgrade_major_versions_enabled,
@@ -25,7 +27,14 @@ control "redshift_cluster_automatic_snapshots_min_7_days" {
   description = "This control checks whether Amazon Redshift clusters have automated snapshots enabled. It also checks whether the snapshot retention period is greater than or equal to seven."
   sql           = query.redshift_cluster_automatic_snapshots_min_7_days.sql
 
-  tags = local.redshift_compliance_common_tags
+  tags = merge(local.redshift_compliance_common_tags, {
+    aws_foundational_security = "true"
+    gdpr               = "true"
+    hipaa              = "true"
+    nist_csf           = "true"
+    rbi_cyber_security = "true"
+    sco_2              = "true"
+  })
 }
 
 control "redshift_cluster_automatic_upgrade_major_versions_enabled" {
@@ -33,7 +42,9 @@ control "redshift_cluster_automatic_upgrade_major_versions_enabled" {
   description   = "This control checks whether automatic major version upgrades are enabled for the Amazon Redshift cluster."
   sql           = query.redshift_cluster_automatic_upgrade_major_versions_enabled.sql
 
-  tags = local.redshift_compliance_common_tags
+  tags = merge(local.redshift_compliance_common_tags, {
+    aws_foundational_security = "true"
+  })
 }
 
 control "redshift_cluster_deployed_in_ec2_classic_mode" {
@@ -57,7 +68,9 @@ control "redshift_cluster_enhanced_vpc_routing_enabled" {
   description   = "This control checks whether an Amazon Redshift cluster has EnhancedVpcRouting enabled."
   sql           = query.redshift_cluster_enhanced_vpc_routing_enabled.sql
 
-  tags = local.redshift_compliance_common_tags
+  tags = merge(local.redshift_compliance_common_tags, {
+    aws_foundational_security = "true"
+  })
 }
 
 control "redshift_cluster_kms_enabled" {
@@ -65,7 +78,9 @@ control "redshift_cluster_kms_enabled" {
   description = "Ensure if Amazon Redshift clusters are using a specified AWS Key Management Service (AWS KMS) key for encryption. The rule is complaint if encryption is enabled and the cluster is encrypted with the key provided in the kmsKeyArn parameter. The rule is non complaint if the cluster is not encrypted or encrypted with another key."
   sql           = query.redshift_cluster_kms_enabled.sql
 
-  tags = local.redshift_compliance_common_tags
+  tags = merge(local.redshift_compliance_common_tags, {
+    rbi_cyber_security = "true"
+  })
 }
 
 control "redshift_cluster_logging_enabled" {
@@ -81,7 +96,9 @@ control "redshift_cluster_maintenance_settings_check" {
   description = "Ensure whether Amazon Redshift clusters have the specified maintenance settings. Redshift clusters 'allowVersionUpgrade' should be set to 'true' and 'automatedSnapshotRetentionPeriod' should be greater than 7."
   sql           = query.redshift_cluster_maintenance_settings_check.sql
 
-  tags = local.redshift_compliance_common_tags
+  tags = merge(local.redshift_compliance_common_tags, {
+    rbi_cyber_security = "true"
+  })
 }
 
 control "redshift_cluster_prohibit_public_access" {
@@ -89,5 +106,12 @@ control "redshift_cluster_prohibit_public_access" {
   description = "Manage access to resources in the AWS Cloud by ensuring that Amazon Redshift clusters are not public."
   sql           = query.redshift_cluster_prohibit_public_access.sql
 
-  tags = local.redshift_compliance_common_tags
+  tags = merge(local.redshift_compliance_common_tags, {
+    aws_foundational_security = "true"
+    hipaa                     = "true"
+    nist_800_53_rev_4         = "true"
+    nist_csf                  = "true"
+    pci                       = "true"
+    rbi_cyber_security        = "true"
+  })
 }

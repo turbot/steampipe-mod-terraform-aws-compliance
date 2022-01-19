@@ -1,6 +1,6 @@
 # Terraform AWS Compliance
 
-Lightweight, security and compliance-focused framework for Terraform. Run individual configuration, compliance and security controls for individual AWS services across all your AWS accounts using Steampipe. Terraform AWS compliance allows you to perform deep analysis of your Terraform resources and test them against operations & security best practices.
+140+ compliance and security controls to test your Terraform AWS resources against security best practices prior to deployment in your AWS accounts.
 
 <!-- TO DO -->
 

@@ -5,7 +5,9 @@ locals {
 }
 
 benchmark "config" {
-  title    = "Config"
+  title        = "Config"
+  description  = "This benchmark provides a set of controls that detect Terraform AWS Config resources deviating from security best practices."
+
   children = [
     control.config_aggregator_enabled_all_regions
   ]

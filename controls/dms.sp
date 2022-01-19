@@ -5,7 +5,9 @@ locals {
 }
 
 benchmark "dms" {
-  title         = "DMS"
+  title       = "DMS"
+  description = "This benchmark provides a set of controls that detect Terraform AWS DMS resources deviating from security best practices."
+
   children = [
     control.dms_replication_instance_not_publicly_accessible
   ]
@@ -17,5 +19,12 @@ control "dms_replication_instance_not_publicly_accessible" {
   description   = "Manage access to the AWS Cloud by ensuring DMS replication instances cannot be publicly accessed."
   sql           = query.dms_replication_instance_not_publicly_accessible.sql
 
-  tags = local.dms_compliance_common_tags
+  tags = merge(local.dms_compliance_common_tags, {
+    aws_foundational_security = "true"
+    hipaa                     = "true"
+    nist_800_53_rev_4         = "true"
+    nist_csf                  = "true"
+    pci                       = "true"
+    rbi_cyber_security        = "true"
+  })
 }

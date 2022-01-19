@@ -4,7 +4,7 @@ repository: "https://github.com/turbot/steampipe-mod-terraform-aws-compliance"
 
 # Terraform AWS Compliance
 
-Lightweight, security and compliance-focused framework for Terraform. Run individual configuration, compliance and security controls for individual AWS services across all your AWS accounts using Steampipe.
+Run compliance and security controls to detect Terraform AWS resources deviating from security best practices prior to deployment in your AWS accounts.
 
 <!-- ![image](https://raw.githubusercontent.com/turbot/steampipe-mod-aws-compliance/main/docs/aws_cis_v140_console.png) -->
 

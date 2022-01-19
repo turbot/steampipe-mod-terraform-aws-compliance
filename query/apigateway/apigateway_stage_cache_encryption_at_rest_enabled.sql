@@ -1,7 +1,17 @@
 with stages_v1 as (
-  select * from terraform_resource where type = 'aws_api_gateway_stage'
+  select
+    *
+  from
+    terraform_resource
+  where
+    type = 'aws_api_gateway_stage'
 ), method_settings as (
-    select * from terraform_resource where type = 'aws_api_gateway_method_settings'
+    select
+      *
+    from
+      terraform_resource
+    where
+      type = 'aws_api_gateway_method_settings'
 ), all_stages as (
     select
       m.arguments -> 'settings' ->> 'caching_enabled' as caching_enabled,

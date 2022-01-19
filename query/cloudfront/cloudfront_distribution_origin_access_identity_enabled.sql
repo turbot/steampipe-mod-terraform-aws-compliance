@@ -13,7 +13,7 @@ with cloudfront_distribution as (
       cloudfront_distribution,
       jsonb_array_elements(arguments -> 'origin') as o
     where
-      (o  ->> 'domain_name' ) like '%aws_s3_bucket%' and
+      (o ->> 'domain_name' ) like '%aws_s3_bucket%' and
       (o -> 's3_origin_config' ->> 'origin_access_identity') = ''
     group by name
 )

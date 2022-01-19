@@ -5,13 +5,15 @@ locals {
 }
 
 benchmark "cloudwatch" {
-  title         = "CloudWatch"
+  title        = "CloudWatch"
+  description  = "This benchmark provides a set of controls that detect Terraform AWS CloudWatch resources deviating from security best practices."
+
   children = [
     control.cloudwatch_alarm_action_enabled,
     control.cloudwatch_log_group_retention_period_365,
     control.log_group_encryption_at_rest_enabled,
   ]
-  tags          = local.cloudwatch_compliance_common_tags
+  tags = local.cloudwatch_compliance_common_tags
 }
 
 control "cloudwatch_alarm_action_enabled" {
@@ -19,7 +21,12 @@ control "cloudwatch_alarm_action_enabled" {
   description   = "Amazon CloudWatch alarms alert when a metric breaches the threshold for a specified number of evaluation periods. The alarm performs one or more actions based on the value of the metric or expression relative to a threshold over a number of time periods."
   sql           = query.cloudwatch_alarm_action_enabled.sql
 
-  tags = local.cloudwatch_compliance_common_tags
+  tags = merge(local.cloudwatch_compliance_common_tags, {
+    hipaa             = "true"
+    nist_800_53_rev_4 = "true"
+    nist_csf          = "true"
+    soc_2             = "true"
+  })
 }
 
 control "cloudwatch_log_group_retention_period_365" {
@@ -27,7 +34,12 @@ control "cloudwatch_log_group_retention_period_365" {
   description   = "Ensure a minimum duration of event log data is retained for your log groups to help with troubleshooting and forensics investigations."
   sql           = query.cloudwatch_log_group_retention_period_365.sql
 
-  tags = local.cloudwatch_compliance_common_tags
+  tags = merge(local.cloudwatch_compliance_common_tags, {
+    hipaa              = "true"
+    nist_800_53_rev_4  = "true"
+    rbi_cyber_security = "true"
+    soc_2              = "true"
+  })
 }
 
 control "log_group_encryption_at_rest_enabled" {
@@ -35,5 +47,12 @@ control "log_group_encryption_at_rest_enabled" {
   description   = "To help protect sensitive data at rest, ensure encryption is enabled for your Amazon CloudWatch Log Group."
   sql           = query.log_group_encryption_at_rest_enabled.sql
 
-  tags = local.cloudwatch_compliance_common_tags
+   tags = merge(local.cloudwatch_compliance_common_tags, {
+    gdpr               = "true"
+    hipaa              = "true"
+    nist_800_53_rev_4  = "true"
+    nist_csf           = "true"
+    rbi_cyber_security = "true"
+    soc_2              = "true"
+  })
 }
