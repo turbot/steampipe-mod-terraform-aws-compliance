@@ -5,7 +5,7 @@ select
     else 'ok'
   end status,
   name || case
-    when (arguments -> 'kms_key_id') is null then ' encryption at rest not enabled'
+    when (arguments -> 'kms_key_id') is null then ' encryption at rest disabled'
     else ' encryption at rest enabled'
   end || '.' reason,
   path

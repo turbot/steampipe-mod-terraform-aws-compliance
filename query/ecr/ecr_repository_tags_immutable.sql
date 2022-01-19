@@ -6,9 +6,9 @@ select
     else 'alarm'
   end as status,
   name || case
-    when (arguments ->> 'image_tag_mutability')::text = 'IMMUTABLE' then ' have immutable tags'
+    when (arguments ->> 'image_tag_mutability')::text = 'IMMUTABLE' then ' has immutable tags'
     else ' does not have immutable tags'
-  end as reason,
+  end || '.' as reason,
   path
 from
   terraform_resource

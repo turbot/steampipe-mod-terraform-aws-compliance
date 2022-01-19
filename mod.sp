@@ -4,7 +4,7 @@ mod "terraform_aws_compliance" {
   description   = "Run compliance and security controls to detect Terraform AWS resources deviating from security best practices prior to deployment in your AWS accounts."
   color         = "#844FBA"
   documentation = file("./docs/index.md")
-  icon          = "/images/mods/turbot/terraform-aws-compliance-social-graphic.svg"
+  icon          = "/images/mods/turbot/terraform-aws-compliance.svg"
   categories    = ["aws", "compliance", "iaas", "security", "terraform"]
 
   opengraph {

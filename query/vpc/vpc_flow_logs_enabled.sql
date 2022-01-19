@@ -1,5 +1,4 @@
 select
-  -- Required Columns
   type || ' ' || name as resource,
   case
     when coalesce(trim(arguments ->> 'vpc_id'), '') = '' then 'alarm'

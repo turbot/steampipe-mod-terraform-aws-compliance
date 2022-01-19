@@ -1,5 +1,4 @@
 select
-  -- Required Columns
   type || ' ' || name as resource,
   case
     when (arguments -> 'description') is null then 'alarm'

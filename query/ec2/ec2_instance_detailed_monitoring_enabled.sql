@@ -5,9 +5,9 @@ select
     else 'alarm'
   end as status,
   name || case
-    when  (arguments ->> 'monitoring')::bool is true then ' detailed monitoring enabled.'
-    else ' detailed monitoring disabled.'
-  end reason,
+    when  (arguments ->> 'monitoring')::bool is true then ' detailed monitoring enabled'
+    else ' detailed monitoring disabled'
+  end || '.' as reason,
   path
 from
   terraform_resource

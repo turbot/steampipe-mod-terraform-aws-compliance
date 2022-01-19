@@ -1,5 +1,4 @@
 select
-  -- Required Columns
   type || ' ' || name as resource,
   case
     when
@@ -21,21 +20,21 @@ select
         case when arguments -> 'block_public_policy' is null then 'block_public_policy' end,
         case when arguments -> 'ignore_public_acls' is null then 'ignore_public_acls' end,
         case when arguments -> 'restrict_public_buckets' is null then 'restrict_public_buckets' end
-      ) || ' not defined.'
+      ) || ' not defined'
     when 
       (arguments ->> 'block_public_acls')::boolean
       and (arguments ->> 'block_public_policy')::boolean
       and (arguments ->> 'ignore_public_acls')::boolean
       and (arguments ->> 'restrict_public_buckets')::boolean
-    then 'Public access blocks enabled.'
+    then 'Public access blocks enabled'
     else 'Public access not enabled for: ' ||
       concat_ws(', ',
         case when not ((arguments ->> 'block_public_acls')::boolean) then 'block_public_acls' end,
         case when not ((arguments ->> 'block_public_policy')::boolean) then 'block_public_policy' end,
         case when not ((arguments ->> 'ignore_public_acls')::boolean ) then 'ignore_public_acls' end,
         case when not ((arguments ->> 'restrict_public_buckets')::boolean) then 'restrict_public_buckets' end
-      ) || '.'
-  end as reason,
+      )
+  end || '.' as reason,
   path
 from
   terraform_resource

@@ -1,4 +1,3 @@
--- TODO the following query will become irrelevant since the attributes rotation_rules attribute has been deprecated
 select
   type || ' ' || name as resource,
   case
@@ -6,7 +5,7 @@ select
     else 'ok'
   end as status,
   name || case
-    when (arguments -> 'rotation_rules') is null then ' automatic rotation not enabled'
+    when (arguments -> 'rotation_rules') is null then ' automatic rotation disabled'
     else ' automatic rotation enabled'
   end || '.' as reason,
   path

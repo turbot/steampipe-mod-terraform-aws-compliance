@@ -5,9 +5,9 @@ select
     else 'alarm'
   end as status,
   name || case
-    when  (arguments -> 'ebs_optimized')::bool is true then ' EBS optimization enabled.'
-    else ' EBS optimization disabled.'
-  end reason,
+    when  (arguments -> 'ebs_optimized')::bool is true then ' EBS optimization enabled'
+    else ' EBS optimization disabled'
+  end || '.' as reason,
   path
 from
   terraform_resource
