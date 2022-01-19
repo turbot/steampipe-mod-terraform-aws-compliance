@@ -1,11 +1,11 @@
 select
   type || ' ' || name as resource,
   case
-    when  (arguments ->> 'ebs_optimized')::bool is true then 'ok'
+    when  (arguments -> 'ebs_optimized')::bool is true then 'ok'
     else 'alarm'
   end as status,
   name || case
-    when  (arguments ->> 'ebs_optimized')::bool is true then ' EBS optimization enabled.'
+    when  (arguments -> 'ebs_optimized')::bool is true then ' EBS optimization enabled.'
     else ' EBS optimization disabled.'
   end reason,
   path

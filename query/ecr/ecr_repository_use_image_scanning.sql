@@ -6,8 +6,7 @@ select
     else 'alarm'
   end as status,
   name || case
-    when
-      (arguments -> 'image_scanning_configuration' ->> 'scan_on_push')::boolean then ' use image scanning'
+    when (arguments -> 'image_scanning_configuration' ->> 'scan_on_push')::boolean then ' use image scanning'
     else ' does not use image scannings'
   end as reason,
   path

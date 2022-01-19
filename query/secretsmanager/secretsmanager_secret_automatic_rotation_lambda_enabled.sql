@@ -1,4 +1,3 @@
--- TODO the following query will become irrelevant since the attributes rotation_rules and rotation_lambda_arn attributes have been deprecated
 select
   type || ' ' || name as resource,
   case

@@ -1,15 +1,13 @@
 select
-  -- Required Columns
   type || ' ' || name as resource,
   case
-    when
-      (arguments ->> 'encrypted')::boolean then 'ok' else 'alarm'
+    when (arguments -> 'encrypted') is null then 'alarm'
+    when (arguments ->> 'encrypted')::bool then 'ok' 
+    else 'alarm'
   end as status,
   name || case
-    when 
-      arguments -> 'encrypted' is null then ' ''encrypted'' is not defined.'
-    when 
-      (arguments ->> 'encrypted')::boolean then ' encrypted.'
+    when (arguments -> 'encrypted') is null then ' ''encrypted'' is not defined.'
+    when (arguments ->> 'encrypted')::bool then ' encrypted.'
     else ' not encrypted.'
   end as reason,
   path

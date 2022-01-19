@@ -7,10 +7,8 @@ select
       and (arguments ->> 'block_public_policy')::boolean
       and (arguments ->> 'ignore_public_acls')::boolean
       and (arguments ->> 'restrict_public_buckets')::boolean
-    then
-      'ok'
-    else
-      'alarm'
+    then 'ok'
+    else 'alarm'
   end as status,
   case
     when 

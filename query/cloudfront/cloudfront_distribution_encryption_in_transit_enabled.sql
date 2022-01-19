@@ -18,7 +18,6 @@ with cloudfront_distribution as (
     cb ->> 'ViewerProtocolPolicy' = 'allow-all'
 )
 select
-  -- Required Columns
   type || ' ' || b.name as resource,
   case
     when d.name is not null or (arguments -> 'default_cache_behavior' ->> 'ViewerProtocolPolicy' = 'allow-all') then 'alarm'
@@ -27,7 +26,6 @@ select
   case
     when d.name is not null or (arguments -> 'default_cache_behavior' ->> 'ViewerProtocolPolicy' = 'allow-all') then ' data not encrypted in transit'
     else ' data encrypted in transit'
-  -- Additional Dimensions
   end || '.' reason,
   path
 from

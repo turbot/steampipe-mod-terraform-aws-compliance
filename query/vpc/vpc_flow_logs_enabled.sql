@@ -6,10 +6,10 @@ select
     else 'ok'
   end as status,
   name || case
-    when arguments -> 'vpc_id' is null then ' ''vpc_id'' not defined.'
-    when coalesce(trim(arguments ->> 'vpc_id'), '') <> '' then ' flow logging enabled.'
-    else ' flow logging disabled.'
-  end as reason,
+    when (arguments -> 'vpc_id') is null then ' ''vpc_id'' not defined'
+    when coalesce(trim(arguments ->> 'vpc_id'), '') <> '' then ' flow logging enabled'
+    else ' flow logging disabled'
+  end || '.' reason,
   path
 from
   terraform_resource

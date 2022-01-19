@@ -18,7 +18,6 @@ with cloudfront_distribution as (
     group by name
 )
 select
-  -- Required Columns
   type || ' ' || a.name as resource,
   case
     when b.name is not null then 'alarm'

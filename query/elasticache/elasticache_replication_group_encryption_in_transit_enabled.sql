@@ -1,5 +1,4 @@
 select
-  -- Required Columns
   type || ' ' || name as resource,
   case
     when (arguments ->> 'transit_encryption_enabled')::boolean then 'ok'

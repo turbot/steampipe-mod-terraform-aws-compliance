@@ -1,7 +1,6 @@
 select
   type || ' ' || name as resource,
   case
-    -- // kms_key_arn - This attribute should only be specified if the key is different from the default DynamoDB CMK, alias/aws/dynamodb.
     when (arguments -> 'server_side_encryption') is not null then 'ok'
     else 'alarm'
   end status,
