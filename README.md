@@ -2,7 +2,7 @@
 
 140+ compliance and security controls to test your Terraform AWS resources against security best practices prior to deployment in your AWS accounts.
 
-<!-- TO DO -->
+![image](https://raw.githubusercontent.com/turbot/steampipe-mod-terraform-aws-compliance/main/docs/terraform_aws_compliance_console_output.png)
 
 ## Quick start
 
@@ -43,6 +43,12 @@ cd steampipe-mod-terraform-aws-compliance
 
 ```shell
 steampipe check all
+```
+
+Run all benchmarks for a specific compliance framework:
+
+```shell
+steampipe check all --tag gdpr=true
 ```
 
 Run a benchmark:
