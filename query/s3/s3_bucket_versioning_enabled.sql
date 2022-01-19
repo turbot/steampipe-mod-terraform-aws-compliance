@@ -6,9 +6,9 @@ select
     else 'alarm'
   end status,
   name || case
-    when coalesce(trim(lower(arguments -> 'versioning' -> 'enabled')), '') not in ('true', 'false')
+    when coalesce(trim(lower(arguments -> 'versioning' ->> 'enabled')), '') not in ('true', 'false')
     then ' ''enabled'' is not defined'
-    when (arguments -> 'versioning' -> 'enabled')::bool then ' versioning enabled.'
+    when (arguments -> 'versioning' ->> 'enabled')::bool then ' versioning enabled.'
     else ' versioning disabled'
   end || '.' as reason,
   path
