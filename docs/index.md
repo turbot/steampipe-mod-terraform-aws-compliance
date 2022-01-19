@@ -43,7 +43,7 @@ Run all benchmarks:
 steampipe check all
 ```
 
-Run all benchmarks for a specific compliance framework:
+Run all benchmarks for a specific compliance framework using tags:
 
 ```shell
 steampipe check all --tag gdpr=true
