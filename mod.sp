@@ -5,7 +5,7 @@ mod "terraform_aws_compliance" {
   color         = "#844FBA"
   documentation = file("./docs/index.md")
   icon          = "/images/mods/turbot/terraform-aws-compliance-social-graphic.svg"
-  categories    = ["best practices", "terraform", "software development"]
+  categories    = ["aws", "compliance", "iaas", "security", "terraform"]
 
   opengraph {
     title       = "Steampipe Mod to Analyze Terraform"
