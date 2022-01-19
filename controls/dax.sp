@@ -23,6 +23,5 @@ control "dax_cluster_encryption_at_rest_enabled" {
     aws_foundational_security = "true"
     gdpr                      = "true"
     hipaa                     = "true"
-
   })
 }
