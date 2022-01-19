@@ -22,7 +22,6 @@ control "ebs_attached_volume_encryption_enabled" {
 
   tags = merge(local.ebs_compliance_common_tags, {
     aws_foundational_security   = "true"
-    audit_manager_control_tower = "true"
     gdpr                        = "true"
     hipaa                       = "true"
     nist_800_53_rev_4           = "true"

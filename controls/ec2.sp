@@ -61,7 +61,6 @@ control "ec2_instance_ebs_optimized" {
   sql           = query.ec2_instance_ebs_optimized.sql
 
   tags = merge(local.ec2_compliance_common_tags, {
-    audit_manager_control_tower = "true"
     hipaa                       = "true"
     nist_csf                    = "true"
     soc_2                       = "true"

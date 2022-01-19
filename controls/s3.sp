@@ -118,7 +118,6 @@ control "s3_bucket_versioning_enabled" {
   sql           = query.s3_bucket_versioning_enabled.sql
 
   tags = merge(local.s3_compliance_common_tags, {
-    audit_manager_control_tower = "true"
     hipaa                       = "true"
     nist_csf                    = "true"
     rbi_cyber_security          = "true"

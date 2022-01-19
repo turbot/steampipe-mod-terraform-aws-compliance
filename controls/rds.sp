@@ -232,7 +232,6 @@ control "rds_db_instance_prohibit_public_access" {
 
   tags = merge(local.rds_compliance_common_tags, {
     aws_foundational_security   = "true"
-    audit_manager_control_tower = "true"
     hipaa                       = "true"
     nist_800_53_rev_4           = "true"
     nist_csf                    = "true"
