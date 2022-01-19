@@ -10,8 +10,9 @@ benchmark "cloudwatch" {
 
   children = [
     control.cloudwatch_alarm_action_enabled,
+    control.cloudwatch_destination_policy_wildcards,
     control.cloudwatch_log_group_retention_period_365,
-    control.log_group_encryption_at_rest_enabled,
+    control.log_group_encryption_at_rest_enabled
   ]
   tags = local.cloudwatch_compliance_common_tags
 }
@@ -27,6 +28,14 @@ control "cloudwatch_alarm_action_enabled" {
     nist_csf          = "true"
     soc_2             = "true"
   })
+}
+
+control "cloudwatch_destination_policy_wildcards" {
+  title         = "Ensure CloudWatch Logs destination policy has no wildcards"
+  description   = "Amazon CloudWatch Logs destination policy should avoid wildcard in 'principals' and 'actions'."
+  sql           = query.cloudwatch_destination_policy_wildcards.sql
+
+  tags = local.cloudwatch_compliance_common_tags
 }
 
 control "cloudwatch_log_group_retention_period_365" {
