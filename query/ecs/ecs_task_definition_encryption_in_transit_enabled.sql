@@ -6,7 +6,7 @@ select
   end status,
   name || case
     when (arguments -> 'volume' -> 'efs_volume_configuration' ->> 'transit_encryption')::text = 'ENABLED' then ' encryption in transit enabled'
-    else ' encryption in transit enabled disabled'
+    else ' encryption in transit disabled'
   end || '.' reason,
   path
 from
