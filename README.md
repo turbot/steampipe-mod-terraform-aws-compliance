@@ -35,7 +35,7 @@ connection "terraform" {
 4) Clone this repo and step into the directory:
 
 ```sh
-git clone https://github.com/turbot/steampipe-mod-terraform-aws-compliance
+git clone https://github.com/turbot/steampipe-mod-terraform-aws-compliance.git
 cd steampipe-mod-terraform-aws-compliance
 ```
 
@@ -84,7 +84,7 @@ Click on the Terraform Fork Widget. (Don't forget to :star: the repo!)
 **Clone**:
 
 ```sh
-git clone https://github.com/turbot/steampipe-mod-terraform-aws-compliance
+git clone https://github.com/turbot/steampipe-mod-terraform-aws-compliance.git
 cd steampipe-mod-terraform-aws-compliance
 ```
 
