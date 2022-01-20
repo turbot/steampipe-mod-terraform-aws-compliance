@@ -22,7 +22,7 @@ steampipe version 0.11.2
 steampipe plugin install terraform
 ```
 
-3) Configure the Terraform plugin, specifically adding any path that contains your Terraform files to `paths`:
+3) Configure the Terraform plugin, adding any path that contains your Terraform files to `paths`:
 
 ```sh
 vi ~/.steampipe/config/terraform.spc
@@ -35,7 +35,7 @@ connection "terraform" {
 }
 ```
 
-For more details on connection configuration, please refer [Terraform Plugin Configuration](https://hub.steampipe.io/plugins/turbot/terraform#configuration)
+For more details on connection configuration, please refer [Terraform Plugin Configuration](https://hub.steampipe.io/plugins/turbot/terraform#configuration).
 
 4) Clone this repo and step into the directory:
 
