@@ -2,7 +2,7 @@
 
 _What's new?_
 
-- Added 36 benchmarks and 142 controls to check Terraform AWS resources against security best practices for security best practices. Controls for following services have been added:
+- Added 36 benchmarks and 142 controls to check Terraform AWS resources against security best practices. Controls for the following services have been added:
   - API Gateway
   - Auto Scaling
   - Backup
