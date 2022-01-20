@@ -19,7 +19,8 @@ benchmark "vpc" {
     control.vpc_subnet_auto_assign_public_ip_disabled,
     control.vpc_security_group_associated_to_eni
   ]
-  tags          = local.vpc_compliance_common_tags
+
+  tags = local.vpc_compliance_common_tags
 }
 
 control "vpc_default_security_group_restricts_all_traffic" {

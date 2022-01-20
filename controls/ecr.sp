@@ -12,7 +12,8 @@ benchmark "ecr" {
     control.ecr_repository_tags_immutable,
     control.ecr_repository_use_image_scanning,
   ]
-  tags          = local.ecr_compliance_common_tags
+  
+  tags = local.ecr_compliance_common_tags
 }
 
 control "ecr_repository_tags_immutable" {

@@ -17,7 +17,8 @@ benchmark "cloudfront" {
     control.cloudfront_distribution_waf_enabled,
     control.cloudfront_protocol_version_is_low
   ]
-  tags          = local.cloudfront_compliance_common_tags
+
+  tags = local.cloudfront_compliance_common_tags
 }
 
 control "cloudfront_distribution_configured_with_origin_failover" {

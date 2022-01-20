@@ -7,13 +7,14 @@ locals {
 benchmark "apigateway" {
   title       = "API Gateway"
   description = "This benchmark provides a set of controls that detect Terraform AWS API Gateway resources deviating from security best practices."
-  
+
   children = [
     control.apigateway_rest_api_stage_use_ssl_certificate,
     control.apigateway_rest_api_stage_xray_tracing_enabled,
     control.apigateway_stage_cache_encryption_at_rest_enabled,
     control.apigateway_stage_logging_enabled
   ]
+  
   tags = local.apigateway_compliance_common_tags
 }
 

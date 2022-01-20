@@ -13,7 +13,8 @@ benchmark "cloudtrail" {
     control.cloudtrail_trail_logs_encrypted_with_kms_cmk,
     control.cloudtrail_trail_validation_enabled,
   ]
-  tags          = local.cloudtrail_compliance_common_tags
+
+  tags = local.cloudtrail_compliance_common_tags
 }
 
 control "cloudtrail_enabled_all_regions" {

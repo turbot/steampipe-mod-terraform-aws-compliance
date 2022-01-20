@@ -11,6 +11,7 @@ benchmark "kms" {
   children = [
     control.kms_cmk_rotation_enabled
   ]
+  
   tags = local.kms_compliance_common_tags
 }
 

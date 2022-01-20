@@ -14,7 +14,8 @@ benchmark "dynamodb" {
     control.dynamodb_table_point_in_time_recovery_enabled,
     control.dynamodb_vpc_endpoint_routetable_association
   ]
-  tags          = local.dynamodb_compliance_common_tags
+
+  tags = local.dynamodb_compliance_common_tags
 }
 
 control "dynamodb_table_encrypted_with_kms_cmk" {

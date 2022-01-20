@@ -18,7 +18,8 @@ benchmark "elb" {
     control.elb_classic_lb_use_ssl_certificate,
     control.elb_classic_lb_use_tls_https_listeners
   ]
-  tags          = local.elb_compliance_common_tags
+
+  tags = local.elb_compliance_common_tags
 }
 
 control "ec2_classic_lb_connection_draining_enabled" {

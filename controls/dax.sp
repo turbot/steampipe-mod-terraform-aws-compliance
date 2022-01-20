@@ -11,6 +11,7 @@ benchmark "dax" {
   children = [
     control.dax_cluster_encryption_at_rest_enabled
   ]
+
   tags = local.dax_compliance_common_tags
 }
 

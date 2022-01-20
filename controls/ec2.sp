@@ -98,12 +98,3 @@ control "ec2_instance_uses_imdsv2" {
     nist_800_53_rev_4         = "true"
   })
 }
-
-#control "review_ec2_instance_in_vpc" {
-  #title         = "EC2 instances should be in a VPC"
-  #description   = "Deploy Amazon Elastic Compute Cloud (Amazon EC2) instances within an Amazon #Virtual Private Cloud (Amazon VPC) to enable secure communication between an instance and other #services within the amazon VPC, without requiring an internet gateway, NAT device, or VPN #connection."
-  #sql           = query.review_ec2_instance_in_vpc.sql
-
-  #tags = local.ec2_compliance_common_tags
-#}
-

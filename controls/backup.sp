@@ -11,7 +11,8 @@ benchmark "backup" {
   children = [
     control.backup_plan_min_retention_35_days
   ]
-  tags          = local.backup_compliance_common_tags
+
+  tags = local.backup_compliance_common_tags
 }
 
 control "backup_plan_min_retention_35_days" {

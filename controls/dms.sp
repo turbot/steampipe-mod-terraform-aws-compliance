@@ -11,7 +11,8 @@ benchmark "dms" {
   children = [
     control.dms_replication_instance_not_publicly_accessible
   ]
-  tags          = local.dms_compliance_common_tags
+
+  tags = local.dms_compliance_common_tags
 }
 
 control "dms_replication_instance_not_publicly_accessible" {

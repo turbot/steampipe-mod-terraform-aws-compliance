@@ -11,7 +11,8 @@ benchmark "docdb" {
   children = [
     control.docdb_cluster_audit_logs_enabled
   ]
-  tags          = local.docdb_compliance_common_tags
+
+  tags = local.docdb_compliance_common_tags
 }
 
 control "docdb_cluster_audit_logs_enabled" {

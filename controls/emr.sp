@@ -11,7 +11,8 @@ benchmark "emr" {
   children = [
     control.emr_cluster_kerberos_enabled
   ]
-  tags          = local.emr_compliance_common_tags
+
+  tags = local.emr_compliance_common_tags
 }
 
 control "emr_cluster_kerberos_enabled" {

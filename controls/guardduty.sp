@@ -1,6 +1,6 @@
 locals {
   guardduty_compliance_common_tags = merge(local.compliance_common_tags, {
-    service = "emr"
+    service = "guardduty"
   })
 }
 
@@ -11,7 +11,7 @@ benchmark "guardduty" {
   children = [
     control.guardduty_enabled
   ]
-  
+
   tags = local.guardduty_compliance_common_tags
 }
 

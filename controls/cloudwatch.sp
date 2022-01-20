@@ -14,6 +14,7 @@ benchmark "cloudwatch" {
     control.cloudwatch_log_group_retention_period_365,
     control.log_group_encryption_at_rest_enabled
   ]
+
   tags = local.cloudwatch_compliance_common_tags
 }
 

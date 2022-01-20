@@ -19,7 +19,8 @@ benchmark "iam" {
     control.iam_account_password_policy_strong,
     control.iam_password_policy_expire_90
   ]
-  tags          = local.iam_compliance_common_tags
+  
+  tags = local.iam_compliance_common_tags
 }
 
 control "iam_account_password_policy_min_length_14" {

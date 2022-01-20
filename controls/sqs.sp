@@ -12,7 +12,8 @@ benchmark "sqs" {
     control.sqs_queue_encrypted_at_rest,
     control.sqs_vpc_endpoint_without_dns_resolution
   ]
-  tags          = local.sqs_compliance_common_tags
+
+  tags = local.sqs_compliance_common_tags
 }
 
 control "sqs_queue_encrypted_at_rest" {

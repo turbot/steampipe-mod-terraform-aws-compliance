@@ -12,7 +12,8 @@ benchmark "secretsmanager" {
     control.secretsmanager_secret_automatic_rotation_enabled,
     control.secretsmanager_secret_automatic_rotation_lambda_enabled,
   ]
-  tags          = local.secretsmanager_compliance_common_tags
+  
+  tags = local.secretsmanager_compliance_common_tags
 }
 
 control "secretsmanager_secret_automatic_rotation_enabled" {

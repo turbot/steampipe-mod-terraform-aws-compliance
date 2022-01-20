@@ -12,7 +12,8 @@ benchmark "efs" {
     control.efs_file_system_automatic_backups_enabled,
     control.efs_file_system_encrypt_data_at_rest,
   ]
-  tags          = local.efs_compliance_common_tags
+
+  tags = local.efs_compliance_common_tags
 }
 
 control "efs_file_system_automatic_backups_enabled" {

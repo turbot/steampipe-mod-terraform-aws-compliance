@@ -12,7 +12,8 @@ benchmark "elasticache" {
     control.elasticache_redis_cluster_automatic_backup_retention_15_days,
     control.elasticache_replication_group_encryption_in_transit_enabled
   ]
-  tags          = local.elasticache_compliance_common_tags
+
+  tags = local.elasticache_compliance_common_tags
 }
 
 control "elasticache_redis_cluster_automatic_backup_retention_15_days" {

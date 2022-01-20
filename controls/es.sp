@@ -19,7 +19,8 @@ benchmark "es" {
     control.es_domain_logs_to_cloudwatch,
     control.es_domain_node_to_node_encryption_enabled
   ]
-  tags          = local.es_compliance_common_tags
+
+  tags = local.es_compliance_common_tags
 }
 
 control "es_domain_audit_logging_enabled" {

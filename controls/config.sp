@@ -11,7 +11,8 @@ benchmark "config" {
   children = [
     control.config_aggregator_enabled_all_regions
   ]
-  tags     = local.config_compliance_common_tags
+  
+  tags = local.config_compliance_common_tags
 }
 
 control "config_aggregator_enabled_all_regions" {

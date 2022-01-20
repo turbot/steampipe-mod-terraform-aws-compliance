@@ -30,7 +30,8 @@ benchmark "rds" {
     control.rds_db_parameter_group_events_subscription,
     control.rds_db_security_group_events_subscription
   ]
-  tags          = local.rds_compliance_common_tags
+
+  tags = local.rds_compliance_common_tags
 }
 
 control "rds_db_cluster_aurora_backtracking_enabled" {

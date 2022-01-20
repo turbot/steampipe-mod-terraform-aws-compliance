@@ -11,7 +11,8 @@ benchmark "sns" {
   children = [
     control.sns_topic_encrypted_at_rest
   ]
-  tags          = local.sns_compliance_common_tags
+
+  tags = local.sns_compliance_common_tags
 }
 
 control "sns_topic_encrypted_at_rest" {

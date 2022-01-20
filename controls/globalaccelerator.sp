@@ -11,7 +11,8 @@ benchmark "globalaccelerator" {
   children = [
     control.globalaccelerator_flow_logs_enabled
   ]
-  tags          = local.globalaccelerator_compliance_common_tags
+  
+  tags = local.globalaccelerator_compliance_common_tags
 }
 
 control "globalaccelerator_flow_logs_enabled" {

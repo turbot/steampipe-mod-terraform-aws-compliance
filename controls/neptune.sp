@@ -11,7 +11,8 @@ benchmark "neptune" {
   children = [
     control.neptune_cluster_logging_enabled
   ]
-  tags          = local.neptune_compliance_common_tags
+
+  tags = local.neptune_compliance_common_tags
 }
 
 control "neptune_cluster_logging_enabled" {

@@ -19,7 +19,8 @@ benchmark "s3" {
     control.s3_bucket_versioning_enabled,
     control.s3_public_access_block_account
   ]
-  tags          = local.s3_compliance_common_tags
+
+  tags = local.s3_compliance_common_tags
 }
 
 control "s3_bucket_cross_region_replication_enabled" {

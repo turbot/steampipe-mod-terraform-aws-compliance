@@ -15,7 +15,8 @@ benchmark "lambda" {
     control.lambda_function_use_latest_runtime,
     control.lambda_function_xray_tracing_enabled,
   ]
-  tags          = local.lambda_compliance_common_tags
+
+  tags = local.lambda_compliance_common_tags
 }
 
 control "lambda_function_concurrent_execution_limit_configured" {

@@ -19,7 +19,8 @@ benchmark "redshift" {
     control.redshift_cluster_maintenance_settings_check,
     control.redshift_cluster_prohibit_public_access
   ]
-  tags          = local.redshift_compliance_common_tags
+  
+  tags = local.redshift_compliance_common_tags
 }
 
 control "redshift_cluster_automatic_snapshots_min_7_days" {

@@ -13,7 +13,8 @@ benchmark "eks" {
     control.eks_cluster_log_types_enabled,
     control.eks_cluster_secrets_encrypted
   ]
-  tags          = local.eks_compliance_common_tags
+
+  tags = local.eks_compliance_common_tags
 }
 
 control "eks_cluster_endpoint_restrict_public_access" {
