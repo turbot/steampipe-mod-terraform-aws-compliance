@@ -1,3 +1,9 @@
+## v0.2 [2022-01-21]
+
+_Enhancements_
+
+- `README.md` and `docs/index.md` files now include better setup instructions for a seamless experience
+
 ## v0.1 [2022-01-20]
 
 _What's new?_
