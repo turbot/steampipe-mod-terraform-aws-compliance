@@ -9,6 +9,7 @@ benchmark "elb" {
   description = "This benchmark provides a set of controls that detect Terraform AWS ELB resources deviating from security best practices."
 
   children = [
+    control.ec2_classic_lb_connection_draining_enabled,
     control.elb_application_classic_lb_logging_enabled,
     control.elb_application_lb_deletion_protection_enabled,
     control.elb_application_lb_drop_http_headers,
@@ -20,9 +21,19 @@ benchmark "elb" {
   tags          = local.elb_compliance_common_tags
 }
 
+control "ec2_classic_lb_connection_draining_enabled" {
+  title         = "Classic Load Balancers should have connection draining enabled"
+  description   = "This control checks whether Classic Load Balancers have connection draining enabled."
+  sql           = query.ec2_classic_lb_connection_draining_enabled.sql
+
+  tags = merge(local.elb_compliance_common_tags, {
+    aws_foundational_security = "true"
+  })
+}
+
 control "elb_application_classic_lb_logging_enabled" {
   title         = "ELB application and classic load balancer logging should be enabled"
-  description   = "Elastic Load Balancing activity is a central point of communication within an environment."
+  description   = "Elastic Load Balancing activity is a central point of communication within an environment. Ensure that logging is enabled to track the activities of the load balancer."
   sql           = query.elb_application_classic_lb_logging_enabled.sql
 
   tags = merge(local.elb_compliance_common_tags, {

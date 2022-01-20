@@ -58,7 +58,7 @@ control "dynamodb_table_point_in_time_recovery_enabled" {
 
 control "dynamodb_vpc_endpoint_routetable_association" {
   title         = "DynamoDB VPC endpoint should be enabled in all route tables in use in a VPC"
-  description   = "Using VPC endpoints helps secure traffic by ensuring the data does not traverse the Internet or access public networks. It also helps keep private subnets private. Setting up VPC endpoints can be complicated."
+  description   = "Using VPC endpoints helps to secure traffic by ensuring that the data does not traverse the internet or access public networks. It also helps keep private subnets private. Setting up VPC endpoints can be complicated."
   sql           = query.dynamodb_vpc_endpoint_routetable_association.sql
 
   tags = local.dynamodb_compliance_common_tags

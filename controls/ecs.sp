@@ -17,7 +17,7 @@ benchmark "ecs" {
 
 control "ecs_cluster_container_insights_enabled" {
   title         = "ECS cluster container insights should be enabled"
-  description   = "One of the best practices when using AWS ECR is to enable container insights for better visibility."
+  description   = "One of the best practices when using AWS ECS is to enable cluster container insights for better visibility."
   sql           = query.ecs_cluster_container_insights_enabled.sql
 
   tags = local.ecs_compliance_common_tags

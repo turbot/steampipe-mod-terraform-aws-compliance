@@ -9,7 +9,6 @@ benchmark "ec2" {
   description = "This benchmark provides a set of controls that detect Terraform AWS EC2 resources deviating from security best practices."
 
   children = [
-    control.ec2_classic_lb_connection_draining_enabled,
     control.ec2_ebs_default_encryption_enabled,
     control.ec2_instance_detailed_monitoring_enabled,
     control.ec2_instance_ebs_optimized,
@@ -19,16 +18,6 @@ benchmark "ec2" {
     control.ec2_instance_uses_imdsv2
   ]
   tags  = local.ec2_compliance_common_tags
-}
-
-control "ec2_classic_lb_connection_draining_enabled" {
-  title         = "Classic Load Balancers should have connection draining enabled"
-  description   = "This control checks whether Classic Load Balancers have connection draining enabled."
-  sql           = query.ec2_classic_lb_connection_draining_enabled.sql
-
-  tags = merge(local.ec2_compliance_common_tags, {
-    aws_foundational_security = "true"
-  })
 }
 
 control "ec2_ebs_default_encryption_enabled" {
@@ -45,7 +34,7 @@ control "ec2_ebs_default_encryption_enabled" {
 
 control "ec2_instance_detailed_monitoring_enabled" {
   title         = "EC2 instance detailed monitoring should be enabled"
-  description   = "Enable this rule to help improve Amazon Elastic Compute Cloud (Amazon EC2) instance monitoring on the Amazon EC2 console, which displays monitoring graphs with a 1-minute period for the instance."
+  description   = "Enable this rule to help improve Amazon Elastic Compute Cloud (Amazon EC2) instance monitoring on the Amazon EC2 console, which displays monitoring graphs with a one minute period for the instance."
   sql           = query.ec2_instance_detailed_monitoring_enabled.sql
 
   tags = merge(local.ec2_compliance_common_tags, {

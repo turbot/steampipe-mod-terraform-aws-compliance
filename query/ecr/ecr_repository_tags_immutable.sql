@@ -1,5 +1,4 @@
 select
-  -- Required Columns
   type || ' ' || name as resource,
   case
     when (arguments ->> 'image_tag_mutability')::text = 'IMMUTABLE' then 'ok'

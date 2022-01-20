@@ -83,7 +83,7 @@ control "cloudfront_distribution_waf_enabled" {
 
 control "cloudfront_protocol_version_is_low" {
   title       = "CloudFront distributions minimum protocol version should be set"
-  description = "CloudFront distributions minimum protocol version should be good one, minimum recommended version is TLSv1.2_2019."
+  description = "CloudFront distributions minimum protocol version should be a good one. Minimum recommended version is TLSv1.2_2019."
   sql         = query.cloudfront_protocol_version_is_low.sql
 
   tags = local.cloudfront_compliance_common_tags

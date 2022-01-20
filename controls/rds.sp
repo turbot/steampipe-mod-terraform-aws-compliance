@@ -35,7 +35,7 @@ benchmark "rds" {
 
 control "rds_db_cluster_aurora_backtracking_enabled" {
   title         = "Amazon Aurora clusters should have backtracking enabled"
-  description   = "This control checks whether Amazon Aurora clusters have backtracking enabled. Backups help you to recover more quickly from a security incident. They also strengthens the resilience of your systems. Aurora backtracking reduces the time to recover a database to a point in time. It does not require a database restore to so."
+  description   = "This control checks whether Amazon Aurora clusters have backtracking enabled. Backups help you to recover more quickly from a security incident. They also strengthen the resilience of your systems. Aurora backtracking reduces the time to recover a database to a point in time. It does not require a database restore to do so."
   sql           = query.rds_db_cluster_aurora_backtracking_enabled.sql
 
   tags = merge(local.rds_compliance_common_tags, {
