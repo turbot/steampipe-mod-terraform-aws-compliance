@@ -63,7 +63,7 @@ steampipe check terraform_aws_compliance.control.s3_bucket_default_encryption_en
 
 ### Credentials
 
-This mod uses the credentials configured in the [Steampipe Terraform plugin](https://hub.steampipe.io/plugins/turbot/).
+This mod uses the credentials configured in the [Steampipe Terraform plugin](https://hub.steampipe.io/plugins/turbot/terraform).
 
 ### Configuration
 
