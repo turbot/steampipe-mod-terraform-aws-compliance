@@ -1,15 +1,8 @@
-# Terraform Sherlock
+# Terraform AWS Compliance
 
-Interrogate your Terraform resources with the help of the World's greatest
-detectives: Steampipe + Sherlock. Terraform Sherlock allows you to perform
-deep analysis of your Terraform resources and test them against operations &
-security best practices.
+140+ compliance and security controls to test your Terraform AWS resources against security best practices prior to deployment in your AWS accounts.
 
-![image](https://github.com/turbot/steampipe-mod-terraform-sherlock/blob/main/docs/terraform_sherlock_session.png?raw=true)
-
-## Current Sherlock Checks
-
-TBD
+![image](https://raw.githubusercontent.com/turbot/steampipe-mod-terraform-aws-compliance/main/docs/terraform_aws_compliance_console_output.png)
 
 ## Quick start
 
@@ -20,7 +13,7 @@ brew tap turbot/tap
 brew install steampipe
 
 steampipe -v
-steampipe version 0.10.0
+steampipe version 0.11.2
 ```
 
 2) Install the Terraform plugin:
@@ -42,8 +35,8 @@ connection "terraform" {
 4) Clone this repo and step into the directory:
 
 ```sh
-git clone https://github.com/turbot/steampipe-mod-terraform-sherlock.git
-cd steampipe-mod-terraform-sherlock
+git clone https://github.com/turbot/steampipe-mod-terraform-aws-compliance.git
+cd steampipe-mod-terraform-aws-compliance
 ```
 
 5) Run the checks:
@@ -52,10 +45,22 @@ cd steampipe-mod-terraform-sherlock
 steampipe check all
 ```
 
-You can also run a specific controls by name:
+Run all benchmarks for a specific compliance framework using tags:
 
 ```shell
-steampipe check control.TBD
+steampipe check all --tag gdpr=true
+```
+
+Run a benchmark:
+
+```shell
+steampipe check terraform_aws_compliance.benchmark.s3
+```
+
+Run a specific control:
+
+```shell
+steampipe check terraform_aws_compliance.control.s3_bucket_default_encryption_enabled
 ```
 
 Use introspection to view the available controls:
@@ -74,13 +79,13 @@ Have an idea for additional checks or best practices?
 - Steampipe Terraform plugin installed (see above)
 
 **Fork**:
-Click on the Terraform Fork Widget. (Don't forget to :star: the repo!)
+Click on the GitHub Fork Widget. (Don't forget to :star: the repo!)
 
 **Clone**:
 
 ```sh
-git clone https://github.com/turbot/steampipe-mod-terraform-sherlock.git
-cd steampipe-mod-terraform-sherlock
+git clone https://github.com/turbot/steampipe-mod-terraform-aws-compliance.git
+cd steampipe-mod-terraform-aws-compliance
 ```
 
 Thanks for getting involved! We would love to have you [join our Slack community](https://steampipe.io/community/join) and hang out with other Steampipe Mod developers.
@@ -89,4 +94,4 @@ Please see the [contribution guidelines](https://github.com/turbot/steampipe/blo
 
 `help wanted` issues:
 - [Steampipe](https://github.com/turbot/steampipe/labels/help%20wanted)
-- [Terraform Sherlock Mod](https://github.com/turbot/steampipe-mod-terraform-sherlock/labels/help%20wanted)
+- [Terraform AWS Compliance Mod](https://github.com/turbot/steampipe-mod-terraform-aws-compliance/labels/help%20wanted)

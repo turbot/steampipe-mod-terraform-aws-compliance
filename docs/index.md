@@ -1,10 +1,12 @@
 ---
-repository: "https://.com/turbot/steampipe-mod-terraform-sherlock"
+repository: "https://github.com/turbot/steampipe-mod-terraform-aws-compliance"
 ---
 
-# Terraform Sherlock Mod
+# Terraform AWS Compliance
 
-Interrogate your Terraform resources with the help of the world's greatest detectives: Steampipe + Sherlock.
+Run compliance and security controls to detect Terraform AWS resources deviating from security best practices prior to deployment in your AWS accounts.
+
+![image](https://raw.githubusercontent.com/turbot/steampipe-mod-terraform-aws-compliance/main/docs/terraform_aws_compliance_console_output.png)
 
 ## References
 
@@ -17,8 +19,8 @@ Interrogate your Terraform resources with the help of the world's greatest detec
 
 ## Documentation
 
-- **[Benchmarks and controls →](https://hub.steampipe.io/mods/turbot/_sherlock/controls)**
-- **[Named queries →](https://hub.steampipe.io/mods/turbot/_sherlock/queries)**
+- **[Benchmarks and controls →](https://hub.steampipe.io/mods/turbot/terraform_aws_compliance/controls)**
+- **[Named queries →](https://hub.steampipe.io/mods/turbot/terraform_aws_compliance/queries)**
 
 ## Get started
 
@@ -31,8 +33,8 @@ steampipe plugin install terraform
 Clone:
 
 ```sh
-git clone https://github.com/turbot/steampipe-mod-terraform-sherlock.git
-cd steampipe-mod-terraform-sherlock
+git clone https://github.com/turbot/steampipe-mod-terraform-aws-compliance.git
+cd steampipe-mod-terraform-aws-compliance
 ```
 
 Run all benchmarks:
@@ -41,21 +43,27 @@ Run all benchmarks:
 steampipe check all
 ```
 
+Run all benchmarks for a specific compliance framework using tags:
+
+```shell
+steampipe check all --tag gdpr=true
+```
+
 Run a benchmark:
 
 ```shell
-steampipe check benchmark.TBD
+steampipe check terraform_aws_compliance.benchmark.s3
 ```
 
 Run a specific control:
 
 ```shell
-steampipe check control.TBD
+steampipe check terraform_aws_compliance.control.s3_bucket_default_encryption_enabled
 ```
 
 ### Credentials
 
-This mod uses the credentials configured in the [Steampipe Terraform plugin](https://hub.steampipe.io/plugins/turbot/).
+This mod uses the credentials configured in the [Steampipe Terraform plugin](https://hub.steampipe.io/plugins/turbot/terraform).
 
 ### Configuration
 
@@ -63,5 +71,5 @@ No extra configuration is required.
 
 ## Get involved
 
-* Contribute: [Terraform Repo](https://github.com/turbot/steampipe-mod-terraform-sherlock)
+* Contribute: [GitHub Repo](https://github.com/turbot/steampipe-mod-terraform-aws-compliance)
 * Community: [Slack Channel](https://steampipe.io/community/join)
