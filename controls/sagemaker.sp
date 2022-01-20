@@ -6,7 +6,7 @@ locals {
 
 benchmark "sagemaker" {
   title       = "SageMaker"
-  description = "This benchmark provides a set of controls that detect Terraform AWS ASageMaker resources deviating from security best practices."
+  description = "This benchmark provides a set of controls that detect Terraform AWS SageMaker resources deviating from security best practices."
 
   children = [
     control.sagemaker_endpoint_configuration_encryption_at_rest_enabled,
