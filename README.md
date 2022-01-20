@@ -22,9 +22,12 @@ steampipe version 0.11.2
 steampipe plugin install terraform
 ```
 
-3) Configure your Terraform creds: [Instructions](https://hub.steampipe.io/plugins/turbot/terraform#configuration)
+3) Configure your Terraform plugin: [Instructions](https://hub.steampipe.io/plugins/turbot/terraform#configuration)
 
-`vi ~/.steampipe/config/terraform.spc`
+```sh
+vi ~/.steampipe/config/terraform.spc
+```
+
 ```hcl
 connection "terraform" {
   plugin = "terraform"

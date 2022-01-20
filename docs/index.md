@@ -30,6 +30,19 @@ Install the Terraform plugin with [Steampipe](https://steampipe.io):
 steampipe plugin install terraform
 ```
 
+Configure your Terraform plugin: [Instructions](https://hub.steampipe.io/plugins/turbot/terraform#configuration)
+
+```sh
+vi ~/.steampipe/config/terraform.spc
+```
+
+```hcl
+connection "terraform" {
+  plugin = "terraform"
+  paths  = ["/path/to/my/tf/files/*"]
+}
+```
+
 Clone:
 
 ```sh
