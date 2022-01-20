@@ -1,3 +1,9 @@
+## v0.2 [2022-01-21]
+
+_Enhancements_
+
+- `docs/index.md` file now include better setup instructions for running the mod 
+
 ## v0.1 [2022-01-20]
 
 _What's new?_
