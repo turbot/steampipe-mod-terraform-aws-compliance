@@ -79,7 +79,7 @@ Have an idea for additional checks or best practices?
 - Steampipe Terraform plugin installed (see above)
 
 **Fork**:
-Click on the Terraform Fork Widget. (Don't forget to :star: the repo!)
+Click on the GitHub Fork Widget. (Don't forget to :star: the repo!)
 
 **Clone**:
 

@@ -71,5 +71,5 @@ No extra configuration is required.
 
 ## Get involved
 
-* Contribute: [Terraform Repo](https://github.com/turbot/steampipe-mod-terraform-aws-compliance)
+* Contribute: [GitHub Repo](https://github.com/turbot/steampipe-mod-terraform-aws-compliance)
 * Community: [Slack Channel](https://steampipe.io/community/join)
