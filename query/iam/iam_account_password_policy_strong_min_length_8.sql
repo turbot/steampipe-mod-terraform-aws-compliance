@@ -1,8 +1,8 @@
 select
   type || ' ' || name as resource,
   case
-    when 
-      (arguments -> 'minimum_password_length')::integer >= 8 
+    when
+      (arguments -> 'minimum_password_length')::integer >= 8
       and (arguments -> 'require_lowercase_characters')::bool
       and (arguments -> 'require_uppercase_characters')::bool
       and (arguments -> 'require_numbers')::bool
@@ -12,7 +12,7 @@ select
   end as status,
   name || case
     when
-      (arguments -> 'minimum_password_length')::integer >= 8 
+      (arguments -> 'minimum_password_length')::integer >= 8
       and (arguments -> 'require_lowercase_characters')::bool
       and (arguments -> 'require_uppercase_characters')::bool
       and (arguments -> 'require_numbers')::bool

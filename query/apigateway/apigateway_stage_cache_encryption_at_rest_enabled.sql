@@ -24,7 +24,6 @@ with stages_v1 as (
 )
 select
   type || ' ' || name as resource,
-  caching_enabled,
   case
     when (caching_enabled)::boolean and (cache_data_encrypted)::boolean then 'ok'
     else 'alarm'

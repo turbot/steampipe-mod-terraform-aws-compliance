@@ -5,7 +5,7 @@ select
     else 'ok'
   end as status,
   name || case
-    when (arguments -> 'kerberos_attributes') is null then ' kerberos not enabled'
+    when (arguments -> 'kerberos_attributes') is null then ' kerberos disabled'
     else ' kerberos enabled'
   end || '.' as reason,
   path

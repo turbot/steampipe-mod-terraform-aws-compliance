@@ -2,12 +2,12 @@ select
   type || ' ' || name as resource,
   case
     when (arguments -> 'logging') is null then 'alarm'
-    when (arguments -> 'logging' ->> 'enabled')::bool then 'ok'
+    when (arguments -> 'logging' ->> 'enabled')::boolean then 'ok'
     else 'alarm'
   end status,
   name || case
     when (arguments -> 'logging') is null then ' audit logging disabled'
-    when (arguments -> 'logging' ->> 'enabled')::bool then ' audit logging enabled'
+    when (arguments -> 'logging' ->> 'enabled')::boolean then ' audit logging enabled'
     else ' audit logging disabled'
   end || '.' as reason,
   path

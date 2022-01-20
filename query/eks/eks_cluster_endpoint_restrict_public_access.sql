@@ -1,11 +1,11 @@
 select
   type || ' ' || name as resource,
   case
-    when (arguments -> 'endpoint_public_access')::bool then 'alarm'
+    when (arguments -> 'endpoint_public_access')::boolean then 'alarm'
     else 'ok'
   end status,
   name || case
-    when (arguments -> 'endpoint_public_access')::bool then ' endpoint publicly accessible'
+    when (arguments -> 'endpoint_public_access')::boolean then ' endpoint publicly accessible'
     else ' endpoint not publicly accessible'
   end || '.' reason,
   path

@@ -1,16 +1,30 @@
+with flow_logs as (
+  select
+    arguments ->> 'vpc_id' as flow_log_vpc_id
+  from
+    terraform_resource
+  where
+    type = 'aws_flow_log'
+), all_vpc as (
+    select
+      '${aws_vpc.' || name || '.id}' as vpc_id,
+      *
+    from
+      terraform_resource
+    where
+      type = 'aws_vpc'
+)
 select
-  type || ' ' || name as resource,
+  a.type || ' ' || a.name as resource,
   case
-    when coalesce(trim(arguments ->> 'vpc_id'), '') = '' then 'alarm'
-    else 'ok'
+    when b.flow_log_vpc_id is not null then 'ok'
+    else 'alarm'
   end as status,
-  name || case
-    when (arguments -> 'vpc_id') is null then ' ''vpc_id'' not defined'
-    when coalesce(trim(arguments ->> 'vpc_id'), '') <> '' then ' flow logging enabled'
+  a.name || case
+    when b.flow_log_vpc_id is not null then ' flow logging enabled'
     else ' flow logging disabled'
   end || '.' reason,
-  path
+  a.path
 from
-  terraform_resource
-where
-  type = 'aws_flow_log';
+  all_vpc as a
+  left join flow_logs as b on a.vpc_id = b.flow_log_vpc_id;

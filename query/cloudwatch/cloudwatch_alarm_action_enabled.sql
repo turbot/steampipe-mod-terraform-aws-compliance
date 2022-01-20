@@ -13,7 +13,7 @@ select
     when (arguments -> 'alarm_actions') is not null then ' alarm action enabled'
     when (arguments -> 'insufficient_data_actions') is not null then ' insufficient data action enabled.'
     when (arguments -> 'ok_actions') is not null then ' ok action enabled.'
-    else 'ok'
+    else ' action enabled'
   end || '.' reason,
   path
 from

@@ -6,7 +6,7 @@ with cloudfront_distribution as (
   where
     type = 'aws_cloudfront_distribution'
 ), origins as (
-   select
+    select
       count(*),
       name
     from
@@ -30,4 +30,4 @@ select
   path
 from
   cloudfront_distribution as a
-  left join origins as b on a.name = b.name
+  left join origins as b on a.name = b.name;

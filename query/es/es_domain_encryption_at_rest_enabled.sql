@@ -6,7 +6,7 @@ select
   end status,
   name || case
     when (arguments -> 'encrypt_at_rest' ->> 'enabled')::boolean then ' encryption at rest enabled'
-    else ' encryption at rest not enabled'
+    else ' encryption at rest disabled'
   end || '.' reason,
   path
 from

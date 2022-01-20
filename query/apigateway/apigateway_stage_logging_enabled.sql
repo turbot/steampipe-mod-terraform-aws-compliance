@@ -41,7 +41,7 @@ select
     else 'ok'
   end status,
   name || case
-    when log_level is null or log_level = 'OFF' then ' logging not enabled'
+    when log_level is null or log_level = 'OFF' then ' logging disabled'
     else ' logging enabled'
   end || '.' reason,
   path

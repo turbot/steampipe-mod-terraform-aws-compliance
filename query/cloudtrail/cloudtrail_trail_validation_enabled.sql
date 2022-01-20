@@ -1,11 +1,11 @@
 select
   type || ' ' || name as resource,
   case
-    when (arguments ->> 'enable_log_file_validation')::bool then 'ok'
+    when (arguments ->> 'enable_log_file_validation')::boolean then 'ok'
     else 'alarm'
   end status,
   name || case
-    when (arguments ->> 'enable_log_file_validation')::bool then ' log file validation enabled'
+    when (arguments ->> 'enable_log_file_validation')::boolean then ' log file validation enabled'
     else ' log file validation disabled'
   end || '.' reason,
   path

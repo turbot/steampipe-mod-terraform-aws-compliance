@@ -5,7 +5,7 @@ select
     else 'ok'
   end status,
   name || case
-     when (arguments -> 'snapshot_retention_limit')::int is null then ' automatic backups not enabled'
+     when (arguments -> 'snapshot_retention_limit')::int is null then ' automatic backups disabled'
     when (arguments -> 'snapshot_retention_limit')::int < 15 then ' automatic backup retention period is less than 15 days'
     else ' automatic backup retention period is more than 15 days'
   end || '.' reason,

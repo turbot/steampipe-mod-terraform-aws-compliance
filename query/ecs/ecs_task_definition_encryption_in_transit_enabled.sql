@@ -5,8 +5,8 @@ select
     else 'alarm'
   end status,
   name || case
-    when (arguments -> 'volume' -> 'efs_volume_configuration' ->> 'transit_encryption')::text = 'ENABLED'  then ' encrypted in transit'
-    else ' not encrypted in transit'
+    when (arguments -> 'volume' -> 'efs_volume_configuration' ->> 'transit_encryption')::text = 'ENABLED' then ' encryption in transit enabled'
+    else ' encryption in transit enabled disabled'
   end || '.' reason,
   path
 from

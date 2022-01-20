@@ -8,7 +8,7 @@ select
   name || case
     when (arguments -> 'reserved_concurrent_executions') is null then ' function-level concurrent execution limit not configured'
     when (arguments -> 'reserved_concurrent_executions')::integer = -1 then ' function-level concurrent execution limit not configured'
-    else  ' function-level concurrent execution limit configured'
+    else ' function-level concurrent execution limit configured'
   end || '.' as reason,
   path
 from

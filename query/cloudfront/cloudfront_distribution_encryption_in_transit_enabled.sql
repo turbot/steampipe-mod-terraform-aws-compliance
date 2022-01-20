@@ -5,17 +5,17 @@ with cloudfront_distribution as (
     terraform_resource
   where type = 'aws_cloudfront_distribution'
 ), data as (
-  select
-    distinct name
-  from
-    cloudfront_distribution,
+    select
+      distinct name
+    from
+      cloudfront_distribution,
       jsonb_array_elements(
-    case jsonb_typeof(arguments -> 'ordered_cache_behavior' -> 'Items')
+      case jsonb_typeof(arguments -> 'ordered_cache_behavior' -> 'Items')
         when 'array' then (arguments -> 'ordered_cache_behavior' -> 'Items')
         else null end
-    ) as cb
-  where
-    cb ->> 'ViewerProtocolPolicy' = 'allow-all'
+      ) as cb
+    where
+      cb ->> 'ViewerProtocolPolicy' = 'allow-all'
 )
 select
   type || ' ' || b.name as resource,

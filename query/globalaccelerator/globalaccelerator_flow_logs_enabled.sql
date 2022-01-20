@@ -7,10 +7,10 @@ select
     else 'alarm'
   end as status,
   name || case
-    when (arguments -> 'attributes') is null then ' flow log not enabled'
-    when (arguments -> 'attributes' -> 'flow_logs_enabled') is null then ' flow log not enabled'
+    when (arguments -> 'attributes') is null then ' flow log disabled'
+    when (arguments -> 'attributes' -> 'flow_logs_enabled') is null then ' flow log disabled'
     when (arguments -> 'attributes' -> 'flow_logs_enabled')::bool then ' flow log enabled'
-    else ' flow log not enabled'
+    else ' flow log disabled'
   end || '.' as reason,
   path
 from

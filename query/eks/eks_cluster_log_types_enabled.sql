@@ -5,7 +5,7 @@ select
     else 'ok'
   end as status,
   name || case
-    when (arguments -> 'enabled_cluster_log_types') is null then ' logging not enabled'
+    when (arguments -> 'enabled_cluster_log_types') is null then ' logging disabled'
     else ' logging enabled'
   end || '.' as reason,
   path
