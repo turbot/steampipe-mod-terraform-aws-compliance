@@ -2,7 +2,7 @@
 
 _Enhancements_
 
-- `docs/index.md` file now include better setup instructions for running the mod 
+- `README.md` and `docs/index.md` files now include better setup instructions for a seamless experience
 
 ## v0.1 [2022-01-20]
 
