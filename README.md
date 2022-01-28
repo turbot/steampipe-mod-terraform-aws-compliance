@@ -77,7 +77,7 @@ steampipe query "select resource_name from steampipe_control;"
 
 Have an idea for additional checks or best practices?
 - **[Join our Slack community →](https://steampipe.io/community/join)**
-- **[Mod developer guide →](https://steampipe.io/docs/steampipe-mods/writing-mods.md)**
+- **[Mod developer guide →](https://steampipe.io/docs/using-steampipe/writing-controls)**
 
 **Prerequisites**:
 - [Steampipe installed](https://steampipe.io/downloads)
