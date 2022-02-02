@@ -1,3 +1,9 @@
+## v0.3 [2022-02-02]
+
+_Bug fixes_
+
+- Updated the mod category from `iaas` to `iac`
+
 ## v0.2 [2022-01-21]
 
 _Enhancements_
