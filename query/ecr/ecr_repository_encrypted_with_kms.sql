@@ -1,16 +1,18 @@
 select
   type || ' ' || name as resource,
   case
-    when (arguments ->> 'encryption_configuration') is not null and
-      coalesce((arguments -> 'encryption_configuration' ->> 'encryption_type'), '') = 'KMS'
+    when
+      (arguments ->> 'encryption_configuration') is not null
+      and coalesce((arguments -> 'encryption_configuration' ->> 'encryption_type'), '') = 'KMS'
     then 'ok'
     else 'alarm'
   end as status,
   name || case
-    when (arguments ->> 'encryption_configuration') is not null and
-      coalesce((arguments -> 'encryption_configuration' ->> 'encryption_type'), '') = 'KMS'
-    then ' is encrypted using KMS'
-    else ' is not encrypted using KMS'
+    when
+      (arguments ->> 'encryption_configuration') is not null
+      and coalesce((arguments -> 'encryption_configuration' ->> 'encryption_type'), '') = 'KMS'
+    then ' encrypted using KMS'
+    else ' not encrypted using KMS'
   end || '.' as reason,
   path
 from

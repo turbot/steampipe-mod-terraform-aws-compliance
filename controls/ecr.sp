@@ -11,8 +11,9 @@ benchmark "ecr" {
   children = [
     control.ecr_repository_tags_immutable,
     control.ecr_repository_use_image_scanning,
+    control.ecr_repository_encrypted_with_kms
   ]
-  
+
   tags = local.ecr_compliance_common_tags
 }
 
@@ -28,6 +29,14 @@ control "ecr_repository_use_image_scanning" {
   title         = "ECR repository should use image scanning"
   description   = "One of the best practices when making containers available through AWS ECR is to scan them for vulnerabilities before sharing or using them."
   sql           = query.ecr_repository_use_image_scanning.sql
+
+   tags     = local.ecr_compliance_common_tags
+}
+
+control "ecr_repository_encrypted_with_kms" {
+  title         = "ECR repository should be encrypted with KMS"
+  description   = "Ensure ECR repositories being created are set to be encrypted at rest using customer-managed CMK."
+  sql           = query.ecr_repository_encrypted_with_kms.sql
 
    tags     = local.ecr_compliance_common_tags
 }

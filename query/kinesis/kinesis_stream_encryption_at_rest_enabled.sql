@@ -1,14 +1,12 @@
 select
   type || ' ' || name as resource,
   case
-    when (arguments ->> 'encryption_type') = 'KMS'
-    then 'ok'
+    when (arguments ->> 'encryption_type') = 'KMS' then 'ok'
     else 'alarm'
   end as status,
   name || case
-    when (arguments ->> 'encryption_type') = 'KMS'
-    then ' is encrypted'
-    else ' is not encrypted'
+    when (arguments ->> 'encryption_type') = 'KMS' then ' encrypted aty rest'
+    else ' not encrypted at rest'
   end || '.' as reason,
   path
 from

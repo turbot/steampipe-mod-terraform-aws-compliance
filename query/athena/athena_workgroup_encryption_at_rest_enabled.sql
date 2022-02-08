@@ -7,8 +7,8 @@ select
   end status,
   name || case
     when (arguments -> 'configuration' -> 'result_configuration' -> 'encryption_configuration') is not null
-    then ' is encrypted'
-    else ' is not encrypted'
+    then ' encrypted at rest'
+    else ' not encrypted at rest'
   end || '.' reason,
   path
 from

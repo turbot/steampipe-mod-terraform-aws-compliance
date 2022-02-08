@@ -1,14 +1,12 @@
 select
   type || ' ' || name as resource,
   case
-    when (arguments ->> 'storage_encrypted')::boolean
-    then 'ok'
+    when (arguments ->> 'storage_encrypted')::boolean then 'ok'
     else 'alarm'
   end as status,
   name || case
-    when (arguments ->> 'storage_encrypted')::boolean
-    then ' is encrypted'
-    else ' is not encrypted'
+    when (arguments ->> 'storage_encrypted')::boolean then ' encrypted at rest'
+    else ' not encrypted at rest'
   end || '.' as reason,
   path
 from

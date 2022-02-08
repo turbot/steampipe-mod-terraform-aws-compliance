@@ -5,8 +5,8 @@ select
     else 'alarm'
   end status,
   name || case
-    when (arguments -> 'encryption_configuration') is null then ' is not encrypted'
-    else ' is encrypted'
+    when (arguments -> 'encryption_configuration') is not null then ' encrypted at rest'
+    else ' not encrypted at rest'
   end || '.' reason,
   path
 from
