@@ -1,0 +1,19 @@
+select
+  type || ' ' || name as resource,
+  case
+    when (arguments ->> 'encryption_configuration') is not null and
+      coalesce((arguments -> 'encryption_configuration' ->> 'encryption_type'), '') = 'KMS'
+    then 'ok'
+    else 'alarm'
+  end as status,
+  name || case
+    when (arguments ->> 'encryption_configuration') is not null and
+      coalesce((arguments -> 'encryption_configuration' ->> 'encryption_type'), '') = 'KMS'
+    then ' is encrypted using KMS'
+    else ' is not encrypted using KMS'
+  end || '.' as reason,
+  path
+from
+  terraform_resource
+where
+  type = 'aws_ecr_repository';
