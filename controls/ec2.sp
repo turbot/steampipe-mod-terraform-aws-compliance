@@ -13,6 +13,7 @@ benchmark "ec2" {
     control.ec2_instance_detailed_monitoring_enabled,
     control.ec2_instance_ebs_optimized,
     control.ec2_instance_not_publicly_accessible,
+    control.ec2_instance_not_use_default_vpc,
     control.ec2_instance_not_use_multiple_enis,
     control.ec2_instance_termination_protection_enabled,
     control.ec2_instance_uses_imdsv2
@@ -30,6 +31,14 @@ control "ec2_ebs_default_encryption_enabled" {
     hipaa                     = "true"
     nist_800_53_rev_4         = "true"
   })
+}
+
+control "ec2_instance_not_use_default_vpc" {
+  title         = "Ensure EC2 instances do not use default VPC"
+  description   = "One of the best practices when using EC2s in AWS is not to deploy any resources to the default VPC."
+  sql           = query.ec2_instance_not_use_default_vpc.sql
+
+  tags  = local.ec2_compliance_common_tags
 }
 
 control "ec2_instance_detailed_monitoring_enabled" {
