@@ -2,7 +2,7 @@
 
 _What's new?_
 
-- New benchmarks added:
+- New benchmarks added for the following AWS services:
   - Athena
   - Kinesis
   - Workspace
