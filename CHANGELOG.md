@@ -16,7 +16,6 @@ _What's new?_
   - kinesis_stream_encryption_at_rest
   - neptune_cluster_encryption_at_rest
   - secretsmanager_secret_encrypted_with_kms_cmk
-  - workspace_root_volume_encryption_at_rest copy
   - workspace_user_volume_encryption_at_rest
 
 ## v0.3 [2022-02-02]
