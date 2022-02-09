@@ -11,8 +11,9 @@ benchmark "secretsmanager" {
   children = [
     control.secretsmanager_secret_automatic_rotation_enabled,
     control.secretsmanager_secret_automatic_rotation_lambda_enabled,
+    control.secretsmanager_secret_encrypted_with_kms_cmk
   ]
-  
+
   tags = local.secretsmanager_compliance_common_tags
 }
 
@@ -36,4 +37,12 @@ control "secretsmanager_secret_automatic_rotation_lambda_enabled" {
   tags = merge(local.secretsmanager_compliance_common_tags, {
     aws_foundational_security = "true"
   })
+}
+
+control "secretsmanager_secret_encrypted_with_kms_cmk" {
+  title         = "Secrets Manager secrets should be encrypted with KMS CMK"
+  description   = "Ensure Secrets Manager secrets are encrypted at rest with customer-managed CMK."
+  sql           = query.secretsmanager_secret_encrypted_with_kms_cmk.sql
+
+  tags = local.secretsmanager_compliance_common_tags
 }

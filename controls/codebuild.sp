@@ -9,6 +9,7 @@ benchmark "codebuild" {
   description  = "This benchmark provides a set of controls that detect Terraform AWS CodeBuild resources deviating from security best practices."
 
   children = [
+    control.codebuild_project_encryption_at_rest_enabled,
     control.codebuild_project_plaintext_env_variables_no_sensitive_aws_values,
     control.codebuild_project_source_repo_oauth_configured
   ]
@@ -44,4 +45,12 @@ control "codebuild_project_source_repo_oauth_configured" {
     pci                       = "true"
     soc_2                     = "true"
   })
+}
+
+control "codebuild_project_encryption_at_rest_enabled" {
+  title         = "CodeBuild project encryption at rest should be enabled"
+  description   = "Ensure CodeBuild projects are set to be encrypted at rest with customer-managed CMK to protect sensitive data."
+  sql           = query.codebuild_project_encryption_at_rest_enabled.sql
+
+  tags = local.codebuild_compliance_common_tags
 }

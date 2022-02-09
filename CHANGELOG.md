@@ -1,3 +1,24 @@
+## v0.4 [2022-02-09]
+
+_What's new?_
+
+- New benchmarks added for the following AWS services:
+  - Athena
+  - Kinesis
+  - Workspace
+- New controls added:
+  - athena_database_encryption_at_rest
+  - athena_workgroup_encryption_at_rest
+  - codebuild_project_encryption_at_rest
+  - docdb_cluster_encrypted_with_kms
+  - ec2_instance_not_use_default_vpc
+  - ecr_repository_encrypted_with_kms
+  - kinesis_stream_encryption_at_rest
+  - neptune_cluster_encryption_at_rest
+  - secretsmanager_secret_encrypted_with_kms_cmk
+  - workspace_root_volume_encryption_at_rest
+  - workspace_user_volume_encryption_at_rest
+
 ## v0.3 [2022-02-02]
 
 _Bug fixes_
