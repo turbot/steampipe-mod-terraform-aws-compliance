@@ -23,7 +23,7 @@ steampipe plugin install terraform
 ### Configuration
 
 By default, the Terraform plugin configuration loads Terraform configuration
-files in your current working directory. So if you are running benchmarks and
+files in your current working directory. If you are running benchmarks and
 controls from the current working directory, no extra plugin configuration is
 necessary.
 
@@ -46,9 +46,9 @@ For more details on connection configuration, please refer to [Terraform Plugin 
 
 ### Usage
 
-If running from the current working directory, the Steampipe workspace must be
-set to the location where you downloaded the
-`steampipe-mod-terraform-aws-compliance` mod:
+If running from the current working directory containing your Terraform
+configuration files, the Steampipe workspace must be set to the location where
+you downloaded the `steampipe-mod-terraform-aws-compliance` mod:
 
 Set through an environment variable:
 
