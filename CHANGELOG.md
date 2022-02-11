@@ -1,3 +1,9 @@
+## v0.5 [2022-02-10]
+
+_Enhancements_
+
+- Updated `README.md` and `docs/index.md` with more detailed usage instructions
+
 ## v0.4 [2022-02-09]
 
 _What's new?_
