@@ -16,7 +16,6 @@ Run compliance and security controls to detect Terraform AWS resources deviating
 
 [Steampipe Mods](https://steampipe.io/docs/reference/mod-resources#mod) are collections of `named queries`, and codified `controls` that can be used to test current configuration of your cloud resources against a desired configuration.
 
-
 ## Documentation
 
 - **[Benchmarks and controls →](https://hub.steampipe.io/mods/turbot/terraform_aws_compliance/controls)**
@@ -24,13 +23,30 @@ Run compliance and security controls to detect Terraform AWS resources deviating
 
 ## Get started
 
+### Installation
+
+Clone:
+
+```sh
+git clone https://github.com/turbot/steampipe-mod-terraform-aws-compliance.git
+```
+
 Install the Terraform plugin with [Steampipe](https://steampipe.io):
 
-```shell
+```sh
 steampipe plugin install terraform
 ```
 
-Configure the Terraform plugin, adding any path that contains your Terraform files to `paths`:
+### Configuration
+
+By default, the Terraform plugin configuration loads Terraform configuration
+files in your current working directory. If you are running benchmarks and
+controls from the current working directory, no extra plugin configuration is
+necessary.
+
+If you want to run benchmarks and controls across multiple directories, they
+can be run from within the `steampipe-mod-terraform-aws-compliance` mod
+directory after configuring the Terraform plugin configuration:
 
 ```sh
 vi ~/.steampipe/config/terraform.spc
@@ -39,50 +55,64 @@ vi ~/.steampipe/config/terraform.spc
 ```hcl
 connection "terraform" {
   plugin = "terraform"
-  paths  = ["/path/to/my/tf/files/*.tf"]
+  paths  = ["/path/to/files/*.tf", "/path/to/more/files/*.tf"]
 }
 ```
 
-For more details on connection configuration, please refer [Terraform Plugin Configuration](https://hub.steampipe.io/plugins/turbot/terraform#configuration).
+For more details on connection configuration, please refer to [Terraform Plugin Configuration](https://hub.steampipe.io/plugins/turbot/terraform#configuration).
 
-Clone:
+### Usage
+
+If you are running from the current working directory containing your Terraform
+configuration files, the Steampipe workspace must be set to the location where
+you downloaded the `steampipe-mod-terraform-aws-compliance` mod:
+
+Set through an environment variable:
 
 ```sh
-git clone https://github.com/turbot/steampipe-mod-terraform-aws-compliance.git
-cd steampipe-mod-terraform-aws-compliance
+export STEAMPIPE_WORKSPACE_CHDIR=/path/to/steampipe-mod-terraform-aws-compliance
+steampipe check all
 ```
+
+Set through the CLI argument:
+
+```sh
+steampipe check all --workspace-chdir=/path/to/steampipe-mod-terraform-aws-compliance
+```
+
+However, if you are running from within the
+`steampipe-mod-terraform-aws-compliance` mod directory and `paths` was
+configured in the Terraform plugin configuration, the Steampipe workspace does
+not need to be set (since you are already in the Steampipe workspace
+directory).
 
 Run all benchmarks:
 
-```shell
+```sh
 steampipe check all
 ```
 
 Run all benchmarks for a specific compliance framework using tags:
 
-```shell
+```sh
 steampipe check all --tag gdpr=true
 ```
 
 Run a benchmark:
 
-```shell
+```sh
 steampipe check terraform_aws_compliance.benchmark.s3
 ```
 
 Run a specific control:
 
-```shell
+```sh
 steampipe check terraform_aws_compliance.control.s3_bucket_default_encryption_enabled
 ```
 
 ### Credentials
 
 This mod uses the credentials configured in the [Steampipe Terraform plugin](https://hub.steampipe.io/plugins/turbot/terraform).
-
-### Configuration
-
-No extra configuration is required.
 
 ## Get involved
 
