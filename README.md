@@ -46,7 +46,7 @@ For more details on connection configuration, please refer to [Terraform Plugin 
 
 ### Usage
 
-If running from the current working directory containing your Terraform
+If you are running from the current working directory containing your Terraform
 configuration files, the Steampipe workspace must be set to the location where
 you downloaded the `steampipe-mod-terraform-aws-compliance` mod:
 
@@ -57,15 +57,17 @@ export STEAMPIPE_WORKSPACE_CHDIR=/path/to/steampipe-mod-terraform-aws-compliance
 steampipe check all
 ```
 
-Set through the command line argument:
+Set through the CLI argument:
 
 ```sh
 steampipe check all --workspace-chdir=/path/to/steampipe-mod-terraform-aws-compliance
 ```
 
-If running from within the `steampipe-mod-terraform-aws-compliance` mod
-directory and `paths` was configured in the Terraform plugin configuration, the
-Steampipe workspace does not need to be set:
+However, if you are running from within the
+`steampipe-mod-terraform-aws-compliance` mod directory and `paths` was
+configured in the Terraform plugin configuration, the Steampipe workspace does
+not need to be set (since you are already in the Steampipe workspace
+directory).
 
 Run all benchmarks:
 
