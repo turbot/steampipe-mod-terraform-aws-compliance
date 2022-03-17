@@ -10,7 +10,7 @@ select
     when (arguments -> 'encryption_config' -> 'resources') @> '["secrets"]' then 'encrypted with EKS secrets'
     else ' not encrypted with EKS secrets'
   end || '.' reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

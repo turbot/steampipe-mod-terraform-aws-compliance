@@ -12,7 +12,7 @@ select
     when (arguments -> 'listener' ->> 'lb_protocol') ilike 'SSL' and (arguments -> 'listener' ->> 'ssl_certificate_id') like 'arn:aws:acm%' then ' uses certificates provided by ACM'
     else ' does not use certificate provided by ACM'
   end || '.' reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

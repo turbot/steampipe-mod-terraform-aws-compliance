@@ -12,7 +12,7 @@ select
     (arguments -> 'log_publishing_options') @> '[{"log_type": "ES_APPLICATION_LOGS"}]' then ' logging enabled for search , index and error'
     else ' logging not enabled for all search, index and error'
   end || '.' reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

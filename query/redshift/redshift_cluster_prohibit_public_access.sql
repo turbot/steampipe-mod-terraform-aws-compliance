@@ -10,7 +10,7 @@ select
     when (arguments -> 'publicly_accessible')::bool then ' publicly accessible'
     else ' not publicly accessible'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

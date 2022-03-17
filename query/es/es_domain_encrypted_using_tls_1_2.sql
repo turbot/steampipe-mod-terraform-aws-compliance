@@ -8,7 +8,7 @@ select
     when (arguments -> 'domain_endpoint_options'  ->> 'tls_security_policy') = 'Policy-Min-TLS-1-2-2019-07' then ' encrypted using TLS 1.2'
     else ' not encrypted using TLS 1.2'
   end || '.' reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

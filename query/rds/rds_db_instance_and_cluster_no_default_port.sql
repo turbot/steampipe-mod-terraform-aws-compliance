@@ -17,7 +17,7 @@
       when (arguments ->> 'engine') like 'sqlserver%' and ((arguments ->> 'port')::int = 1433 or (arguments -> 'port') is null) then ' uses a default port'
       else ' does not use a default port'
     end || '.' reason,
-    path
+    path || ':' || start_line
   from
     terraform_resource
   where
@@ -41,7 +41,7 @@ union
       when (arguments ->> 'engine') like 'sqlserver%' and ((arguments ->> 'port')::int = 1433 or (arguments -> 'port') is null) then ' uses a default port'
       else ' does not use a default port'
     end || '.' reason,
-    path
+    path || ':' || start_line
   from
     terraform_resource
   where

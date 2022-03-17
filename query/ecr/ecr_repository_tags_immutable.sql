@@ -8,7 +8,7 @@ select
     when (arguments ->> 'image_tag_mutability')::text = 'IMMUTABLE' then ' has immutable tags'
     else ' does not have immutable tags'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

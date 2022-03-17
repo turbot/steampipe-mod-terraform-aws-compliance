@@ -26,7 +26,7 @@ select
     when (b.arguments ->> 'auth_type') = 'OAUTH' then ' using OAuth to connect source repository'
     else ' not using OAuth to connect source repository'
   end || '.' reason,
-  a.path
+  a.path || ':' || a.start_line
 from
   codebuild_projects as a
   left join codebuild_source_credential as b on (b.arguments -> 'server_type') = (a.arguments -> 'source' -> 'type');

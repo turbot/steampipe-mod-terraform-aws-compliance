@@ -8,7 +8,7 @@ select
    when (arguments -> 'associate_public_ip_address')::boolean then ' public IP enabled'
     else ' public IP disabled'
   end || '.' reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

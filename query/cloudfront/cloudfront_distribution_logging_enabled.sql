@@ -8,7 +8,7 @@ select
     when (arguments -> 'logging_config') is not null then ' logging enabled'
     else ' logging disabled'
   end || '.' reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

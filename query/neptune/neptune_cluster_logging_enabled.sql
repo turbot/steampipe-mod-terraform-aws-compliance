@@ -8,7 +8,7 @@ select
     when (arguments -> 'enable_cloudwatch_logs_exports') is null then ' logging not enabled'
     else ' logging enabled'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

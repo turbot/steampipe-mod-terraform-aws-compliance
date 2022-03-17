@@ -8,7 +8,7 @@ select
     when (arguments -> 'dead_letter_config') is null then ' not configured with dead-letter queue'
     else  ' configured with dead-letter queue'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

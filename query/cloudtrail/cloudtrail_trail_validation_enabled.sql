@@ -8,7 +8,7 @@ select
     when (arguments ->> 'enable_log_file_validation')::boolean then ' log file validation enabled'
     else ' log file validation disabled'
   end || '.' reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

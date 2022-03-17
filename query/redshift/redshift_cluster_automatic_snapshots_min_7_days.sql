@@ -10,7 +10,7 @@ select
     when (arguments -> 'automated_snapshot_retention_period')::integer > 7 then ' ''automated_snapshot_retention_period'' set to ' || (arguments ->> 'automated_snapshot_retention_period')::integer || ' day(s)'
     else ' ''automated_snapshot_retention_period'' set to 0 days'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

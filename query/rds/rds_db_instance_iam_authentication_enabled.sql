@@ -10,7 +10,7 @@ select
     when (arguments -> 'iam_database_authentication_enabled')::bool then ' ''iam_database_authentication_enabled'' enabled'
     else ' ''iam_database_authentication_enabled'' disabled'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

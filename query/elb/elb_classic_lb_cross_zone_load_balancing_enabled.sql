@@ -10,7 +10,7 @@ select
     when (arguments -> 'cross_zone_load_balancing')::boolean then ' cross-zone load balancing enabled'
     else ' cross-zone load balancing disabled'
     end || '.' reason,
-    path
+    path || ':' || start_line
 from
   terraform_resource
 where

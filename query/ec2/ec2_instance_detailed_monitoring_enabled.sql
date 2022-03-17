@@ -8,7 +8,7 @@ select
     when  (arguments ->> 'monitoring')::bool is true then ' detailed monitoring enabled'
     else ' detailed monitoring disabled'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

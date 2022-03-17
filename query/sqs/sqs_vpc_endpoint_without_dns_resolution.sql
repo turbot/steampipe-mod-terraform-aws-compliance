@@ -11,7 +11,7 @@ select
     when (arguments ->> 'service_name') like '%sqs%' and (arguments -> 'private_dns_enabled')::bool then ' private DNS enabled'
     when (arguments ->> 'service_name') like '%sqs%' and (arguments -> 'private_dns_enabled')::bool = false then ' private DNS disabled'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

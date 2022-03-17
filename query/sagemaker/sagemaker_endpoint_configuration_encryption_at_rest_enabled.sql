@@ -8,7 +8,7 @@ select
     when (arguments -> 'kms_key_arn') is null then ' encryption at rest not enabled'
     else ' encryption at rest enabled'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

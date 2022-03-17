@@ -10,7 +10,7 @@ select
     when (arguments -> 'minimum_password_length')::integer >= 14 then ' ''minimum_password_length'' is set and greater than 14'
     else ' ''minimum_password_length'' is set and less than 14'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

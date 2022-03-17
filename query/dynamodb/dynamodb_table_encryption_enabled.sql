@@ -8,7 +8,7 @@ select
     when (arguments -> 'server_side_encryption') is not null then ' server-side encryption not set to DynamoDB owned KMS key'
     else ' server-side encryption set to AWS owned CMK'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

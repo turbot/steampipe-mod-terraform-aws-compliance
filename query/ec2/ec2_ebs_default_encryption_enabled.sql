@@ -10,7 +10,7 @@ select
     when (arguments ->> 'enabled')::bool then ' default EBS encryption enabled'
     else ' default EBS encryption disabled'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

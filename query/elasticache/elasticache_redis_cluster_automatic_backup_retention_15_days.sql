@@ -9,7 +9,7 @@ select
     when (arguments -> 'snapshot_retention_limit')::int < 15 then ' automatic backup retention period is less than 15 days'
     else ' automatic backup retention period is more than 15 days'
   end || '.' reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

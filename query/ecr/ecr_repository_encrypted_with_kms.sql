@@ -14,7 +14,7 @@ select
     then ' encrypted using KMS'
     else ' not encrypted using KMS'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

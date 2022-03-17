@@ -14,7 +14,7 @@ select
     then ' encrypted at rest using customer-managed CMK'
     else ' not encrypted at rest using customer-managed CMK'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

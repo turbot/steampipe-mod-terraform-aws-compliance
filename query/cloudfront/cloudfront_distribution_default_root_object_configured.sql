@@ -8,7 +8,7 @@ select
     when (arguments -> 'default_root_object') is not null then ' default root object configured'
     else ' default root object not configured'
   end || '.' reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

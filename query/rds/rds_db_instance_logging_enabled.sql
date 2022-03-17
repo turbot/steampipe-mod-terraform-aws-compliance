@@ -54,7 +54,7 @@ select
       and (arguments -> 'enabled_cloudwatch_logs_exports')::jsonb <@ '["error","agent"]' then ' logging enabled'
     else ' logging disabled'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where
