@@ -24,7 +24,7 @@ select
     when b.flow_log_vpc_id is not null then ' flow logging enabled'
     else ' flow logging disabled'
   end || '.' reason,
-  a.path
+  a.path || ':' || a.start_line
 from
   all_vpc as a
   left join flow_logs as b on a.vpc_id = b.flow_log_vpc_id;

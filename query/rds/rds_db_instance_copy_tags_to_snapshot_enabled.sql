@@ -10,7 +10,7 @@ select
     when (arguments -> 'copy_tags_to_snapshot')::bool then ' ''copy_tags_to_snapshot'' enabled'
     else ' ''copy_tags_to_snapshot'' disabled'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

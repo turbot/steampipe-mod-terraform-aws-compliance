@@ -8,7 +8,7 @@ select
     when (arguments -> 'viewer_certificate' ->> 'minimum_protocol_version')::text = 'TLSv1.2_2019' then ' minimum protocol version is set to TLSv1.2_2019'
     else ' minimum protocol version is not set to TLSv1.2_2019'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

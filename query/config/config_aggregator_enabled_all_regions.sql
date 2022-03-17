@@ -8,7 +8,7 @@ select
     when (arguments -> 'account_aggregation_source' ->> 'all_regions')::boolean then ' enabled in all regions'
     else ' not enabled in all regions'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

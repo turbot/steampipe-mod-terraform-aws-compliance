@@ -8,7 +8,7 @@ select
     when (arguments -> 'encrypted') is not null and (arguments -> 'kms_key_id') is not null then ' encrypted with KMS'
     else ' not encrypted with KMS'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

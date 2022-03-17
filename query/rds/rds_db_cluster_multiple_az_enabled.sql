@@ -10,7 +10,7 @@ select
     when (arguments -> 'multi_az')::boolean then ' ''multi_az'' enabled'
     else ' ''multi_az'' disabled'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

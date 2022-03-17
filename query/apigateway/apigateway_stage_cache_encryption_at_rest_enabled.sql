@@ -19,7 +19,8 @@ with stages_v1 as (
       a.arguments ->> 'stage_name' as stage_name,
       a.type,
       a.name,
-      a.path
+      a.path,
+      a.start_line
     from stages_v1 as a left join method_settings as m on (m.arguments ->> 'rest_api_id') = (a.arguments ->> 'rest_api_id')
 )
 select
@@ -32,6 +33,6 @@ select
     when (caching_enabled)::boolean and (cache_data_encrypted)::boolean then ' API cache and encryption enabled'
     else ' API cache and encryption not enabled'
   end || '.' reason,
-  path
+  path || ':' || start_line
 from
   all_stages;

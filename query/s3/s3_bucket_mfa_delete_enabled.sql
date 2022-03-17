@@ -8,7 +8,7 @@ select
     when (arguments -> 'versioning' ->> 'mfa_delete')::bool then ' MFA delete enabled'
     else ' MFA delete disabled'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

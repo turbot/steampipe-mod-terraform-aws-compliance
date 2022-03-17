@@ -10,7 +10,7 @@ select
     when (arguments ->> 'encrypted')::boolean then ' encrypted at rest'
     else ' not encrypted at rest'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

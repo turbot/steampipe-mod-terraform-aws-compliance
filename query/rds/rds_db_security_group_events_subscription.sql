@@ -17,7 +17,7 @@ select
       and (arguments -> 'event_categories_list')::jsonb <@ '["failure", "configuration change"]'::jsonb then ' event subscription enabled for critical database security group events'
     else ' event subscription missing critical database security group events'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

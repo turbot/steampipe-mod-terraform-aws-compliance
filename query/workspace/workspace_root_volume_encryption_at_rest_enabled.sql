@@ -8,7 +8,7 @@ select
     when (arguments ->> 'user_volume_encryption_enabled')::boolean then ' encrypted at rest'
     else ' not encrypted at rest'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

@@ -10,7 +10,7 @@ select
     when (arguments -> 'storage_encrypted')::bool then ' encrypted'
     else ' not encrypted'
   end || '.' reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

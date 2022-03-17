@@ -8,7 +8,7 @@ select
     when (arguments -> 'kerberos_attributes') is null then ' kerberos disabled'
     else ' kerberos enabled'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

@@ -11,7 +11,7 @@ select
     and (arguments -> 'log_publishing_options' ->> 'log_type')::text = 'ES_APPLICATION_LOGS') or (arguments -> 'log_publishing_options') @> '[{"log_type": "ES_APPLICATION_LOGS"}]' then ' error logging enabled'
     else ' error logging disabled'
   end || '.' reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

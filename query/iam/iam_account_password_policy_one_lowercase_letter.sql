@@ -10,7 +10,7 @@ select
     when (arguments -> 'require_lowercase_characters')::boolean then ' lowercase character set to required'
     else ' lowercase character not set to required'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

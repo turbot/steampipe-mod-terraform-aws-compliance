@@ -10,7 +10,7 @@ select
     when (arguments -> 'require_uppercase_characters')::boolean then ' uppercase characters set to required'
     else ' uppercase characters not set to required'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

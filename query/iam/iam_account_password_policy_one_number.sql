@@ -10,7 +10,7 @@ select
     when (arguments -> 'require_numbers')::bool then ' number set to required'
     else ' number not set to required'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

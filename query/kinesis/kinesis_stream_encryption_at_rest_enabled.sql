@@ -8,7 +8,7 @@ select
     when (arguments ->> 'encryption_type') = 'KMS' then ' encrypted aty rest'
     else ' not encrypted at rest'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

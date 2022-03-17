@@ -8,7 +8,7 @@ select
     when (arguments -> 'node_to_node_encryption' ->> 'enabled')::boolean then ' node-to-node encryption enabled'
     else ' node-to-node encryption disabled'
   end || '.' reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

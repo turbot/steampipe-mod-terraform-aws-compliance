@@ -8,7 +8,7 @@ select
     when (arguments -> 'origin_group' -> 'member' ) is not null then ' origin group is configured'
     else ' origin group not configured'
   end || '.' reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

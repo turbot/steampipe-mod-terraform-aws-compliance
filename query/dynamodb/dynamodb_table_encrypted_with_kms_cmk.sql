@@ -12,7 +12,7 @@ select
     when (arguments -> 'server_side_encryption'->> 'enabled')::bool is true and (arguments -> 'server_side_encryption' ->> 'kms_key_arn') is not null then ' encrypted by AWS managed CMK'
     else ' not encrypted by AWS managed CMK'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where
