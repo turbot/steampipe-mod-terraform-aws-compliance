@@ -1,6 +1,6 @@
 locals {
   es_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
-    service = "AWS/ES"
+    service = "AWS/Elasticsearch"
   })
 }
 
