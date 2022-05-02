@@ -4,7 +4,7 @@ locals {
   })
 }
 
-benchmark "workspaces" {
+benchmark "workspace" {
   title       = "WorkSpaces"
   description = "This benchmark provides a set of controls that detect Terraform AWS WorkSpaces resources deviating from security best practices."
 
