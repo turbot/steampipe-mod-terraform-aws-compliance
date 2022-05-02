@@ -1,6 +1,6 @@
 locals {
   eks_compliance_common_tags = merge(local.compliance_common_tags, {
-    service = "eks"
+    service = "AWS/EKS"
   })
 }
 

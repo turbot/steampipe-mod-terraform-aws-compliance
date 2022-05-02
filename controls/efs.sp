@@ -1,6 +1,6 @@
 locals {
   efs_compliance_common_tags = merge(local.compliance_common_tags, {
-    service = "efs"
+    service = "AWS/EFS"
   })
 }
 

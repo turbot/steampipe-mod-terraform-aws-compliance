@@ -1,6 +1,6 @@
 locals {
   globalaccelerator_compliance_common_tags = merge(local.compliance_common_tags, {
-    service = "globalaccelerator"
+    service = "AWS/GlobalAccelerator"
   })
 }
 
@@ -11,7 +11,7 @@ benchmark "globalaccelerator" {
   children = [
     control.globalaccelerator_flow_logs_enabled
   ]
-  
+
   tags = local.globalaccelerator_compliance_common_tags
 }
 

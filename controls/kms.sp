@@ -1,6 +1,6 @@
 locals {
   kms_compliance_common_tags = merge(local.compliance_common_tags, {
-    service = "kms"
+    service = "AWS/KMS"
   })
 }
 
@@ -11,7 +11,7 @@ benchmark "kms" {
   children = [
     control.kms_cmk_rotation_enabled
   ]
-  
+
   tags = local.kms_compliance_common_tags
 }
 

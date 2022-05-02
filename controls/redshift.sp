@@ -1,6 +1,6 @@
 locals {
   redshift_compliance_common_tags = merge(local.compliance_common_tags, {
-    service = "redshift"
+    service = "AWS/Redshift"
   })
 }
 
@@ -19,7 +19,7 @@ benchmark "redshift" {
     control.redshift_cluster_maintenance_settings_check,
     control.redshift_cluster_prohibit_public_access
   ]
-  
+
   tags = local.redshift_compliance_common_tags
 }
 

@@ -1,6 +1,6 @@
 locals {
   config_compliance_common_tags = merge(local.compliance_common_tags, {
-    service = "config"
+    service = "AWS/Config"
   })
 }
 
@@ -11,7 +11,7 @@ benchmark "config" {
   children = [
     control.config_aggregator_enabled_all_regions
   ]
-  
+
   tags = local.config_compliance_common_tags
 }
 

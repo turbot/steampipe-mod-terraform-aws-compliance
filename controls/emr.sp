@@ -1,6 +1,6 @@
 locals {
   emr_compliance_common_tags = merge(local.compliance_common_tags, {
-    service = "emr"
+    service = "AWS/EMR"
   })
 }
 

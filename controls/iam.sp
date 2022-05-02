@@ -1,6 +1,6 @@
 locals {
   iam_compliance_common_tags = merge(local.compliance_common_tags, {
-    service = "iam"
+    service = "AWS/IAM"
   })
 }
 
@@ -19,7 +19,7 @@ benchmark "iam" {
     control.iam_account_password_policy_strong,
     control.iam_password_policy_expire_90
   ]
-  
+
   tags = local.iam_compliance_common_tags
 }
 

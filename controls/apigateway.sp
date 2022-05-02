@@ -1,6 +1,6 @@
 locals {
   apigateway_compliance_common_tags = merge(local.compliance_common_tags, {
-    service = "apigateway"
+    service = "AWS/APIGateway"
   })
 }
 
@@ -14,7 +14,7 @@ benchmark "apigateway" {
     control.apigateway_stage_cache_encryption_at_rest_enabled,
     control.apigateway_stage_logging_enabled
   ]
-  
+
   tags = local.apigateway_compliance_common_tags
 }
 

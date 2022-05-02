@@ -1,6 +1,6 @@
 locals {
   ec2_compliance_common_tags = merge(local.compliance_common_tags, {
-    service = "ec2"
+    service = "AWS/EC2"
   })
 }
 

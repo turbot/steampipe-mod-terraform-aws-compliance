@@ -1,6 +1,6 @@
 locals {
   kinesis_compliance_common_tags = merge(local.compliance_common_tags, {
-    service = "kinesis"
+    service = "AWS/Kinesis"
   })
 }
 
