@@ -1,6 +1,6 @@
 locals {
-  elasticache_compliance_common_tags = merge(local.compliance_common_tags, {
-    service = "elasticache"
+  elasticache_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
+    service = "AWS/ElastiCache"
   })
 }
 
@@ -13,7 +13,9 @@ benchmark "elasticache" {
     control.elasticache_replication_group_encryption_in_transit_enabled
   ]
 
-  tags = local.elasticache_compliance_common_tags
+  tags = merge(local.elasticache_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "elasticache_redis_cluster_automatic_backup_retention_15_days" {

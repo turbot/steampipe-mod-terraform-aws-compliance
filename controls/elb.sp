@@ -1,6 +1,6 @@
 locals {
-  elb_compliance_common_tags = merge(local.compliance_common_tags, {
-    service = "elb"
+  elb_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
+    service = "AWS/ELB"
   })
 }
 
@@ -19,7 +19,9 @@ benchmark "elb" {
     control.elb_classic_lb_use_tls_https_listeners
   ]
 
-  tags = local.elb_compliance_common_tags
+  tags = merge(local.elb_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "ec2_classic_lb_connection_draining_enabled" {

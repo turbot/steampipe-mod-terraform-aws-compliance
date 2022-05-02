@@ -1,6 +1,6 @@
 locals {
-  eks_compliance_common_tags = merge(local.compliance_common_tags, {
-    service = "eks"
+  eks_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
+    service = "AWS/EKS"
   })
 }
 
@@ -14,7 +14,9 @@ benchmark "eks" {
     control.eks_cluster_secrets_encrypted
   ]
 
-  tags = local.eks_compliance_common_tags
+  tags = merge(local.eks_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "eks_cluster_endpoint_restrict_public_access" {

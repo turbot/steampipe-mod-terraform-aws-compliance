@@ -1,6 +1,6 @@
 locals {
-  iam_compliance_common_tags = merge(local.compliance_common_tags, {
-    service = "iam"
+  iam_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
+    service = "AWS/IAM"
   })
 }
 
@@ -19,8 +19,10 @@ benchmark "iam" {
     control.iam_account_password_policy_strong,
     control.iam_password_policy_expire_90
   ]
-  
-  tags = local.iam_compliance_common_tags
+
+  tags = merge(local.iam_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "iam_account_password_policy_min_length_14" {

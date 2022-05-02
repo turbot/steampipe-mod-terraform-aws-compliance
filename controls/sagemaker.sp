@@ -1,6 +1,6 @@
 locals {
-  sagemaker_compliance_common_tags = merge(local.compliance_common_tags, {
-    service = "sagemaker"
+  sagemaker_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
+    service = "AWS/SageMaker"
   })
 }
 
@@ -14,7 +14,9 @@ benchmark "sagemaker" {
     control.sagemaker_notebook_instance_encryption_at_rest_enabled
   ]
 
-  tags= local.sagemaker_compliance_common_tags
+  tags = merge(local.sagemaker_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "sagemaker_endpoint_configuration_encryption_at_rest_enabled" {
