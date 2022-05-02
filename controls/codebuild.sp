@@ -1,5 +1,5 @@
 locals {
-  codebuild_compliance_common_tags = merge(local.compliance_common_tags, {
+  codebuild_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
     service = "AWS/CodeBuild"
   })
 }
@@ -14,7 +14,9 @@ benchmark "codebuild" {
     control.codebuild_project_source_repo_oauth_configured
   ]
 
-  tags = local.codebuild_compliance_common_tags
+  tags = merge(local.codebuild_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "codebuild_project_plaintext_env_variables_no_sensitive_aws_values" {

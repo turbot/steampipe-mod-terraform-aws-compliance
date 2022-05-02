@@ -1,5 +1,5 @@
 locals {
-  neptune_compliance_common_tags = merge(local.compliance_common_tags, {
+  neptune_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
     service = "AWS/Neptune"
   })
 }
@@ -13,7 +13,9 @@ benchmark "neptune" {
     control.neptune_cluster_encryption_at_rest_enabled
   ]
 
-  tags = local.neptune_compliance_common_tags
+  tags = merge(local.neptune_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "neptune_cluster_logging_enabled" {

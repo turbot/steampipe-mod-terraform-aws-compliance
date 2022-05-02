@@ -1,5 +1,5 @@
 locals {
-  cloudtrail_compliance_common_tags = merge(local.compliance_common_tags, {
+  cloudtrail_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
     service = "AWS/CloudTrail"
   })
 }
@@ -14,7 +14,9 @@ benchmark "cloudtrail" {
     control.cloudtrail_trail_validation_enabled,
   ]
 
-  tags = local.cloudtrail_compliance_common_tags
+  tags = merge(local.cloudtrail_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "cloudtrail_enabled_all_regions" {

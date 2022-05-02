@@ -1,5 +1,5 @@
 locals {
-  kms_compliance_common_tags = merge(local.compliance_common_tags, {
+  kms_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
     service = "AWS/KMS"
   })
 }
@@ -12,7 +12,9 @@ benchmark "kms" {
     control.kms_cmk_rotation_enabled
   ]
 
-  tags = local.kms_compliance_common_tags
+  tags = merge(local.kms_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "kms_cmk_rotation_enabled" {

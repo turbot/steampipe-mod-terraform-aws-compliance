@@ -1,5 +1,5 @@
 locals {
-  dynamodb_compliance_common_tags = merge(local.compliance_common_tags, {
+  dynamodb_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
     service = "AWS/DynamoDB"
   })
 }
@@ -15,7 +15,9 @@ benchmark "dynamodb" {
     control.dynamodb_vpc_endpoint_routetable_association
   ]
 
-  tags = local.dynamodb_compliance_common_tags
+  tags = merge(local.dynamodb_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "dynamodb_table_encrypted_with_kms_cmk" {

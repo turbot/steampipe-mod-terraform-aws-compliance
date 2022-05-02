@@ -1,5 +1,5 @@
 locals {
-  guardduty_compliance_common_tags = merge(local.compliance_common_tags, {
+  guardduty_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
     service = "AWS/GuardDuty"
   })
 }
@@ -12,7 +12,9 @@ benchmark "guardduty" {
     control.guardduty_enabled
   ]
 
-  tags = local.guardduty_compliance_common_tags
+  tags = merge(local.guardduty_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "guardduty_enabled" {

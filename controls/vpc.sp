@@ -1,5 +1,5 @@
 locals {
-  vpc_compliance_common_tags = merge(local.compliance_common_tags, {
+  vpc_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
     service = "AWS/VPC"
   })
 }
@@ -20,7 +20,9 @@ benchmark "vpc" {
     control.vpc_security_group_associated_to_eni
   ]
 
-  tags = local.vpc_compliance_common_tags
+  tags = merge(local.vpc_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "vpc_default_security_group_restricts_all_traffic" {

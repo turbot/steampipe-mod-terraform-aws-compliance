@@ -1,5 +1,5 @@
 locals {
-  apigateway_compliance_common_tags = merge(local.compliance_common_tags, {
+  apigateway_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
     service = "AWS/APIGateway"
   })
 }
@@ -15,7 +15,9 @@ benchmark "apigateway" {
     control.apigateway_stage_logging_enabled
   ]
 
-  tags = local.apigateway_compliance_common_tags
+  tags = merge(local.apigateway_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "apigateway_rest_api_stage_use_ssl_certificate" {

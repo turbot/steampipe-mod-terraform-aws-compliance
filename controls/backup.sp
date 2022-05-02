@@ -1,5 +1,5 @@
 locals {
-  backup_compliance_common_tags = merge(local.compliance_common_tags, {
+  backup_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
     service = "AWS/Backup"
   })
 }
@@ -12,7 +12,9 @@ benchmark "backup" {
     control.backup_plan_min_retention_35_days
   ]
 
-  tags = local.backup_compliance_common_tags
+  tags = merge(local.backup_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "backup_plan_min_retention_35_days" {

@@ -1,10 +1,10 @@
 locals {
-  workspace_compliance_common_tags = merge(local.compliance_common_tags, {
-    service = "workspace"
+  workspace_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
+    service = "AWS/WorkSpaces"
   })
 }
 
-benchmark "workspace" {
+benchmark "workspaces" {
   title       = "WorkSpaces"
   description = "This benchmark provides a set of controls that detect Terraform AWS WorkSpaces resources deviating from security best practices."
 
@@ -13,7 +13,9 @@ benchmark "workspace" {
     control.workspace_user_volume_encryption_at_rest_enabled
   ]
 
-  tags = local.workspace_compliance_common_tags
+  tags = merge(local.workspace_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "workspace_root_volume_encryption_at_rest_enabled" {

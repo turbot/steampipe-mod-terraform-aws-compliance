@@ -1,5 +1,5 @@
 locals {
-  docdb_compliance_common_tags = merge(local.compliance_common_tags, {
+  docdb_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
     service = "AWS/DocDB"
   })
 }
@@ -13,7 +13,9 @@ benchmark "docdb" {
     control.docdb_cluster_encrypted_with_kms
   ]
 
-  tags = local.docdb_compliance_common_tags
+  tags = merge(local.docdb_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "docdb_cluster_audit_logs_enabled" {

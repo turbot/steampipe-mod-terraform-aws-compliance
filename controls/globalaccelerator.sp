@@ -1,5 +1,5 @@
 locals {
-  globalaccelerator_compliance_common_tags = merge(local.compliance_common_tags, {
+  globalaccelerator_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
     service = "AWS/GlobalAccelerator"
   })
 }
@@ -12,7 +12,9 @@ benchmark "globalaccelerator" {
     control.globalaccelerator_flow_logs_enabled
   ]
 
-  tags = local.globalaccelerator_compliance_common_tags
+  tags = merge(local.globalaccelerator_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "globalaccelerator_flow_logs_enabled" {

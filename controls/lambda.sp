@@ -1,5 +1,5 @@
 locals {
-  lambda_compliance_common_tags = merge(local.compliance_common_tags, {
+  lambda_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
     service = "AWS/Lambda"
   })
 }
@@ -16,7 +16,9 @@ benchmark "lambda" {
     control.lambda_function_xray_tracing_enabled,
   ]
 
-  tags = local.lambda_compliance_common_tags
+  tags = merge(local.lambda_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "lambda_function_concurrent_execution_limit_configured" {

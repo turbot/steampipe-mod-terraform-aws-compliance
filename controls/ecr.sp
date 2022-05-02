@@ -1,5 +1,5 @@
 locals {
-  ecr_compliance_common_tags = merge(local.compliance_common_tags, {
+  ecr_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
     service = "AWS/ECR"
   })
 }
@@ -22,7 +22,9 @@ control "ecr_repository_tags_immutable" {
   description   = "AWS ECR should have all tags be immutable - once a container is published, another image cannot assume the same tag."
   sql           = query.ecr_repository_tags_immutable.sql
 
-  tags       = local.ecr_compliance_common_tags
+  tags = merge(local.ecr_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "ecr_repository_use_image_scanning" {

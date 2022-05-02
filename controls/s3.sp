@@ -1,5 +1,5 @@
 locals {
-  s3_compliance_common_tags = merge(local.compliance_common_tags, {
+  s3_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
     service = "AWS/S3"
   })
 }
@@ -20,7 +20,9 @@ benchmark "s3" {
     control.s3_public_access_block_account
   ]
 
-  tags = local.s3_compliance_common_tags
+  tags = merge(local.s3_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "s3_bucket_cross_region_replication_enabled" {

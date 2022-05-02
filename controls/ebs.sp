@@ -1,5 +1,5 @@
 locals {
-  ebs_compliance_common_tags = merge(local.compliance_common_tags, {
+  ebs_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
     service = "AWS/EBS"
   })
 }
@@ -13,7 +13,9 @@ benchmark "ebs" {
     control.ebs_volume_encryption_at_rest_enabled
   ]
 
-  tags = local.ebs_compliance_common_tags
+  tags = merge(local.ebs_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "ebs_attached_volume_encryption_enabled" {

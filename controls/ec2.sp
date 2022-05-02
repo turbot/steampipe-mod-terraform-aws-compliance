@@ -1,5 +1,5 @@
 locals {
-  ec2_compliance_common_tags = merge(local.compliance_common_tags, {
+  ec2_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
     service = "AWS/EC2"
   })
 }
@@ -18,7 +18,10 @@ benchmark "ec2" {
     control.ec2_instance_termination_protection_enabled,
     control.ec2_instance_uses_imdsv2
   ]
-  tags  = local.ec2_compliance_common_tags
+
+  tags = merge(local.ec2_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "ec2_ebs_default_encryption_enabled" {

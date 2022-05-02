@@ -1,5 +1,5 @@
 locals {
-  sqs_compliance_common_tags = merge(local.compliance_common_tags, {
+  sqs_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
     service = "AWS/SQS"
   })
 }
@@ -13,7 +13,9 @@ benchmark "sqs" {
     control.sqs_vpc_endpoint_without_dns_resolution
   ]
 
-  tags = local.sqs_compliance_common_tags
+  tags = merge(local.sqs_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "sqs_queue_encrypted_at_rest" {

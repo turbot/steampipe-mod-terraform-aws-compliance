@@ -1,5 +1,5 @@
 locals {
-  ecs_compliance_common_tags = merge(local.compliance_common_tags, {
+  ecs_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
     service = "AWS/ECS"
   })
 }
@@ -13,7 +13,9 @@ benchmark "ecs" {
     control.ecs_task_definition_encryption_in_transit_enabled,
   ]
 
-  tags = local.ecs_compliance_common_tags
+  tags = merge(local.ecs_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "ecs_cluster_container_insights_enabled" {

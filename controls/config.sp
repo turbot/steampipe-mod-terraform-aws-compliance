@@ -1,5 +1,5 @@
 locals {
-  config_compliance_common_tags = merge(local.compliance_common_tags, {
+  config_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
     service = "AWS/Config"
   })
 }
@@ -12,7 +12,9 @@ benchmark "config" {
     control.config_aggregator_enabled_all_regions
   ]
 
-  tags = local.config_compliance_common_tags
+  tags = merge(local.config_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "config_aggregator_enabled_all_regions" {

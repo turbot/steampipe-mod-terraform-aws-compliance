@@ -1,5 +1,5 @@
 locals {
-  emr_compliance_common_tags = merge(local.compliance_common_tags, {
+  emr_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
     service = "AWS/EMR"
   })
 }
@@ -12,7 +12,9 @@ benchmark "emr" {
     control.emr_cluster_kerberos_enabled
   ]
 
-  tags = local.emr_compliance_common_tags
+  tags = merge(local.emr_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "emr_cluster_kerberos_enabled" {

@@ -1,5 +1,5 @@
 locals {
-  athena_compliance_common_tags = merge(local.compliance_common_tags, {
+  athena_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
     service = "AWS/Athena"
   })
 }
@@ -13,7 +13,9 @@ benchmark "athena" {
     control.athena_workgroup_encryption_at_rest_enabled
   ]
 
-  tags = local.athena_compliance_common_tags
+  tags = merge(local.athena_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "athena_database_encryption_at_rest_enabled" {

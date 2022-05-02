@@ -1,5 +1,5 @@
 locals {
-  cloudfront_compliance_common_tags = merge(local.compliance_common_tags, {
+  cloudfront_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
     service = "AWS/CloudFront"
   })
 }
@@ -18,7 +18,9 @@ benchmark "cloudfront" {
     control.cloudfront_protocol_version_is_low
   ]
 
-  tags = local.cloudfront_compliance_common_tags
+  tags = merge(local.cloudfront_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "cloudfront_distribution_configured_with_origin_failover" {

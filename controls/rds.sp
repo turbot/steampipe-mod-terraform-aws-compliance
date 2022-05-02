@@ -1,5 +1,5 @@
 locals {
-  rds_compliance_common_tags = merge(local.compliance_common_tags, {
+  rds_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
     service = "AWS/RDS"
   })
 }
@@ -31,7 +31,9 @@ benchmark "rds" {
     control.rds_db_security_group_events_subscription
   ]
 
-  tags = local.rds_compliance_common_tags
+  tags = merge(local.rds_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "rds_db_cluster_aurora_backtracking_enabled" {

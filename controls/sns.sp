@@ -1,5 +1,5 @@
 locals {
-  sns_compliance_common_tags = merge(local.compliance_common_tags, {
+  sns_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
     service = "AWS/SNS"
   })
 }
@@ -12,7 +12,9 @@ benchmark "sns" {
     control.sns_topic_encrypted_at_rest
   ]
 
-  tags = local.sns_compliance_common_tags
+  tags = merge(local.sns_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "sns_topic_encrypted_at_rest" {

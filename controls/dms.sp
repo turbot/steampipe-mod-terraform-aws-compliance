@@ -1,5 +1,5 @@
 locals {
-  dms_compliance_common_tags = merge(local.compliance_common_tags, {
+  dms_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
     service = "AWS/DMS"
   })
 }
@@ -12,7 +12,9 @@ benchmark "dms" {
     control.dms_replication_instance_not_publicly_accessible
   ]
 
-  tags = local.dms_compliance_common_tags
+  tags = merge(local.dms_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "dms_replication_instance_not_publicly_accessible" {

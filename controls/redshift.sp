@@ -1,5 +1,5 @@
 locals {
-  redshift_compliance_common_tags = merge(local.compliance_common_tags, {
+  redshift_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
     service = "AWS/Redshift"
   })
 }
@@ -20,7 +20,9 @@ benchmark "redshift" {
     control.redshift_cluster_prohibit_public_access
   ]
 
-  tags = local.redshift_compliance_common_tags
+  tags = merge(local.redshift_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "redshift_cluster_automatic_snapshots_min_7_days" {
