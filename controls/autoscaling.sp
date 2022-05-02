@@ -1,19 +1,21 @@
 locals {
-  autoscaling_compliance_common_tags = merge(local.compliance_common_tags, {
-    service = "autoscaling"
+  autoscaling_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
+    service = "AWS/AutoScaling"
   })
 }
 
 benchmark "autoscaling" {
   title       = "Auto Scaling"
   description = "This benchmark provides a set of controls that detect Terraform AWS Auto Scaling resources deviating from security best practices."
-  
+
   children = [
     control.autoscaling_group_with_lb_use_health_check,
     control.autoscaling_launch_config_public_ip_disabled
   ]
 
-  tags = local.autoscaling_compliance_common_tags
+  tags = merge(local.autoscaling_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "autoscaling_group_with_lb_use_health_check" {

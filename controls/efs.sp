@@ -1,6 +1,6 @@
 locals {
-  efs_compliance_common_tags = merge(local.compliance_common_tags, {
-    service = "efs"
+  efs_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
+    service = "AWS/EFS"
   })
 }
 
@@ -13,7 +13,9 @@ benchmark "efs" {
     control.efs_file_system_encrypt_data_at_rest,
   ]
 
-  tags = local.efs_compliance_common_tags
+  tags = merge(local.efs_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "efs_file_system_automatic_backups_enabled" {
