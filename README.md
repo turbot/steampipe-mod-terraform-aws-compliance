@@ -34,53 +34,7 @@ git clone https://github.com/turbot/steampipe-mod-terraform-aws-compliance.git
 cd steampipe-mod-terraform-aws-compliance
 ```
 
-### Configuration
-
-By default, the Terraform plugin configuration loads Terraform configuration
-files in your current working directory. If you are running benchmarks and
-controls from the current working directory, no extra plugin configuration is
-necessary.
-
-If you want to run benchmarks and controls across multiple directories, they
-can be run from within the `steampipe-mod-terraform-aws-compliance` mod
-directory after configuring the Terraform plugin configuration:
-
-```sh
-vi ~/.steampipe/config/terraform.spc
-```
-
-```hcl
-connection "terraform" {
-  plugin = "terraform"
-  paths  = ["/path/to/files/*.tf", "/path/to/more/files/*.tf"]
-}
-```
-
-For more details on connection configuration, please refer to [Terraform Plugin Configuration](https://hub.steampipe.io/plugins/turbot/terraform#configuration).
-
 ### Usage
-
-If you are running from the current working directory containing your Terraform
-configuration files, the Steampipe workspace must be set to the location where
-you downloaded the `steampipe-mod-terraform-aws-compliance` mod:
-
-Set through an environment variable:
-
-```sh
-export STEAMPIPE_WORKSPACE_CHDIR=/path/to/steampipe-mod-terraform-aws-compliance
-```
-
-Set through the CLI argument:
-
-```sh
-steampipe check all --workspace-chdir=/path/to/steampipe-mod-terraform-aws-compliance
-```
-
-However, if you are running from within the
-`steampipe-mod-terraform-aws-compliance` mod directory and `paths` was
-configured in the Terraform plugin configuration, the Steampipe workspace does
-not need to be set (since you are already in the Steampipe workspace
-directory).
 
 Start your dashboard server to get started:
 
@@ -116,11 +70,65 @@ steampipe check terraform_aws_compliance.benchmark.s3
 Run a specific control:
 
 ```sh
-terraform_aws_compliance.control.s3_bucket_default_encryption_enabled
+steampipe check terraform_aws_compliance.control.s3_bucket_default_encryption_enabled
 ```
 
 Different output formats are also available, for more information please see
 [Output Formats](https://steampipe.io/docs/reference/cli/check#output-formats).
+
+If you are running from the current working directory containing your Terraform
+configuration files, the Steampipe workspace must be set to the location where
+you downloaded the `steampipe-mod-terraform-aws-compliance` mod:
+
+Set through an environment variable:
+
+```sh
+export STEAMPIPE_WORKSPACE_CHDIR=/path/to/steampipe-mod-terraform-aws-compliance
+```
+
+Set through the CLI argument:
+
+```sh
+steampipe check all --workspace-chdir=/path/to/steampipe-mod-terraform-aws-compliance
+```
+
+```sh
+steampipe dashboard --workspace-chdir=/path/to/steampipe-mod-terraform-aws-compliance
+```
+
+However, if you are running from within the
+`steampipe-mod-terraform-aws-compliance` mod directory and `paths` was
+configured in the Terraform plugin configuration, the Steampipe workspace does
+not need to be set (since you are already in the Steampipe workspace
+directory).
+
+### Credentials
+
+This mod uses the credentials configured in the [Steampipe Terraform plugin](https://hub.steampipe.io/plugins/turbot/terraform).
+
+### Configuration
+
+By default, the Terraform plugin configuration loads Terraform configuration
+files in your current working directory. If you are running benchmarks and
+controls from the current working directory, no extra plugin configuration is
+necessary.
+
+If you want to run benchmarks and controls across multiple directories, they
+can be run from within the `steampipe-mod-terraform-aws-compliance` mod
+directory after configuring the Terraform plugin configuration:
+
+```sh
+vi ~/.steampipe/config/terraform.spc
+```
+
+```hcl
+connection "terraform" {
+  plugin = "terraform"
+  paths  = ["/path/to/files/*.tf", "/path/to/more/files/*.tf"]
+}
+```
+
+For more details on connection configuration, please refer to [Terraform Plugin Configuration](https://hub.steampipe.io/plugins/turbot/terraform#configuration).
 
 ## Contributing
 
@@ -134,3 +142,4 @@ Want to help but not sure where to start? Pick up one of the `help wanted` issue
 
 - [Steampipe](https://github.com/turbot/steampipe/labels/help%20wanted)
 - [Terraform AWS Compliance Mod](https://github.com/turbot/steampipe-mod-terraform-aws-compliance/labels/help%20wanted)
+
