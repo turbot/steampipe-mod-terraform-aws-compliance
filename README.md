@@ -31,7 +31,6 @@ Clone:
 
 ```sh
 git clone https://github.com/turbot/steampipe-mod-terraform-aws-compliance.git
-cd steampipe-mod-terraform-aws-compliance
 ```
 
 ### Usage
