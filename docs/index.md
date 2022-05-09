@@ -49,7 +49,22 @@ cd steampipe-mod-terraform-aws-compliance
 
 ### Usage
 
-Start your dashboard server to get started:
+By default, the Terraform plugin configuration loads Terraform configuration
+files in your current working directory (CWD).
+
+To get started, change your CWD to where your TF files are located:
+
+```sh
+cd /path/to/tf_files
+```
+
+Then set the `STEAMPIPE_WORKSPACE_CHDIR` environment variable to the mod directory so Steampipe knows where to load benchmarks from:
+
+```sh
+export STEAMPIPE_WORKSPACE_CHDIR=/path/to/steampipe-mod-terraform-aws-compliance
+```
+
+Start your dashboard server:
 
 ```sh
 steampipe dashboard
@@ -86,49 +101,26 @@ Run a specific control:
 steampipe check terraform_aws_compliance.control.s3_bucket_default_encryption_enabled
 ```
 
-Different output formats are also available, for more information please see
-[Output Formats](https://steampipe.io/docs/reference/cli/check#output-formats).
-
-If you are running from the current working directory containing your Terraform
-configuration files, the Steampipe workspace must be set to the location where
-you downloaded the `steampipe-mod-terraform-aws-compliance` mod:
-
-Set through an environment variable:
-
-```sh
-export STEAMPIPE_WORKSPACE_CHDIR=/path/to/steampipe-mod-terraform-aws-compliance
-```
-
-Set through the CLI argument:
-
-```sh
-steampipe check all --workspace-chdir=/path/to/steampipe-mod-terraform-aws-compliance
-```
+When running checks from the CWD, you can also run the `steampipe dashboard` and `steampipe check` commands using the `--workspace-chdir` command line argument:
 
 ```sh
 steampipe dashboard --workspace-chdir=/path/to/steampipe-mod-terraform-aws-compliance
+steampipe check all --workspace-chdir=/path/to/steampipe-mod-terraform-aws-compliance
 ```
 
-However, if you are running from within the
-`steampipe-mod-terraform-aws-compliance` mod directory and `paths` was
-configured in the Terraform plugin configuration, the Steampipe workspace does
-not need to be set (since you are already in the Steampipe workspace
-directory).
+Different output formats are also available, for more information please see
+[Output Formats](https://steampipe.io/docs/reference/cli/check#output-formats).
 
 ### Credentials
 
-This mod uses the credentials configured in the [Steampipe Terraform plugin](https://hub.steampipe.io/plugins/turbot/terraform).
+No credentials are required.
 
 ### Configuration
 
-By default, the Terraform plugin configuration loads Terraform configuration
-files in your current working directory. If you are running benchmarks and
-controls from the current working directory, no extra plugin configuration is
-necessary.
-
-If you want to run benchmarks and controls across multiple directories, they
-can be run from within the `steampipe-mod-terraform-aws-compliance` mod
-directory after configuring the Terraform plugin configuration:
+If you want to run benchmarks and controls across multiple directories
+containing Terraform configuration files, they can be run from within the
+`steampipe-mod-terraform-aws-compliance` mod directory after configuring the
+Terraform plugin configuration:
 
 ```sh
 vi ~/.steampipe/config/terraform.spc
@@ -137,8 +129,15 @@ vi ~/.steampipe/config/terraform.spc
 ```hcl
 connection "terraform" {
   plugin = "terraform"
-  paths  = ["/path/to/files/*.tf", "/path/to/more/files/*.tf"]
+  paths  = ["/path/to/files/*.tf", "/path/to/nested/files/**/*.tf"]
 }
+```
+
+After setting up your Terraform plugin configuration, navigate to the `steampipe-mod-terraform-aws-compliance` mod directory and start the dashboard server:
+
+```sh
+cd /path/to/steampipe-mod-terraform-aws-compliance
+steampipe dashboard
 ```
 
 For more details on connection configuration, please refer to [Terraform Plugin Configuration](https://hub.steampipe.io/plugins/turbot/terraform#configuration).
