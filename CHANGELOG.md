@@ -1,4 +1,4 @@
-## v0.8 [2022-05-10]
+## v0.8 [2022-05-09]
 
 - Updated docs/index.md and README to the latest format. ([#34](https://github.com/turbot/steampipe-mod-terraform-aws-compliance/pull/34))
 
