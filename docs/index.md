@@ -6,9 +6,9 @@ repository: "https://github.com/turbot/steampipe-mod-terraform-aws-compliance"
 
 Run compliance and security controls to detect Terraform AWS resources deviating from security best practices prior to deployment in your AWS accounts.
 
-<img src="https://raw.githubusercontent.com/turbot/steampipe-mod-terraform-aws-compliance/update-doc-fix/docs/terraform_aws_compliance_dashboard.png" width="50%" type="thumbnail"/>
-<img src="https://raw.githubusercontent.com/turbot/steampipe-mod-terraform-aws-compliance/update-doc-fix/docs/terraform_aws_compliance_ec2_dashboard.png" width="50%" type="thumbnail"/>
-<img src="https://raw.githubusercontent.com/turbot/steampipe-mod-terraform-aws-compliance/update-doc-fix/docs/terraform_aws_compliance_console_output.png" width="50%" type="thumbnail"/>
+<img src="https://raw.githubusercontent.com/turbot/steampipe-mod-terraform-aws-compliance/main/docs/terraform_aws_compliance_dashboard.png" width="50%" type="thumbnail"/>
+<img src="https://raw.githubusercontent.com/turbot/steampipe-mod-terraform-aws-compliance/main/docs/terraform_aws_compliance_ec2_dashboard.png" width="50%" type="thumbnail"/>
+<img src="https://raw.githubusercontent.com/turbot/steampipe-mod-terraform-aws-compliance/main/docs/terraform_aws_compliance_console_output.png" width="50%" type="thumbnail"/>
 
 ## References
 
