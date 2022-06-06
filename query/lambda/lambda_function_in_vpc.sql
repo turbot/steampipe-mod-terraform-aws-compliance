@@ -8,7 +8,7 @@ select
     when (arguments -> 'vpc_config') is null then ' is not in VPC'
     else  ' is in VPC'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

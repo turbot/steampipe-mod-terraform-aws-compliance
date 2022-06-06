@@ -10,7 +10,7 @@ select
     when (arguments -> 'instance') is not null or (arguments -> 'network_interface') is not null then ' associated with an instance or network interface'
     else ' not associated with an instance or network interface'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

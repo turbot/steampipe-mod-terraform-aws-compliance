@@ -10,7 +10,7 @@ select
     when (arguments -> 'ingress') is null and (arguments -> 'egress') is not null then 'Default security group ' || name || ' has outbound rules'
     else 'Default security group ' || name || ' has no inbound or outbound rules'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

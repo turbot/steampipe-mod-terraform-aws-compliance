@@ -25,7 +25,7 @@ select
     when b.name is not null then ' has plaintext environment variables with sensitive AWS values'
     else ' has no plaintext environment variables with sensitive AWS values'
   end || '.' reason,
-  path
+  path || ':' || start_line
 from
   codebuild_projects as a
   left join invalid_key_name as b on a.name = b.name;

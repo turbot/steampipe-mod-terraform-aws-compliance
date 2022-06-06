@@ -12,7 +12,7 @@ select
     when (arguments -> 'logging' ->> 'enabled')::boolean then ' audit logging enabled'
     else ' audit logging disabled'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

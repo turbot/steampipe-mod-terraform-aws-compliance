@@ -12,7 +12,7 @@ select
     when (arguments -> 'event_selector' ->> 'read_write_type')::text <> 'All' then ' not enbaled for all events'
     else ' logging enabled for ALL events'
   end || '.' reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

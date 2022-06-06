@@ -10,7 +10,7 @@ select
     when (arguments ->> 'source_type') = 'db-parameter-group' and (arguments -> 'enabled')::bool and (arguments -> 'event_categories_list')::jsonb @> '["failure", "maintenance"]'::jsonb and (arguments -> 'event_categories_list')::jsonb <@ '["failure", "maintenance"]'::jsonb then ' event subscription enabled for critical database parameter group events'
     else ' event subscription missing critical database parameter group events'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

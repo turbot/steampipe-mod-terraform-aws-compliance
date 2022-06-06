@@ -8,7 +8,7 @@ select
     when (arguments -> 'endpoint_public_access')::boolean then ' endpoint publicly accessible'
     else ' endpoint not publicly accessible'
   end || '.' reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

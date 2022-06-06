@@ -1,3 +1,21 @@
+## v0.8 [2022-05-09]
+
+_Enhancements_
+
+- Updated docs/index.md and README to the latest format. ([#34](https://github.com/turbot/steampipe-mod-terraform-aws-compliance/pull/34))
+
+## v0.7 [2022-05-02]
+
+_Enhancements_
+
+- Added `category`, `service`, and `type` tags to benchmarks and controls. ([#31](https://github.com/turbot/steampipe-mod-terraform-aws-compliance/pull/31))
+
+## v0.6 [2022-03-17]
+
+_Enhancements_
+
+- Paths in control outputs now also include the starting line number for the resource
+
 ## v0.5 [2022-02-10]
 
 _Enhancements_

@@ -8,7 +8,7 @@ select
     when coalesce(trim(arguments ->> 'encryption_key'), '') = '' then ' not encrypted at rest'
     else ' encrypted at rest'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

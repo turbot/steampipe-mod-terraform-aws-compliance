@@ -8,7 +8,7 @@ select
     when (arguments ->> 'transit_encryption_enabled')::boolean then ' encrypted in transit'
     else ' not encrypted in transit'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

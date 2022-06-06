@@ -10,7 +10,7 @@ select
     when split_part((arguments ->> 'subnet_id'), '.', 2) in (select name from terraform_resource where type = 'aws_subnet' and (arguments ->> 'vpc_id') like '%default%') then ' deployed to a default VPC'
     else ' not deployed to a default VPC'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

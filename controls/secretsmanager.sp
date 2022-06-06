@@ -1,6 +1,6 @@
 locals {
-  secretsmanager_compliance_common_tags = merge(local.compliance_common_tags, {
-    service = "secretsmanager"
+  secretsmanager_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
+    service = "AWS/SecretsManager"
   })
 }
 
@@ -14,7 +14,9 @@ benchmark "secretsmanager" {
     control.secretsmanager_secret_encrypted_with_kms_cmk
   ]
 
-  tags = local.secretsmanager_compliance_common_tags
+  tags = merge(local.secretsmanager_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "secretsmanager_secret_automatic_rotation_enabled" {

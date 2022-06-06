@@ -10,7 +10,7 @@ select
     when (arguments -> 'enable_waf_fail_open')::boolean then ' WAF enabled'
     else ' WAF disabled'
   end || '.' reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

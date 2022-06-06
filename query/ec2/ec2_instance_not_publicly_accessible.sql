@@ -8,7 +8,7 @@ select
     when (arguments -> 'associate_public_ip_address') is null then ' not publicly accessible'
     else ' publicly accessible'
   end || '.' reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

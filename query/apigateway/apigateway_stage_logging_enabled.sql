@@ -18,11 +18,17 @@ with stages_v1 as (
       a.arguments ->> 'stage_name' as stage_name,
       a.type,
       a.name,
-      a.path
+      a.path,
+      a.start_line
     from stages_v1 as a left join method_settings as m on (m.arguments ->> 'rest_api_id') = (a.arguments ->> 'rest_api_id')
 ), all_stages as (
     select
-      log_level, stage_name, type, name, path
+      log_level,
+      stage_name,
+      type,
+      name,
+      path,
+      start_line
     from
       all_v1
     union
@@ -31,7 +37,8 @@ with stages_v1 as (
       arguments ->>  'name' as stage_name,
       type,
       name,
-      path
+      path,
+      start_line
     from terraform_resource where type = 'aws_apigatewayv2_stage'
 )
 select
@@ -44,6 +51,6 @@ select
     when log_level is null or log_level = 'OFF' then ' logging disabled'
     else ' logging enabled'
   end || '.' reason,
-  path
+  path || ':' || start_line
 from
   all_stages;

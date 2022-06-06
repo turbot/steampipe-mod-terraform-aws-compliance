@@ -10,7 +10,7 @@ select
     when (arguments -> 'max_password_age')::integer <= 90 then ' password expiration set to ' || (arguments ->> 'max_password_age') || ' days'
     else ' password expiration set to ' || (arguments ->> 'max_password_age') || ' days'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

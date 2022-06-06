@@ -8,7 +8,7 @@ select
     when  (arguments -> 'ebs_optimized')::bool is true then ' EBS optimization enabled'
     else ' EBS optimization disabled'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

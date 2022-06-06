@@ -12,7 +12,7 @@ select
     when (arguments -> 'allow_version_upgrade')::bool and (arguments -> 'automated_snapshot_retention_period')::integer >= 7 then ' has the required maintenance settings'
     else ' does not have the required maintenance settings'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

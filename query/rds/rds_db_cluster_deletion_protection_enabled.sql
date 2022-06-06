@@ -10,7 +10,7 @@ select
     when (arguments -> 'deletion_protection')::boolean then ' ''deletion_protection'' enabled'
     else ' ''deletion_protection'' disabled'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

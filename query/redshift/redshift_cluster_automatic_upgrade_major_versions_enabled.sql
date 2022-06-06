@@ -10,7 +10,7 @@ select
     when (arguments -> 'allow_version_upgrade')::bool then '  ''allow_version_upgrade'' set to true'
     else ' ''allow_version_upgrade'' set to false'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

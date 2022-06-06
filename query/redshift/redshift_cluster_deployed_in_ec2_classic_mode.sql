@@ -8,7 +8,7 @@ select
     when (arguments -> 'cluster_subnet_group_name') is not null then ' deployed inside VPC'
     else ' not deployed inside VPC'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

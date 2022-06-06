@@ -1,6 +1,6 @@
 locals {
-  es_compliance_common_tags = merge(local.compliance_common_tags, {
-    service = "es"
+  es_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
+    service = "AWS/Elasticsearch"
   })
 }
 
@@ -20,7 +20,9 @@ benchmark "es" {
     control.es_domain_node_to_node_encryption_enabled
   ]
 
-  tags = local.es_compliance_common_tags
+  tags = merge(local.es_compliance_common_tags, {
+    type    = "Benchmark"
+  })
 }
 
 control "es_domain_audit_logging_enabled" {

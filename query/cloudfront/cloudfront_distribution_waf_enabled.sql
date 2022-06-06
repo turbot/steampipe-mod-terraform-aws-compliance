@@ -8,7 +8,7 @@ select
     when (arguments -> 'web_acl_id') is not null then ' associated with WAF'
     else ' not associated with WAF'
   end || '.' reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

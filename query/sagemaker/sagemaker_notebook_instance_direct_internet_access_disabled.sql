@@ -9,7 +9,7 @@ select
     when (arguments -> 'direct_internet_access') is null or (arguments ->> 'direct_internet_access') = 'Disabled' then ' direct internet access disabled'
     else ' direct internet access enabled'
   end || '.' reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

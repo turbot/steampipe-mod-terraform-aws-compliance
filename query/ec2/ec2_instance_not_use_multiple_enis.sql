@@ -10,7 +10,7 @@ select
     when (jsonb_typeof(arguments -> 'network_interface'))::text = 'object' then ' has 1 ENI attached'
     else ' has ' || (jsonb_array_length(arguments -> 'network_interface')) || ' ENI(s) attached'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where

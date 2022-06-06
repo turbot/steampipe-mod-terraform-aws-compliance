@@ -8,7 +8,7 @@ select
     when (arguments -> 'server_side_encryption') is null then ' encryption at rest disabled'
     else ' encryption at rest disabled enabled'
   end || '.' as reason,
-  path
+  path || ':' || start_line
 from
   terraform_resource
 where
