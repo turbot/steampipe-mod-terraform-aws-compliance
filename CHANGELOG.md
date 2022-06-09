@@ -1,3 +1,9 @@
+## v0.9 [2022-06-09]
+
+_Bug fixes_
+
+- Fixed the `redshift_cluster_automatic_snapshots_min_7_days` control to use `soc_2 = "true"` tag instead of `sco_2 = "true"`. ([#28](https://github.com/turbot/steampipe-mod-terraform-aws-compliance/pull/28))
+
 ## v0.8 [2022-05-09]
 
 _Enhancements_
