@@ -1,4 +1,4 @@
-# Terraform AWS Compliance
+# Terraform AWS Compliance Mod for Steampipe
 
 140+ compliance and security controls to test your Terraform AWS resources against security best practices prior to deployment in your AWS accounts.
 
