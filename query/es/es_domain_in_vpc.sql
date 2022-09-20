@@ -8,7 +8,10 @@ select
     when (arguments -> 'vpc_options' -> 'subnet_ids') is not null then ' in VPC'
     else ' not in VPC'
   end || '.' reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

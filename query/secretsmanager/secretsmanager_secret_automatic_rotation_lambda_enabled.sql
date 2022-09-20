@@ -8,7 +8,10 @@ select
     when (arguments -> 'rotation_rules') is not null and (arguments -> 'rotation_lambda_arn') is not null then ' scheduled for rotation using Lambda function'
     else ' automatic rotation using Lambda function disabled'
   end || '.' as reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

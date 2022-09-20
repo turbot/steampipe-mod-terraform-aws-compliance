@@ -10,7 +10,10 @@ select
     when (arguments -> 'enable')::bool then ' guardduty enabled'
     else ' guardduty disabled'
   end || '.' as reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

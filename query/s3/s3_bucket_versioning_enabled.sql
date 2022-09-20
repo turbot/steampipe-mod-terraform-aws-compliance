@@ -10,7 +10,10 @@ select
     when (arguments -> 'versioning' ->> 'enabled')::bool then ' versioning enabled'
     else ' versioning disabled'
   end || '.' as reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

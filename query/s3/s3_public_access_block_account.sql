@@ -35,7 +35,10 @@ select
         case when not ((arguments ->> 'restrict_public_buckets')::boolean) then 'restrict_public_buckets' end
       )
   end || '.' as reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

@@ -9,7 +9,10 @@ select
     when (arguments -> 'cluster_config' -> 'dedicated_master_enabled')::bool = false then ' dedicated master nodes disabled'
     else ' has ' || (arguments -> 'cluster_config' ->> 'instance_count') || ' data node(s)'
   end || '.' reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

@@ -8,7 +8,10 @@ select
     when (arguments -> 'listener' ->> 'lb_protocol') like any (array ['HTTPS', 'TLS']) then ' configured with ' || (arguments -> 'listener' ->> 'lb_protocol') || ' protocol'
     else ' not configured with HTTPS or TLS protocol'
     end || '.' reason,
-    path || ':' || start_line
+    path,
+    start_line,
+    end_line,
+    source
 from
   terraform_resource
 where

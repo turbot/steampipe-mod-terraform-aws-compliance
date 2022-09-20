@@ -10,7 +10,10 @@ select
     when (arguments -> 'require_symbols')::boolean then ' symbol set to required'
     else ' symbol not set to required'
   end || '.' as reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

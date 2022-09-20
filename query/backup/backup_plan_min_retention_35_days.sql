@@ -11,7 +11,10 @@ select
     when (arguments -> 'rule' -> 'lifecycle') is null then ' retention period set to never expire'
     else ' retention period set to ' || (arguments -> 'rule' -> 'lifecycle' ->> 'delete_after')::int
   end || '.' reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

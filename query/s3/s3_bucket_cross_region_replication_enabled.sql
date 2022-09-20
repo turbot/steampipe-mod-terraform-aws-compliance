@@ -9,7 +9,10 @@ select
     when (arguments -> 'cors_rule')::jsonb ?& array['allowed_methods', 'allowed_origins'] then ' enabled with cross-region replication'
     else ' not enabled with cross-region replication'
   end || '.' reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

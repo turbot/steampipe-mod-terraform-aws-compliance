@@ -10,7 +10,10 @@ select
     when (arguments -> 'backup_retention_period')::integer < 1 then ' backup disabled'
     else ' backup enabled'
   end || '.' as reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

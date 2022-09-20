@@ -28,7 +28,10 @@ select
     when e.name is null then ' policy is ok'
     else ' policy is not ok'
   end || '.' as reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   cloudwatch_log_destination_policy as a
   left join access_policy as e on a.ap = e.name;

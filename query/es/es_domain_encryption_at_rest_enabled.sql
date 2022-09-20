@@ -8,7 +8,10 @@ select
     when (arguments -> 'encrypt_at_rest' ->> 'enabled')::boolean then ' encryption at rest enabled'
     else ' encryption at rest disabled'
   end || '.' reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

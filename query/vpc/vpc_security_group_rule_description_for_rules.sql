@@ -8,7 +8,10 @@ select
     when (arguments -> 'description') is null then ' no description defined'
     else ' description defined'
   end || '.' reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

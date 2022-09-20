@@ -10,7 +10,10 @@ select
     when '"audit"' in (select jsonb_array_elements(arguments -> 'enabled_cloudwatch_logs_exports') from terraform_resource where type = 'aws_docdb_cluster') then ' audit logging enabled'
     else ' audit logging not enabled'
   end || '.' as reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

@@ -10,7 +10,10 @@ select
     when (arguments -> 'reserved_concurrent_executions')::integer = -1 then ' function-level concurrent execution limit not configured'
     else ' function-level concurrent execution limit configured'
   end || '.' as reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

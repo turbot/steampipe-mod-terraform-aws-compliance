@@ -10,7 +10,10 @@ select
     when (arguments ->> 'map_public_ip_on_launch')::boolean then ' ''map_public_ip_on_launch'' enabled'
     else ' ''map_public_ip_on_launch'' disabled'
   end || '.' reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

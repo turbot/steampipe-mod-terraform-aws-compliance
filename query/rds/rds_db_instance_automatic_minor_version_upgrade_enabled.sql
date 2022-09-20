@@ -10,7 +10,10 @@ select
     when (arguments -> 'deletion_protection')::boolean then ' ''auto_minor_version_upgrade'' enabled'
     else ' ''auto_minor_version_upgrade'' disabled'
   end || '.' as reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

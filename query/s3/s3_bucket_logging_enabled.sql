@@ -10,7 +10,10 @@ select
     when coalesce(trim(arguments -> 'logging' ->> 'target_bucket'), '') = '' then ' logging disabled'
     else ' logging enabled'
   end || '.' as reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

@@ -10,7 +10,10 @@ select
     then ' not configured to use Instance Metadata Service Version 2 (IMDSv2)'
     else ' configured to use Instance Metadata Service Version 2 (IMDSv2)'
   end || '.' as reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

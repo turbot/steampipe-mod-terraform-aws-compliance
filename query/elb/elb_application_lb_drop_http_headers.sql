@@ -10,7 +10,10 @@ select
     when (arguments -> 'drop_invalid_header_fields')::boolean then ' ''drop_invalid_header_fields'' enabled'
     else ' ''drop_invalid_header_fields'' disabled'
   end || '.' reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

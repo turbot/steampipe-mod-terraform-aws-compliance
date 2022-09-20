@@ -12,7 +12,10 @@ select
       and (arguments -> 'setting' ->> 'value')::text = 'enabled' then ' container insights enabled'
     else ' container insights disabled'
   end || '.' as reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

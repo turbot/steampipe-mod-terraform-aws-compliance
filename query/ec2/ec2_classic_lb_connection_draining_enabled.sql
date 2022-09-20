@@ -10,7 +10,10 @@ select
     when (arguments -> 'connection_draining')::bool then ' ''connection_draining'' enabled'
     else ' ''connection_draining'' disabled'
   end || '.' reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

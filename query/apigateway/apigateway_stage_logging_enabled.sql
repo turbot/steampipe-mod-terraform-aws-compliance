@@ -51,6 +51,9 @@ select
     when log_level is null or log_level = 'OFF' then ' logging disabled'
     else ' logging enabled'
   end || '.' reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   all_stages;

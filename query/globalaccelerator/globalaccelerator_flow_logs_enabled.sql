@@ -12,7 +12,10 @@ select
     when (arguments -> 'attributes' -> 'flow_logs_enabled')::bool then ' flow log enabled'
     else ' flow log disabled'
   end || '.' as reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

@@ -33,6 +33,9 @@ select
     when (caching_enabled)::boolean and (cache_data_encrypted)::boolean then ' API cache and encryption enabled'
     else ' API cache and encryption not enabled'
   end || '.' reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   all_stages;

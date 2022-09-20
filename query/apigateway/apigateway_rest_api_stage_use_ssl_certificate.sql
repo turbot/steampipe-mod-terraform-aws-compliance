@@ -8,7 +8,10 @@ select
     when (arguments -> 'client_certificate_id') is null then ' does not use SSL certificate'
     else ' uses SSL certificate'
   end || '.' reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

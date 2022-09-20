@@ -8,7 +8,10 @@ select
     when (arguments -> 'kms_key_id') is not null then ' logs are encrypted at rest'
     else ' logs are not encrypted at rest'
   end || '.' reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

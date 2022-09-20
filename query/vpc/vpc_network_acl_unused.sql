@@ -8,7 +8,10 @@ select
     when (arguments -> 'subnet_ids') is null then ' not associated with subnets'
     else ' associated with ' || (jsonb_array_length(arguments -> 'subnet_ids')) || ' subnet(s)'
   end || '.' as reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

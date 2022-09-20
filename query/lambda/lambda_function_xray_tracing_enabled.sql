@@ -10,7 +10,10 @@ select
     when (arguments -> 'tracing_config' ->> 'mode') = 'Active' then ' has X-Ray tracing enabled'
     else  ' has X-Ray tracing disabled'
   end || '.' as reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

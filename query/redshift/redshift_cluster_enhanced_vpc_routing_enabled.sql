@@ -10,7 +10,10 @@ select
     when (arguments -> 'enhanced_vpc_routing')::bool then '  ''enhanced_vpc_routing'' set to true'
     else ' ''allow_version_upgrade'' set to false'
   end || '.' as reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

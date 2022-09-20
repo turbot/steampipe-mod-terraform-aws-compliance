@@ -9,7 +9,10 @@ select
     when (arguments -> 'object_lock_configuration' ->> 'object_lock_enabled') = 'Enabled' then ' object lock enabled'
     else ' object lock not enabled'
   end || '.' reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

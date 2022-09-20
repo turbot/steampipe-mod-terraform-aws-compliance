@@ -13,7 +13,10 @@ select
     ((arguments -> 'log_publishing_options') @> '[{"log_type": "AUDIT_LOGS"}]') then ' audit logging enabled'
     else ' audit logging disabled'
   end || '.' reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

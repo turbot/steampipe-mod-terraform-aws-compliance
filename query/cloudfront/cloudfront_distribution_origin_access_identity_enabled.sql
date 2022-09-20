@@ -27,7 +27,10 @@ select
     when b.name is not null then ' origin access identity not configured'
     else ' origin access identity configured'
   end || '.' reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   cloudfront_distribution as a
   left join origins as b on a.name = b.name;

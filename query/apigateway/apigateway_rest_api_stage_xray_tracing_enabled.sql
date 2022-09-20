@@ -8,7 +8,10 @@ select
     when (arguments ->> 'tracing_enabled')::boolean then ' X-Ray tracing enabled'
     else ' X-Ray tracing disabled'
   end || '.' reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

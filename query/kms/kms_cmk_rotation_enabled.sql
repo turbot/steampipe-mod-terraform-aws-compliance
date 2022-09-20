@@ -10,7 +10,10 @@ select
     when (arguments -> 'enable_key_rotation')::boolean then ' key rotation enabled'
     else ' key rotation disabled'
   end || '.' as reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

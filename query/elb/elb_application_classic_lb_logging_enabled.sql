@@ -11,7 +11,10 @@
       when (arguments -> 'access_logs' -> 'enabled')::bool then ' logging enabled'
       else ' logging disabled'
     end || '.' as reason,
-    path || ':' || start_line
+    path,
+    start_line,
+    end_line,
+    source
   from
     terraform_resource
   where
@@ -31,7 +34,10 @@ union
       when (arguments -> 'access_logs' -> 'enabled')::bool then ' logging enabled'
       else ' logging disabled'
       end || '.' reason,
-      path || ':' || start_line
+      path,
+      start_line,
+      end_line,
+      source
   from
     terraform_resource
   where

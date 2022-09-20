@@ -8,7 +8,10 @@ select
     when (arguments -> 'enabled_cluster_log_types') is null then ' logging disabled'
     else ' logging enabled'
   end || '.' as reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

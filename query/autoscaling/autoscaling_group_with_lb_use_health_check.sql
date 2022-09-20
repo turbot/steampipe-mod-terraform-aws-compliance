@@ -10,7 +10,10 @@ select
     when (arguments ->> 'health_check_type') <> 'ELB' then ' does not use ELB health check'
     else ' uses ELB health check'
   end || '.' reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

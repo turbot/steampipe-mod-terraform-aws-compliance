@@ -8,7 +8,10 @@ select
     when (arguments -> 'root_block_device' ->> 'delete_on_termination')::bool is true then ' instance termination protection enabled'
     else ' instance termination protection disabled'
   end || '.' as reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

@@ -22,7 +22,10 @@ select
     then ' Strong password policies configured'
     else ' Strong password policies not configured'
   end || '.' as reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

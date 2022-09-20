@@ -10,7 +10,10 @@ select
     when (arguments -> 'password_reuse_prevention')::integer >= 24 then ' password reuse prevention set to ' || (arguments ->> 'password_reuse_prevention') || ' days'
     else ' password reuse prevention set to ' || (arguments ->> 'password_reuse_prevention') || ' days'
   end || '.' as reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

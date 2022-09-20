@@ -9,7 +9,10 @@ select
     when (arguments -> 'retention_in_days')::int < 365 then ' retention period less than 365 days'
     else ' retention period 365 days or above'
   end || '.' reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

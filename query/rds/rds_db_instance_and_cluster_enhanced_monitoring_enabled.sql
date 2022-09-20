@@ -9,7 +9,10 @@ select
     when (arguments -> 'enabled_cloudwatch_logs_exports') is not null then ' ''enabled_cloudwatch_logs_exports'' enabled'
     else '  ''enabled_cloudwatch_logs_exports'' disabled'
   end || '.' reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where
@@ -27,7 +30,10 @@ select
     when (arguments -> 'enabled_cloudwatch_logs_exports') is not null then ' ''enabled_cloudwatch_logs_exports'' enabled'
     else '  ''enabled_cloudwatch_logs_exports'' disabled'
   end || '.' reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

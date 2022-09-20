@@ -10,7 +10,10 @@ select
     when (arguments -> 'backtrack_window') is not null then ' backtracking enabled'
     else ' backtracking disabled'
   end || '.' as reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

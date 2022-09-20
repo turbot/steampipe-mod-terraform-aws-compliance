@@ -8,7 +8,10 @@ select
     when (arguments -> 'rotation_rules') is null then ' automatic rotation disabled'
     else ' automatic rotation enabled'
   end || '.' as reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

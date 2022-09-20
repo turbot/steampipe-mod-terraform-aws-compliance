@@ -15,7 +15,10 @@ select
     when (arguments -> 'ok_actions') is not null then ' ok action enabled.'
     else ' action enabled'
   end || '.' reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   terraform_resource
 where

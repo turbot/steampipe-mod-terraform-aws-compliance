@@ -27,7 +27,10 @@ select
     when d.name is not null or (arguments -> 'default_cache_behavior' ->> 'ViewerProtocolPolicy' = 'allow-all') then ' data not encrypted in transit'
     else ' data encrypted in transit'
   end || '.' reason,
-  path || ':' || start_line
+  path,
+  start_line,
+  end_line,
+  source
 from
   cloudfront_distribution as b
   left join data as d on b.name = d.name;
