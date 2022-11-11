@@ -24,7 +24,7 @@ control "kms_cmk_rotation_enabled" {
 
   tags = merge(local.kms_compliance_common_tags, {
     cis                = "true"
-    hippa              = "true"
+    hipaa              = "true"
     gdpr               = "true"
     nist_800_53_rev_4  = "true"
     pci                = "true"
