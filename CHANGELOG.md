@@ -2,7 +2,7 @@
 
 _Bug fixes_
 
-- Fixed typo in the tag of `kms_cmk_rotation_enabled` control to use `hipaa` instead of `hippa`. ([#42](https://github.com/turbot/steampipe-mod-terraform-aws-compliance/pull/42))
+- Fixed typo in the tags of `kms_cmk_rotation_enabled` control to use `hipaa` instead of `hippa`. ([#42](https://github.com/turbot/steampipe-mod-terraform-aws-compliance/pull/42))
 
 ## v0.9 [2022-06-09]
 
