@@ -13,14 +13,14 @@ benchmark "globalaccelerator" {
   ]
 
   tags = merge(local.globalaccelerator_compliance_common_tags, {
-    type    = "Benchmark"
+    type = "Benchmark"
   })
 }
 
 control "globalaccelerator_flow_logs_enabled" {
-  title         = "Global Accelerator  flow logs should be enabled"
-  description   = "Ensure Global Accelerator accelerator has flow logs enabled"
-  sql           = query.globalaccelerator_flow_logs_enabled.sql
+  title       = "Global Accelerator  flow logs should be enabled"
+  description = "Ensure Global Accelerator accelerator has flow logs enabled"
+  query       = query.globalaccelerator_flow_logs_enabled
 
   tags = local.globalaccelerator_compliance_common_tags
 }

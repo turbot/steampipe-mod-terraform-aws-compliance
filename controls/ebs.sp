@@ -14,29 +14,29 @@ benchmark "ebs" {
   ]
 
   tags = merge(local.ebs_compliance_common_tags, {
-    type    = "Benchmark"
+    type = "Benchmark"
   })
 }
 
 control "ebs_attached_volume_encryption_enabled" {
-  title         = "Attached EBS volumes should have encryption enabled"
-  description   = "Because sensitive data can exist and to help protect data at rest, ensure encryption is enabled for your Amazon Elastic Block Store (Amazon EBS) volumes."
-  sql           = query.ebs_attached_volume_encryption_enabled.sql
+  title       = "Attached EBS volumes should have encryption enabled"
+  description = "Because sensitive data can exist and to help protect data at rest, ensure encryption is enabled for your Amazon Elastic Block Store (Amazon EBS) volumes."
+  query       = query.ebs_attached_volume_encryption_enabled
 
   tags = merge(local.ebs_compliance_common_tags, {
-    aws_foundational_security   = "true"
-    gdpr                        = "true"
-    hipaa                       = "true"
-    nist_800_53_rev_4           = "true"
-    nist_csf                    = "true"
-    rbi_cyber_security          = "true"
+    aws_foundational_security = "true"
+    gdpr                      = "true"
+    hipaa                     = "true"
+    nist_800_53_rev_4         = "true"
+    nist_csf                  = "true"
+    rbi_cyber_security        = "true"
   })
 }
 
 control "ebs_volume_encryption_at_rest_enabled" {
-  title         = "EBS volumes should have encryption enabled"
-  description   = "Because sensitive data can exist and to help protect data at rest, ensure encryption is enabled for your Amazon Elastic Block Store (Amazon EBS) volumes."
-  sql           = query.ebs_attached_volume_encryption_enabled.sql
+  title       = "EBS volumes should have encryption enabled"
+  description = "Because sensitive data can exist and to help protect data at rest, ensure encryption is enabled for your Amazon Elastic Block Store (Amazon EBS) volumes."
+  query       = query.ebs_attached_volume_encryption_enabled
 
   tags = merge(local.ebs_compliance_common_tags, {
     cis                = "true"

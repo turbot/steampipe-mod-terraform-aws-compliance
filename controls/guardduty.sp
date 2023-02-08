@@ -13,14 +13,14 @@ benchmark "guardduty" {
   ]
 
   tags = merge(local.guardduty_compliance_common_tags, {
-    type    = "Benchmark"
+    type = "Benchmark"
   })
 }
 
 control "guardduty_enabled" {
   title       = "GuardDuty should be enabled"
   description = "Amazon GuardDuty can help to monitor and detect potential cybersecurity events by using threat intelligence feeds."
-  sql           = query.guardduty_enabled.sql
+  query       = query.guardduty_enabled
 
   tags = merge(local.guardduty_compliance_common_tags, {
     aws_foundational_security = "true"
