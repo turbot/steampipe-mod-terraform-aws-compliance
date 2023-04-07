@@ -14,14 +14,14 @@ benchmark "workspace" {
   ]
 
   tags = merge(local.workspace_compliance_common_tags, {
-    type    = "Benchmark"
+    type = "Benchmark"
   })
 }
 
 control "workspace_root_volume_encryption_at_rest_enabled" {
   title       = "AWS workspaces root volume should be encrypted at rest"
   description = "Ensure Workspaces being created are set to encrypt root volume at rest."
-  sql           = query.workspace_root_volume_encryption_at_rest_enabled.sql
+  query       = query.workspace_root_volume_encryption_at_rest_enabled
 
   tags = local.workspace_compliance_common_tags
 
@@ -30,7 +30,7 @@ control "workspace_root_volume_encryption_at_rest_enabled" {
 control "workspace_user_volume_encryption_at_rest_enabled" {
   title       = "AWS workspaces user volume should be encrypted at rest"
   description = "Ensure Workspaces being created are set to encrypt user volume at rest."
-  sql           = query.workspace_user_volume_encryption_at_rest_enabled.sql
+  query       = query.workspace_user_volume_encryption_at_rest_enabled
 
   tags = local.workspace_compliance_common_tags
 

@@ -15,14 +15,14 @@ benchmark "secretsmanager" {
   ]
 
   tags = merge(local.secretsmanager_compliance_common_tags, {
-    type    = "Benchmark"
+    type = "Benchmark"
   })
 }
 
 control "secretsmanager_secret_automatic_rotation_enabled" {
   title       = "Secrets Manager secrets should have automatic rotation enabled"
   description = "This rule ensures AWS Secrets Manager secrets have rotation enabled. Rotating secrets on a regular schedule can shorten the period a secret is active, and potentially reduce the business impact if the secret is compromised."
-  sql           = query.secretsmanager_secret_automatic_rotation_enabled.sql
+  query       = query.secretsmanager_secret_automatic_rotation_enabled
 
   tags = merge(local.secretsmanager_compliance_common_tags, {
     aws_foundational_security = "true"
@@ -32,9 +32,9 @@ control "secretsmanager_secret_automatic_rotation_enabled" {
 }
 
 control "secretsmanager_secret_automatic_rotation_lambda_enabled" {
-  title         = "Secrets Manager secrets should be rotated within a specified number of days"
-  description   = "This control checks whether your secrets have been rotated at least once within 90 days. Rotating secrets can help you to reduce the risk of an unauthorized use of your secrets in your AWS account. Examples include database credentials, passwords, third-party API keys, and even arbitrary text. If you do not change your secrets for a long period of time, the secrets are more likely to be compromised."
-  sql           = query.secretsmanager_secret_automatic_rotation_lambda_enabled.sql
+  title       = "Secrets Manager secrets should be rotated within a specified number of days"
+  description = "This control checks whether your secrets have been rotated at least once within 90 days. Rotating secrets can help you to reduce the risk of an unauthorized use of your secrets in your AWS account. Examples include database credentials, passwords, third-party API keys, and even arbitrary text. If you do not change your secrets for a long period of time, the secrets are more likely to be compromised."
+  query       = query.secretsmanager_secret_automatic_rotation_lambda_enabled
 
   tags = merge(local.secretsmanager_compliance_common_tags, {
     aws_foundational_security = "true"
@@ -42,9 +42,9 @@ control "secretsmanager_secret_automatic_rotation_lambda_enabled" {
 }
 
 control "secretsmanager_secret_encrypted_with_kms_cmk" {
-  title         = "Secrets Manager secrets should be encrypted with KMS CMK"
-  description   = "Ensure Secrets Manager secrets are encrypted at rest with customer-managed CMK."
-  sql           = query.secretsmanager_secret_encrypted_with_kms_cmk.sql
+  title       = "Secrets Manager secrets should be encrypted with KMS CMK"
+  description = "Ensure Secrets Manager secrets are encrypted at rest with customer-managed CMK."
+  query       = query.secretsmanager_secret_encrypted_with_kms_cmk
 
   tags = local.secretsmanager_compliance_common_tags
 }

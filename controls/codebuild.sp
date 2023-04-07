@@ -5,8 +5,8 @@ locals {
 }
 
 benchmark "codebuild" {
-  title        = "CodeBuild"
-  description  = "This benchmark provides a set of controls that detect Terraform AWS CodeBuild resources deviating from security best practices."
+  title       = "CodeBuild"
+  description = "This benchmark provides a set of controls that detect Terraform AWS CodeBuild resources deviating from security best practices."
 
   children = [
     control.codebuild_project_encryption_at_rest_enabled,
@@ -15,14 +15,14 @@ benchmark "codebuild" {
   ]
 
   tags = merge(local.codebuild_compliance_common_tags, {
-    type    = "Benchmark"
+    type = "Benchmark"
   })
 }
 
 control "codebuild_project_plaintext_env_variables_no_sensitive_aws_values" {
-  title         = "CodeBuild project plaintext environment variables should not contain sensitive AWS values"
-  description   = "Ensure authentication credentials AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY do not exist within AWS CodeBuild project environments. Do not store these variables in clear text. Storing these variables in clear text leads to unintended data exposure and unauthorized access."
-  sql           = query.codebuild_project_plaintext_env_variables_no_sensitive_aws_values.sql
+  title       = "CodeBuild project plaintext environment variables should not contain sensitive AWS values"
+  description = "Ensure authentication credentials AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY do not exist within AWS CodeBuild project environments. Do not store these variables in clear text. Storing these variables in clear text leads to unintended data exposure and unauthorized access."
+  query       = query.codebuild_project_plaintext_env_variables_no_sensitive_aws_values
 
   tags = merge(local.codebuild_compliance_common_tags, {
     aws_foundational_security = "true"
@@ -35,9 +35,9 @@ control "codebuild_project_plaintext_env_variables_no_sensitive_aws_values" {
 }
 
 control "codebuild_project_source_repo_oauth_configured" {
-  title         = "CodeBuild GitHub or Bitbucket source repository URLs should use OAuth"
-  description   = "Ensure the GitHub or Bitbucket source repository URL does not contain personal access tokens, user name and password within AWS Codebuild project environments."
-  sql           = query.codebuild_project_source_repo_oauth_configured.sql
+  title       = "CodeBuild GitHub or Bitbucket source repository URLs should use OAuth"
+  description = "Ensure the GitHub or Bitbucket source repository URL does not contain personal access tokens, user name and password within AWS Codebuild project environments."
+  query       = query.codebuild_project_source_repo_oauth_configured
 
   tags = merge(local.codebuild_compliance_common_tags, {
     aws_foundational_security = "true"
@@ -50,9 +50,9 @@ control "codebuild_project_source_repo_oauth_configured" {
 }
 
 control "codebuild_project_encryption_at_rest_enabled" {
-  title         = "CodeBuild project encryption at rest should be enabled"
-  description   = "Ensure CodeBuild projects are set to be encrypted at rest with customer-managed CMK to protect sensitive data."
-  sql           = query.codebuild_project_encryption_at_rest_enabled.sql
+  title       = "CodeBuild project encryption at rest should be enabled"
+  description = "Ensure CodeBuild projects are set to be encrypted at rest with customer-managed CMK to protect sensitive data."
+  query       = query.codebuild_project_encryption_at_rest_enabled
 
   tags = local.codebuild_compliance_common_tags
 }

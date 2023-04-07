@@ -13,14 +13,14 @@ benchmark "backup" {
   ]
 
   tags = merge(local.backup_compliance_common_tags, {
-    type    = "Benchmark"
+    type = "Benchmark"
   })
 }
 
 control "backup_plan_min_retention_35_days" {
-  title         = "Backup plan min frequency and min retention check"
-  description   = "Checks if a backup plan has a backup rule that satisfies the required frequency and retention period(35 days). The rule is non complaint if recovery points are not created at least as often as the specified frequency or expire before the specified period."
-  sql           = query.backup_plan_min_retention_35_days.sql
+  title       = "Backup plan min frequency and min retention check"
+  description = "Checks if a backup plan has a backup rule that satisfies the required frequency and retention period(35 days). The rule is non complaint if recovery points are not created at least as often as the specified frequency or expire before the specified period."
+  query       = query.backup_plan_min_retention_35_days
 
   tags = merge(local.backup_compliance_common_tags, {
     hipaa    = "true"

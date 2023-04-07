@@ -14,22 +14,22 @@ benchmark "ecs" {
   ]
 
   tags = merge(local.ecs_compliance_common_tags, {
-    type    = "Benchmark"
+    type = "Benchmark"
   })
 }
 
 control "ecs_cluster_container_insights_enabled" {
-  title         = "ECS cluster container insights should be enabled"
-  description   = "One of the best practices when using AWS ECS is to enable cluster container insights for better visibility."
-  sql           = query.ecs_cluster_container_insights_enabled.sql
+  title       = "ECS cluster container insights should be enabled"
+  description = "One of the best practices when using AWS ECS is to enable cluster container insights for better visibility."
+  query       = query.ecs_cluster_container_insights_enabled
 
   tags = local.ecs_compliance_common_tags
 }
 
 control "ecs_task_definition_encryption_in_transit_enabled" {
-  title         = "ECS task definition encryption in transit should be enabled"
-  description   = "Ensure encryption in transit is enabled for EFS volumes in ECS Task definitions."
-  sql           = query.ecs_task_definition_encryption_in_transit_enabled.sql
+  title       = "ECS task definition encryption in transit should be enabled"
+  description = "Ensure encryption in transit is enabled for EFS volumes in ECS Task definitions."
+  query       = query.ecs_task_definition_encryption_in_transit_enabled
 
   tags = local.ecs_compliance_common_tags
 }
