@@ -16,7 +16,6 @@ variable "common_dimensions" {
   default     = [ "connection_name", "path" ]
 }
 
-
 locals {
 
   # Local internal variable to build the SQL select clause for common
@@ -35,7 +34,6 @@ locals {
   common_dimensions_sql = replace(local.common_dimensions_qualifier_sql, "__QUALIFIER__", "")
 
 }
-
 
 mod "terraform_aws_compliance" {
   # Hub metadata
