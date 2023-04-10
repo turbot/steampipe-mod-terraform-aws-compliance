@@ -13,7 +13,7 @@ variable "common_dimensions" {
   # Define which common dimensions should be added to each control.
   # - connection_name (_ctx ->> 'connection_name')
   # - path
-  default     = [ "connection_name", "path" ]
+  default     = [ "path" ]
 }
 
 locals {
