@@ -12,6 +12,7 @@ query "dms_replication_instance_not_publicly_accessible" {
         when (arguments -> 'publicly_accessible')::bool then ' publicly accessible'
         else ' not publicly accessible'
       end || '.' reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource

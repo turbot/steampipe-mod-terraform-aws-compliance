@@ -14,6 +14,7 @@ query "ecs_cluster_container_insights_enabled" {
           and (arguments -> 'setting' ->> 'value')::text = 'enabled' then ' container insights enabled'
         else ' container insights disabled'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -34,6 +35,7 @@ query "ecs_task_definition_encryption_in_transit_enabled" {
         when (arguments -> 'volume' -> 'efs_volume_configuration' ->> 'transit_encryption')::text = 'ENABLED' then ' encryption in transit enabled'
         else ' encryption in transit disabled'
       end || '.' reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource

@@ -14,6 +14,7 @@ query "globalaccelerator_flow_logs_enabled" {
         when (arguments -> 'attributes' -> 'flow_logs_enabled')::bool then ' flow log enabled'
         else ' flow log disabled'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource

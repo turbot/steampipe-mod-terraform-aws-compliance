@@ -10,6 +10,7 @@ query "emr_cluster_kerberos_enabled" {
         when (arguments -> 'kerberos_attributes') is null then ' kerberos disabled'
         else ' kerberos enabled'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource

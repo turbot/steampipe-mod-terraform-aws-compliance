@@ -11,8 +11,9 @@ query "ebs_attached_volume_encryption_enabled" {
         when (arguments -> 'encrypted') is null then ' ''encrypted'' is not defined.'
         when (arguments ->> 'encrypted')::bool then ' encrypted.'
         else ' not encrypted.'
-      end || '.' as reason,
-      path || ':' || start_line
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       terraform_resource
     where
@@ -33,8 +34,9 @@ query "ebs_volume_encryption_at_rest_enabled" {
         when (arguments -> 'encrypted') is null then ' ''encrypted'' is not defined.'
         when (arguments ->> 'encrypted')::bool then ' encrypted.'
         else ' not encrypted.'
-      end || '.' as reason,
-      path || ':' || start_line
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       terraform_resource
     where

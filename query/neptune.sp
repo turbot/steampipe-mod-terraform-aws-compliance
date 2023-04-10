@@ -10,6 +10,7 @@ query "neptune_cluster_encryption_at_rest_enabled" {
         when (arguments ->> 'storage_encrypted')::boolean then ' encrypted at rest'
         else ' not encrypted at rest'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -30,6 +31,7 @@ query "neptune_cluster_logging_enabled" {
         when (arguments -> 'enable_cloudwatch_logs_exports') is null then ' logging not enabled'
         else ' logging enabled'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource

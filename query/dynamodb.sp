@@ -14,6 +14,7 @@ query "dynamodb_table_encrypted_with_kms_cmk" {
         when (arguments -> 'server_side_encryption'->> 'enabled')::bool is true and (arguments -> 'server_side_encryption' ->> 'kms_key_arn') is not null then ' encrypted by AWS managed CMK'
         else ' not encrypted by AWS managed CMK'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -34,6 +35,7 @@ query "dynamodb_table_encryption_enabled" {
         when (arguments -> 'server_side_encryption') is not null then ' server-side encryption not set to DynamoDB owned KMS key'
         else ' server-side encryption set to AWS owned CMK'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -56,6 +58,7 @@ query "dynamodb_table_point_in_time_recovery_enabled" {
         when (arguments -> 'point_in_time_recovery' ->> 'enabled')::boolean then ' ''point_in_time_recovery'' enabled'
         else ' ''point_in_time_recovery'' disabled'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -78,6 +81,7 @@ query "dynamodb_vpc_endpoint_routetable_association" {
         when (arguments ->> 'service_name') like '%dynamodb%' and (arguments -> 'route_table_ids') is not null then ' VPC Endpoint for DynamoDB enabled'
         else ' VPC Endpoint for DynamoDB disabled'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource

@@ -11,6 +11,7 @@ query "s3_bucket_cross_region_replication_enabled" {
         when (arguments -> 'cors_rule')::jsonb ?& array['allowed_methods', 'allowed_origins'] then ' enabled with cross-region replication'
         else ' not enabled with cross-region replication'
       end || '.' reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -33,6 +34,7 @@ query "s3_bucket_default_encryption_enabled_kms" {
         when trim(arguments -> 'server_side_encryption_configuration' -> 'rule' -> 'apply_server_side_encryption_by_default' ->> 'sse_algorithm') = 'aws:kms' then ' default encryption with KMS enabled'
         else ' default encryption with KMS disabled'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -55,6 +57,7 @@ query "s3_bucket_default_encryption_enabled" {
         when trim(arguments -> 'server_side_encryption_configuration' -> 'rule' -> 'apply_server_side_encryption_by_default' ->> 'sse_algorithm') in ('aws:kms', 'AES256') then ' default encryption enabled'
         else ' default encryption disabled'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -77,6 +80,7 @@ query "s3_bucket_logging_enabled" {
         when coalesce(trim(arguments -> 'logging' ->> 'target_bucket'), '') = '' then ' logging disabled'
         else ' logging enabled'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -97,6 +101,7 @@ query "s3_bucket_mfa_delete_enabled" {
         when (arguments -> 'versioning' ->> 'mfa_delete')::bool then ' MFA delete enabled'
         else ' MFA delete disabled'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -118,6 +123,7 @@ query "s3_bucket_object_lock_enabled" {
         when (arguments -> 'object_lock_configuration' ->> 'object_lock_enabled') = 'Enabled' then ' object lock enabled'
         else ' object lock not enabled'
       end || '.' reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -187,6 +193,7 @@ query "s3_bucket_versioning_enabled" {
         when (arguments -> 'versioning' ->> 'enabled')::bool then ' versioning enabled'
         else ' versioning disabled'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource

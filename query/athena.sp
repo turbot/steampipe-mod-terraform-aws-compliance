@@ -32,6 +32,7 @@ query "athena_workgroup_encryption_at_rest_enabled" {
         then ' encrypted at rest'
         else ' not encrypted at rest'
       end || '.' reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource

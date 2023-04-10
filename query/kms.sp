@@ -12,6 +12,7 @@ query "kms_cmk_rotation_enabled" {
         when (arguments -> 'enable_key_rotation')::boolean then ' key rotation enabled'
         else ' key rotation disabled'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource

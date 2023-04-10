@@ -12,6 +12,7 @@ query "guardduty_enabled" {
         when (arguments -> 'enable')::bool then ' guardduty enabled'
         else ' guardduty disabled'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource

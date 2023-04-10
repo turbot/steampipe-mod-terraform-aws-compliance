@@ -9,6 +9,7 @@ query "efs_file_system_automatic_backups_enabled" {
         when name in (select split_part((arguments ->> 'file_system_id')::text, '.', 2) from terraform_resource where type = 'aws_efs_backup_policy' and (arguments -> 'backup_policy' ->> 'status')::text = 'ENABLED') then ' backup policy enabled'
         else ' backup policy disabled'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -31,6 +32,7 @@ query "efs_file_system_encrypt_data_at_rest" {
         when (arguments ->> 'encrypted')::boolean then ' encrypted at rest'
         else ' not encrypted at rest'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource

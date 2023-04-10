@@ -10,6 +10,7 @@ query "kinesis_stream_encryption_at_rest_enabled" {
         when (arguments ->> 'encryption_type') = 'KMS' then ' encrypted aty rest'
         else ' not encrypted at rest'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource

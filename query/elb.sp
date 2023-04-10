@@ -13,6 +13,7 @@ query "elb_application_classic_lb_logging_enabled" {
         when (arguments -> 'access_logs' -> 'enabled')::bool then ' logging enabled'
         else ' logging disabled'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -33,6 +34,7 @@ query "elb_application_classic_lb_logging_enabled" {
         when (arguments -> 'access_logs' -> 'enabled')::bool then ' logging enabled'
         else ' logging disabled'
         end || '.' reason
+        ${local.tag_dimensions_sql}
         ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -56,6 +58,7 @@ query "elb_application_lb_deletion_protection_enabled" {
         when (arguments -> 'enable_deletion_protection')::boolean then ' deletion protection enabled'
         else ' deletion protection disabled'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -78,6 +81,7 @@ query "elb_application_lb_drop_http_headers" {
         when (arguments -> 'drop_invalid_header_fields')::boolean then ' ''drop_invalid_header_fields'' enabled'
         else ' ''drop_invalid_header_fields'' disabled'
       end || '.' reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -100,6 +104,7 @@ query "elb_application_lb_waf_enabled" {
         when (arguments -> 'enable_waf_fail_open')::boolean then ' WAF enabled'
         else ' WAF disabled'
       end || '.' reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -122,6 +127,7 @@ query "elb_classic_lb_cross_zone_load_balancing_enabled" {
         when (arguments -> 'cross_zone_load_balancing')::boolean then ' cross-zone load balancing enabled'
         else ' cross-zone load balancing disabled'
         end || '.' reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -146,6 +152,7 @@ query "elb_classic_lb_use_ssl_certificate" {
         when (arguments -> 'listener' ->> 'lb_protocol') ilike 'SSL' and (arguments -> 'listener' ->> 'ssl_certificate_id') like 'arn:aws:acm%' then ' uses certificates provided by ACM'
         else ' does not use certificate provided by ACM'
       end || '.' reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -166,6 +173,7 @@ query "elb_classic_lb_use_tls_https_listeners" {
         when (arguments -> 'listener' ->> 'lb_protocol') like any (array ['HTTPS', 'TLS']) then ' configured with ' || (arguments -> 'listener' ->> 'lb_protocol') || ' protocol'
         else ' not configured with HTTPS or TLS protocol'
         end || '.' reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource

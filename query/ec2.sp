@@ -12,6 +12,7 @@ query "ec2_classic_lb_connection_draining_enabled" {
         when (arguments -> 'connection_draining')::bool then ' ''connection_draining'' enabled'
         else ' ''connection_draining'' disabled'
       end || '.' reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -47,13 +48,14 @@ query "ec2_instance_detailed_monitoring_enabled" {
     select
       type || ' ' || name as resource,
       case
-        when  (arguments ->> 'monitoring')::bool is true then 'ok'
+        when (arguments ->> 'monitoring')::bool is true then 'ok'
         else 'alarm'
       end as status,
       name || case
-        when  (arguments ->> 'monitoring')::bool is true then ' detailed monitoring enabled'
+        when (arguments ->> 'monitoring')::bool is true then ' detailed monitoring enabled'
         else ' detailed monitoring disabled'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -67,13 +69,14 @@ query "ec2_instance_ebs_optimized" {
     select
       type || ' ' || name as resource,
       case
-        when  (arguments -> 'ebs_optimized')::bool is true then 'ok'
+        when (arguments -> 'ebs_optimized')::bool is true then 'ok'
         else 'alarm'
       end as status,
       name || case
-        when  (arguments -> 'ebs_optimized')::bool is true then ' EBS optimization enabled'
+        when (arguments -> 'ebs_optimized')::bool is true then ' EBS optimization enabled'
         else ' EBS optimization disabled'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -94,6 +97,7 @@ query "ec2_instance_not_publicly_accessible" {
         when (arguments -> 'associate_public_ip_address') is null then ' not publicly accessible'
         else ' publicly accessible'
       end || '.' reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -116,6 +120,7 @@ query "ec2_instance_not_use_default_vpc" {
         when split_part((arguments ->> 'subnet_id'), '.', 2) in (select name from terraform_resource where type = 'aws_subnet' and (arguments ->> 'vpc_id') like '%default%') then ' deployed to a default VPC'
         else ' not deployed to a default VPC'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -130,7 +135,7 @@ query "ec2_instance_not_use_multiple_enis" {
       type || ' ' || name as resource,
       case
         when jsonb_typeof(arguments -> 'network_interface') is null then 'skip'
-        when (jsonb_typeof(arguments -> 'network_interface'))::text = 'object'  then 'ok'
+        when (jsonb_typeof(arguments -> 'network_interface'))::text = 'object' then 'ok'
         else 'alarm'
       end status,
       name || case
@@ -138,6 +143,7 @@ query "ec2_instance_not_use_multiple_enis" {
         when (jsonb_typeof(arguments -> 'network_interface'))::text = 'object' then ' has 1 ENI attached'
         else ' has ' || (jsonb_array_length(arguments -> 'network_interface')) || ' ENI(s) attached'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -151,13 +157,14 @@ query "ec2_instance_termination_protection_enabled" {
     select
       type || ' ' || name as resource,
       case
-        when  (arguments -> 'root_block_device' ->> 'delete_on_termination')::bool is true then 'ok'
+        when (arguments -> 'root_block_device' ->> 'delete_on_termination')::bool is true then 'ok'
         else 'alarm'
       end as status,
       name || case
         when (arguments -> 'root_block_device' ->> 'delete_on_termination')::bool is true then ' instance termination protection enabled'
         else ' instance termination protection disabled'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -180,6 +187,7 @@ query "ec2_instance_uses_imdsv2" {
         then ' not configured to use Instance Metadata Service Version 2 (IMDSv2)'
         else ' configured to use Instance Metadata Service Version 2 (IMDSv2)'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource

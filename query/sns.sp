@@ -11,6 +11,7 @@ query "sns_topic_encrypted_at_rest" {
         when coalesce(trim(arguments ->> 'kms_master_key_id'), '') <> '' then ' encryption at rest enabled'
         else ' encryption at rest disabled'
       end || '.' reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource

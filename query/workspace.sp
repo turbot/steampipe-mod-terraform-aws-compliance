@@ -10,6 +10,7 @@ query "workspace_root_volume_encryption_at_rest_enabled" {
         when (arguments ->> 'user_volume_encryption_enabled')::boolean then ' encrypted at rest'
         else ' not encrypted at rest'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -30,6 +31,7 @@ query "workspace_user_volume_encryption_at_rest_enabled" {
         when (arguments ->> 'root_volume_encryption_enabled')::boolean then ' encrypted at rest'
         else ' not encrypted at rest'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource

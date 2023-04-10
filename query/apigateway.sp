@@ -10,6 +10,7 @@ query "apigateway_rest_api_stage_use_ssl_certificate" {
         when (arguments -> 'client_certificate_id') is null then ' does not use SSL certificate'
         else ' uses SSL certificate'
       end || '.' reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -30,6 +31,7 @@ query "apigateway_rest_api_stage_xray_tracing_enabled" {
         when (arguments ->> 'tracing_enabled')::boolean then ' X-Ray tracing enabled'
         else ' X-Ray tracing disabled'
       end || '.' reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -58,12 +60,7 @@ query "apigateway_stage_cache_encryption_at_rest_enabled" {
       select
         m.arguments -> 'settings' ->> 'caching_enabled' as caching_enabled,
         m.arguments -> 'settings' ->> 'cache_data_encrypted' as cache_data_encrypted,
-        a.arguments ->> 'stage_name' as stage_name,
-        a.type,
-        a.name,
-        a.path,
-        a._ctx,
-        a.start_line
+        a.*
       from stages_v1 as a left join method_settings as m on (m.arguments ->> 'rest_api_id') = (a.arguments ->> 'rest_api_id')
   )
   select
@@ -76,6 +73,7 @@ query "apigateway_stage_cache_encryption_at_rest_enabled" {
       when (caching_enabled)::boolean and (cache_data_encrypted)::boolean then ' API cache and encryption enabled'
       else ' API cache and encryption not enabled'
     end || '.' reason
+    ${local.tag_dimensions_sql}
     ${local.common_dimensions_sql}
   from
     all_stages;
@@ -106,7 +104,7 @@ query "apigateway_stage_logging_enabled" {
         a.name,
         a.path,
         a.start_line,
-        a._ctx
+        a.arguments
       from stages_v1 as a left join method_settings as m on (m.arguments ->> 'rest_api_id') = (a.arguments ->> 'rest_api_id')
     ), all_stages as (
       select
@@ -116,19 +114,22 @@ query "apigateway_stage_logging_enabled" {
         name,
         path,
         start_line,
-        _ctx
+        arguments
       from
         all_v1
       union
       select
         arguments -> 'default_route_settings' ->> 'logging_level' as log_level,
-        arguments ->>  'name' as stage_name,
+        arguments ->> 'name' as stage_name,
         type,
         name,
         path,
         start_line,
-        _ctx
-      from terraform_resource where type = 'aws_apigatewayv2_stage'
+        arguments
+      from
+        terraform_resource
+      where
+        type = 'aws_apigatewayv2_stage'
   )
   select
     type || ' ' || name as resource,
@@ -140,6 +141,7 @@ query "apigateway_stage_logging_enabled" {
       when log_level is null or log_level = 'OFF' then ' logging disabled'
       else ' logging enabled'
     end || '.' reason
+    ${local.tag_dimensions_sql}
     ${local.common_dimensions_sql}
   from
     all_stages;

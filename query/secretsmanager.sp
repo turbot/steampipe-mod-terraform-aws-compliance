@@ -10,6 +10,7 @@ query "secretsmanager_secret_automatic_rotation_enabled" {
         when (arguments -> 'rotation_rules') is null then ' automatic rotation disabled'
         else ' automatic rotation enabled'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -30,6 +31,7 @@ query "secretsmanager_secret_automatic_rotation_lambda_enabled" {
         when (arguments -> 'rotation_rules') is not null and (arguments -> 'rotation_lambda_arn') is not null then ' scheduled for rotation using Lambda function'
         else ' automatic rotation using Lambda function disabled'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -55,6 +57,7 @@ query "secretsmanager_secret_encrypted_with_kms_cmk" {
         then ' is encrypted at rest default KMS key'
         else ' is encrypted at rest using customer-managed CMK'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource

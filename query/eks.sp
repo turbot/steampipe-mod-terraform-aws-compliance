@@ -9,8 +9,9 @@ query "eks_cluster_endpoint_restrict_public_access" {
       name || case
         when (arguments -> 'endpoint_public_access')::boolean then ' endpoint publicly accessible'
         else ' endpoint not publicly accessible'
-      end || '.' reason,
-      path || ':' || start_line
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       terraform_resource
     where
@@ -29,8 +30,9 @@ query "eks_cluster_log_types_enabled" {
       name || case
         when (arguments -> 'enabled_cluster_log_types') is null then ' logging disabled'
         else ' logging enabled'
-      end || '.' as reason,
-      path || ':' || start_line
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       terraform_resource
     where
@@ -51,8 +53,9 @@ query "eks_cluster_secrets_encrypted" {
         when (arguments -> 'encryption_config') is null then ' encryption disabled'
         when (arguments -> 'encryption_config' -> 'resources') @> '["secrets"]' then 'encrypted with EKS secrets'
         else ' not encrypted with EKS secrets'
-      end || '.' reason,
-      path || ':' || start_line
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       terraform_resource
     where

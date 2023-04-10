@@ -13,6 +13,7 @@ query "backup_plan_min_retention_35_days" {
         when (arguments -> 'rule' -> 'lifecycle') is null then ' retention period set to never expire'
         else ' retention period set to ' || (arguments -> 'rule' -> 'lifecycle' ->> 'delete_after')::int
       end || '.' reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource

@@ -10,6 +10,7 @@ query "config_aggregator_enabled_all_regions" {
         when (arguments -> 'account_aggregation_source' ->> 'all_regions')::boolean then ' enabled in all regions'
         else ' not enabled in all regions'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource

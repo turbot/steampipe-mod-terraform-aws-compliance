@@ -17,6 +17,7 @@ query "cloudwatch_alarm_action_enabled" {
         when (arguments -> 'ok_actions') is not null then ' ok action enabled.'
         else ' action enabled'
       end || '.' reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -78,6 +79,7 @@ query "cloudwatch_log_group_retention_period_365" {
         when (arguments -> 'retention_in_days')::int < 365 then ' retention period less than 365 days'
         else ' retention period 365 days or above'
       end || '.' reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -98,6 +100,7 @@ query "log_group_encryption_at_rest_enabled" {
         when (arguments -> 'kms_key_id') is not null then ' encrypted at rest'
         else ' not encrypted at rest'
       end || '.' reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource

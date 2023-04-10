@@ -12,6 +12,7 @@ query "autoscaling_group_with_lb_use_health_check" {
         when (arguments ->> 'health_check_type') <> 'ELB' then ' does not use ELB health check'
         else ' uses ELB health check'
       end || '.' reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -32,6 +33,7 @@ query "autoscaling_launch_config_public_ip_disabled" {
       when (arguments -> 'associate_public_ip_address')::boolean then ' public IP enabled'
         else ' public IP disabled'
       end || '.' reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource

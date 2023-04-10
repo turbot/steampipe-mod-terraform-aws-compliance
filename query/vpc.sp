@@ -12,6 +12,7 @@ query "vpc_default_security_group_restricts_all_traffic" {
         when (arguments -> 'ingress') is null and (arguments -> 'egress') is not null then 'Default security group ' || name || ' has outbound rules'
         else 'Default security group ' || name || ' has no inbound or outbound rules'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -70,6 +71,7 @@ query "vpc_flow_logs_enabled" {
         when b.flow_log_vpc_id is not null then ' flow logging enabled'
         else ' flow logging disabled'
       end || '.' reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       all_vpc as a
@@ -89,6 +91,7 @@ query "vpc_igw_attached_to_authorized_vpc" {
       when name in (select split_part((arguments ->> 'vpc_id')::text, '.', 2) from terraform_resource where type = 'aws_internet_gateway') then ' has internet gateway attachment(s)'
       else ' has no internet gateway attachment(s)'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -109,6 +112,7 @@ query "vpc_network_acl_unused" {
         when (arguments -> 'subnet_ids') is null then ' not associated with subnets'
         else ' associated with ' || (jsonb_array_length(arguments -> 'subnet_ids')) || ' subnet(s)'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -129,6 +133,7 @@ query "vpc_security_group_associated_to_eni" {
       when name in (select split_part((jsonb_array_elements(arguments -> 'security_groups')::text), '.', 2) from terraform_resource where type = 'aws_network_interface') then ' has attached ENI(s)'
       else ' has no attached ENI(s)'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -149,6 +154,7 @@ query "vpc_security_group_description_for_rules" {
         when (arguments -> 'description') is null then ' no description defined'
         else ' description defined'
       end || '.' reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -191,6 +197,7 @@ query "vpc_subnet_auto_assign_public_ip_disabled" {
         when (arguments ->> 'map_public_ip_on_launch')::boolean then ' ''map_public_ip_on_launch'' enabled'
         else ' ''map_public_ip_on_launch'' disabled'
       end || '.' reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource

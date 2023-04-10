@@ -10,6 +10,7 @@ query "sagemaker_endpoint_configuration_encryption_at_rest_enabled" {
         when (arguments -> 'kms_key_arn') is null then ' encryption at rest not enabled'
         else ' encryption at rest enabled'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -31,6 +32,7 @@ query "sagemaker_notebook_instance_direct_internet_access_disabled" {
         when (arguments -> 'direct_internet_access') is null or (arguments ->> 'direct_internet_access') = 'Disabled' then ' direct internet access disabled'
         else ' direct internet access enabled'
       end || '.' reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -51,6 +53,7 @@ query "sagemaker_notebook_instance_encryption_at_rest_enabled" {
         when (arguments -> 'kms_key_id') is null then ' encryption at rest disabled'
         else ' encryption at rest enabled'
       end || '.' reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource

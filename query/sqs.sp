@@ -12,6 +12,7 @@ query "sqs_queue_encrypted_at_rest" {
         when coalesce(trim(arguments ->> 'kms_master_key_id'), '') <> '' then ' encryption at rest enabled'
         else ' encryption at rest disabled'
       end || '.' reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -35,6 +36,7 @@ query "sqs_vpc_endpoint_without_dns_resolution" {
         when (arguments ->> 'service_name') like '%sqs%' and (arguments -> 'private_dns_enabled')::bool then ' private DNS enabled'
         when (arguments ->> 'service_name') like '%sqs%' and (arguments -> 'private_dns_enabled')::bool = false then ' private DNS disabled'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource

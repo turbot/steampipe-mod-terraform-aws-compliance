@@ -12,6 +12,7 @@ query "docdb_cluster_audit_logs_enabled" {
         when '"audit"' in (select jsonb_array_elements(arguments -> 'enabled_cloudwatch_logs_exports') from terraform_resource where type = 'aws_docdb_cluster') then ' audit logging enabled'
         else ' audit logging not enabled'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
@@ -38,6 +39,7 @@ query "docdb_cluster_encrypted_with_kms" {
         then ' encrypted at rest using customer-managed CMK'
         else ' not encrypted at rest using customer-managed CMK'
       end || '.' as reason
+      ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
