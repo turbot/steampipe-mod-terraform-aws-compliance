@@ -1,3 +1,10 @@
+## v0.11 [2023-06-15]
+
+_What's new?_
+
+- Added `connection_name` in the common dimensions to group and filter findings. (see [var.common_dimensions](https://hub.steampipe.io/mods/turbot/terraform_aws_compliance/variables)) ([#49](https://github.com/turbot/steampipe-mod-terraform-aws-compliance/pull/49))
+- Added `tags` as dimensions to group and filter findings. (see [var.tag_dimensions](https://hub.steampipe.io/mods/turbot/terraform_aws_compliance/variables)) ([#49](https://github.com/turbot/steampipe-mod-terraform-aws-compliance/pull/49))
+
 ## v0.10 [2022-11-11]
 
 _Bug fixes_
