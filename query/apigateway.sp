@@ -105,7 +105,8 @@ query "apigateway_stage_logging_enabled" {
         a.name,
         a.path,
         a.start_line,
-        a.arguments
+        a.arguments,
+        a._ctx
       from stages_v1 as a
       left join method_settings as m on (m.arguments ->> 'rest_api_id') = (a.arguments ->> 'rest_api_id')
     ), all_stages as (
@@ -116,7 +117,8 @@ query "apigateway_stage_logging_enabled" {
         name,
         path,
         start_line,
-        arguments
+        arguments,
+        _ctx
       from
         all_v1
       union
@@ -127,7 +129,8 @@ query "apigateway_stage_logging_enabled" {
         name,
         path,
         start_line,
-        arguments
+        arguments,
+        _ctx
       from
         terraform_resource
       where
