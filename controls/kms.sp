@@ -13,14 +13,14 @@ benchmark "kms" {
   ]
 
   tags = merge(local.kms_compliance_common_tags, {
-    type    = "Benchmark"
+    type = "Benchmark"
   })
 }
 
 control "kms_cmk_rotation_enabled" {
   title       = "KMS CMK rotation should be enabled"
   description = "Enable key rotation to ensure that keys are rotated once they have reached the end of their crypto period."
-  sql           = query.kms_cmk_rotation_enabled.sql
+  query       = query.kms_cmk_rotation_enabled
 
   tags = merge(local.kms_compliance_common_tags, {
     cis                = "true"

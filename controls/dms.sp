@@ -13,14 +13,14 @@ benchmark "dms" {
   ]
 
   tags = merge(local.dms_compliance_common_tags, {
-    type    = "Benchmark"
+    type = "Benchmark"
   })
 }
 
 control "dms_replication_instance_not_publicly_accessible" {
-  title         = "DMS replication instances should not be publicly accessible"
-  description   = "Manage access to the AWS Cloud by ensuring DMS replication instances cannot be publicly accessed."
-  sql           = query.dms_replication_instance_not_publicly_accessible.sql
+  title       = "DMS replication instances should not be publicly accessible"
+  description = "Manage access to the AWS Cloud by ensuring DMS replication instances cannot be publicly accessed."
+  query       = query.dms_replication_instance_not_publicly_accessible
 
   tags = merge(local.dms_compliance_common_tags, {
     aws_foundational_security = "true"

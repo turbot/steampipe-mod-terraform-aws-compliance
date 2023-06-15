@@ -14,14 +14,14 @@ benchmark "elasticache" {
   ]
 
   tags = merge(local.elasticache_compliance_common_tags, {
-    type    = "Benchmark"
+    type = "Benchmark"
   })
 }
 
 control "elasticache_redis_cluster_automatic_backup_retention_15_days" {
-  title         = "ElastiCache Redis cluster automatic backup should be enabled with retention period of 15 days or greater"
-  description   = "When automatic backups are enabled, Amazon ElastiCache creates a backup of the cluster on a daily basis. The backup can be retained for a number of days as specified by your organization. Automatic backups can help guard against data loss."
-  sql           = query.elasticache_redis_cluster_automatic_backup_retention_15_days.sql
+  title       = "ElastiCache Redis cluster automatic backup should be enabled with retention period of 15 days or greater"
+  description = "When automatic backups are enabled, Amazon ElastiCache creates a backup of the cluster on a daily basis. The backup can be retained for a number of days as specified by your organization. Automatic backups can help guard against data loss."
+  query       = query.elasticache_redis_cluster_automatic_backup_retention_15_days
 
   tags = merge(local.elasticache_compliance_common_tags, {
     hipaa              = "true"
@@ -33,9 +33,9 @@ control "elasticache_redis_cluster_automatic_backup_retention_15_days" {
 }
 
 control "elasticache_replication_group_encryption_in_transit_enabled" {
-  title         = "ElastiCache replication group should be encrypted at transit"
-  description   = "Ensure all data stored in the Elasticache Replication Group is securely encrypted at transit"
-  sql           = query.elasticache_replication_group_encryption_in_transit_enabled.sql
+  title       = "ElastiCache replication group should be encrypted at transit"
+  description = "Ensure all data stored in the Elasticache Replication Group is securely encrypted at transit"
+  query       = query.elasticache_replication_group_encryption_in_transit_enabled
 
   tags = local.elasticache_compliance_common_tags
 }
