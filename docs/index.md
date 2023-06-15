@@ -141,6 +141,31 @@ steampipe dashboard
 
 For more details on connection configuration, please refer to [Terraform Plugin Configuration](https://hub.steampipe.io/plugins/turbot/terraform#configuration).
 
+### Common and Tag Dimensions
+
+The benchmark queries use common properties (like `connection_name` and `path`) and tags that are defined in the form of a default list of strings in the `mod.sp` file. These properties can be overwritten in several ways:
+
+- Copy and rename the `steampipe.spvars.example` file to `steampipe.spvars`, and then modify the variable values inside that file
+- Pass in a value on the command line:
+
+  ```shell
+  steampipe check benchmark.ec2 --var 'common_dimensions=["connection_name", "path"]'
+  ```
+
+  ```shell
+  steampipe check benchmark.ec2 --var 'tag_dimensions=["Environment", "Owner"]'
+  ```
+
+- Set an environment variable:
+
+  ```shell
+  SP_VAR_common_dimensions='["connection_name", "path"]' steampipe check control.ec2_instance_not_publicly_accessible
+  ```
+
+  ```shell
+  SP_VAR_tag_dimensions='["Environment", "Owner"]' steampipe check control.ec2_instance_not_publicly_accessible
+  ```
+  
 ## Contributing
 
 If you have an idea for additional controls or just want to help maintain and extend this mod ([or others](https://github.com/topics/steampipe-mod)) we would love you to join the community and start contributing.
