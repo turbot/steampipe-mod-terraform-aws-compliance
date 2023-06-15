@@ -1,4 +1,5 @@
 # Dimensions
-common_dimensions = [ "path" ]
+# Possible values for common dimensions: "path" and "connection_name"
+common_dimensions = ["path"]
 tag_dimensions    = []
 

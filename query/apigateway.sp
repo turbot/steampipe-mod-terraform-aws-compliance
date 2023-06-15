@@ -61,7 +61,8 @@ query "apigateway_stage_cache_encryption_at_rest_enabled" {
         m.arguments -> 'settings' ->> 'caching_enabled' as caching_enabled,
         m.arguments -> 'settings' ->> 'cache_data_encrypted' as cache_data_encrypted,
         a.*
-      from stages_v1 as a left join method_settings as m on (m.arguments ->> 'rest_api_id') = (a.arguments ->> 'rest_api_id')
+      from stages_v1 as a
+      left join method_settings as m on (m.arguments ->> 'rest_api_id') = (a.arguments ->> 'rest_api_id')
   )
   select
     type || ' ' || name as resource,
@@ -105,7 +106,8 @@ query "apigateway_stage_logging_enabled" {
         a.path,
         a.start_line,
         a.arguments
-      from stages_v1 as a left join method_settings as m on (m.arguments ->> 'rest_api_id') = (a.arguments ->> 'rest_api_id')
+      from stages_v1 as a
+      left join method_settings as m on (m.arguments ->> 'rest_api_id') = (a.arguments ->> 'rest_api_id')
     ), all_stages as (
       select
         log_level,
