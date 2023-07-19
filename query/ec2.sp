@@ -221,7 +221,7 @@ query "ec2_instance_user_data_no_secrets" {
   EOQ
 }
 
-query "ec2_ami_image_builder_component_encrypted_with_cmk" {
+query "ec2_ami_imagebuilder_component_encrypted_with_cmk" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,
@@ -239,5 +239,47 @@ query "ec2_ami_image_builder_component_encrypted_with_cmk" {
       terraform_resource
     where
       type = 'aws_imagebuilder_component';
+  EOQ
+}
+
+query "ec2_ami_imagebuilder_distribution_configuration_encrypted_with_cmk" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'distribution' -> 'ami_distribution_configuration' ->> 'kms_key_id') is null then 'alarm'
+        else 'ok'
+      end as status,
+      name || case
+        when (arguments -> 'distribution' -> 'ami_distribution_configuration' ->> 'kms_key_id') is null then ' is not encrypted with customer-managed CMK'
+        else ' is encrypted with customer-managed CMK'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_imagebuilder_distribution_configuration';
+  EOQ
+}
+
+query "ec2_ami_imagebuilder_image_recipe_encrypted_with_cmk" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'block_device_mapping' -> 'ebs' ->> 'kms_key_id') is null or (arguments -> 'block_device_mapping' -> 'ebs' ->> 'encrypted') <> 'true' then 'alarm'
+        else 'ok'
+      end as status,
+      name || case
+        when (arguments -> 'block_device_mapping' -> 'ebs' ->> 'kms_key_id') is null or (arguments -> 'block_device_mapping' -> 'ebs' ->> 'encrypted') <> 'true' then ' is not encrypted with customer-managed CMK.'
+        else ' is encrypted with customer-managed CMK.'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_imagebuilder_image_recipe';
   EOQ
 }

@@ -9,7 +9,9 @@ benchmark "ec2" {
   description = "This benchmark provides a set of controls that detect Terraform AWS EC2 resources deviating from security best practices."
 
   children = [
-    control.ec2_ami_image_builder_component_encrypted_with_cmk,
+    control.ec2_ami_imagebuilder_component_encrypted_with_cmk,
+    control.ec2_ami_imagebuilder_distribution_configuration_encrypted_with_cmk,
+    control.ec2_ami_imagebuilder_image_recipe_encrypted_with_cmk,
     control.ec2_ebs_default_encryption_enabled,
     control.ec2_instance_detailed_monitoring_enabled,
     control.ec2_instance_ebs_optimized,
@@ -121,10 +123,26 @@ control "ec2_instance_user_data_no_secrets" {
   tags = local.ec2_compliance_common_tags
 }
 
-control "ec2_ami_image_builder_component_encrypted_with_cmk" {
+control "ec2_ami_imagebuilder_component_encrypted_with_cmk" {
   title       = "EC2 AMI image builder components should be encrypted with a customer-managed CMK"
   description = "Ensure that EC2 AMI image builder components are encrypted with a customer-managed CMK."
-  query       = query.ec2_ami_image_builder_component_encrypted_with_cmk
+  query       = query.ec2_ami_imagebuilder_component_encrypted_with_cmk
+
+  tags = local.ec2_compliance_common_tags
+}
+
+control "ec2_ami_imagebuilder_distribution_configuration_encrypted_with_cmk" {
+  title       = "EC2 AMI image builder distribution configurations should be encrypted with a customer-managed CMK"
+  description = "Ensure that EC2 AMI image builder distribution configurations are encrypted with a customer-managed CMK."
+  query       = query.ec2_ami_imagebuilder_distribution_configuration_encrypted_with_cmk
+
+  tags = local.ec2_compliance_common_tags
+}
+
+control "ec2_ami_imagebuilder_image_recipe_encrypted_with_cmk" {
+  title       = "EC2 AMI image builder image recipes should be encrypted with a customer-managed CMK"
+  description = "Ensure that EC2 AMI image builder image recipes are encrypted with a customer-managed CMK."
+  query       = query.ec2_ami_imagebuilder_image_recipe_encrypted_with_cmk
 
   tags = local.ec2_compliance_common_tags
 }
