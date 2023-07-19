@@ -195,3 +195,49 @@ query "ec2_instance_uses_imdsv2" {
       type = 'aws_instance';
   EOQ
 }
+
+query "ec2_instance_user_data_no_secrets" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'user_data') is null then 'skip'
+        when (arguments ->> 'user_data') like any (array ['%pass%', '%secret%','%token%','%key%'])
+          or (arguments ->> 'user_data') ~ '(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]' then 'alarm'
+        else 'ok'
+      end as status,
+      name || case
+        when (arguments ->> 'user_data') is null then ' no user data defined.'
+        when (arguments ->> 'user_data') like any (array ['%pass%', '%secret%','%token%','%key%'])
+          or (arguments ->> 'user_data') ~ '(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]' then ' potential secret found in user data.'
+        else ' no secrets found in user data.'
+      end as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_instance';
+  EOQ
+}
+
+query "ec2_ami_image_builder_component_encrypted_with_cmk" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'kms_key_id') is null then 'alarm'
+        else 'ok'
+      end as status,
+      name || case
+        when (arguments ->> 'kms_key_id') is null then ' is not encrypted with customer-managed CMK'
+        else ' is encrypted with customer-managed CMK'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_imagebuilder_component';
+  EOQ
+}

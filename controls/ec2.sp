@@ -9,6 +9,7 @@ benchmark "ec2" {
   description = "This benchmark provides a set of controls that detect Terraform AWS EC2 resources deviating from security best practices."
 
   children = [
+    control.ec2_ami_image_builder_component_encrypted_with_cmk,
     control.ec2_ebs_default_encryption_enabled,
     control.ec2_instance_detailed_monitoring_enabled,
     control.ec2_instance_ebs_optimized,
@@ -16,6 +17,7 @@ benchmark "ec2" {
     control.ec2_instance_not_use_default_vpc,
     control.ec2_instance_not_use_multiple_enis,
     control.ec2_instance_termination_protection_enabled,
+    control.ec2_instance_user_data_no_secrets,
     control.ec2_instance_uses_imdsv2
   ]
 
@@ -109,4 +111,20 @@ control "ec2_instance_uses_imdsv2" {
     aws_foundational_security = "true"
     nist_800_53_rev_4         = "true"
   })
+}
+
+control "ec2_instance_user_data_no_secrets" {
+  title       = "EC2 instances should not contain secrets in user data"
+  description = "Ensure that EC2 instances do not contain secrets in user data."
+  query       = query.ec2_instance_user_data_no_secrets
+
+  tags = local.ec2_compliance_common_tags
+}
+
+control "ec2_ami_image_builder_component_encrypted_with_cmk" {
+  title       = "EC2 AMI image builder components should be encrypted with a customer-managed CMK"
+  description = "Ensure that EC2 AMI image builder components are encrypted with a customer-managed CMK."
+  query       = query.ec2_ami_image_builder_component_encrypted_with_cmk
+
+  tags = local.ec2_compliance_common_tags
 }
