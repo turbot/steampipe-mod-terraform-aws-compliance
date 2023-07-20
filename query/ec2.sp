@@ -268,11 +268,11 @@ query "ec2_ami_imagebuilder_image_recipe_encrypted_with_cmk" {
     select
       type || ' ' || name as resource,
       case
-        when (arguments -> 'block_device_mapping' -> 'ebs' ->> 'kms_key_id') is null or (arguments -> 'block_device_mapping' -> 'ebs' ->> 'encrypted') <> 'true' then 'alarm'
+        when (arguments -> 'block_device_mapping' -> 'ebs' ->> 'kms_key_id') is null or (arguments -> 'block_device_mapping' -> 'ebs' ->> 'encrypted') <> 'true' or (arguments -> 'block_device_mapping' -> 'ebs' ->> 'encrypted') is null then 'alarm'
         else 'ok'
       end as status,
       name || case
-        when (arguments -> 'block_device_mapping' -> 'ebs' ->> 'kms_key_id') is null or (arguments -> 'block_device_mapping' -> 'ebs' ->> 'encrypted') <> 'true' then ' is not encrypted with customer-managed CMK.'
+        when (arguments -> 'block_device_mapping' -> 'ebs' ->> 'kms_key_id') is null or (arguments -> 'block_device_mapping' -> 'ebs' ->> 'encrypted') <> 'true' or (arguments -> 'block_device_mapping' -> 'ebs' ->> 'encrypted') is null then ' is not encrypted with customer-managed CMK.'
         else ' is encrypted with customer-managed CMK.'
       end || '.' as reason
       ${local.tag_dimensions_sql}
