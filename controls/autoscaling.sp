@@ -9,6 +9,8 @@ benchmark "autoscaling" {
   description = "This benchmark provides a set of controls that detect Terraform AWS Auto Scaling resources deviating from security best practices."
 
   children = [
+    control.autoscaling_group_tagging_enabled,
+    control.autoscaling_group_uses_launch_template,
     control.autoscaling_group_with_lb_use_health_check,
     control.autoscaling_launch_config_public_ip_disabled
   ]
@@ -38,4 +40,20 @@ control "autoscaling_launch_config_public_ip_disabled" {
   tags = merge(local.autoscaling_compliance_common_tags, {
     rbi_cyber_security = "true"
   })
+}
+
+control "autoscaling_group_uses_launch_template" {
+  title       = "Auto Scaling groups should use launch templates"
+  description = "Ensure EC2 Auto Scaling groups use EC2 launch templates"
+  query       = query.autoscaling_group_uses_launch_template
+
+  tags = local.autoscaling_compliance_common_tags
+}
+
+control "autoscaling_group_tagging_enabled" {
+  title       = "Auto Scaling groups should have tagging enabled"
+  description = "Ensure EC2 Auto Scaling groups have tagging enabled"
+  query       = query.autoscaling_group_tagging_enabled
+
+  tags = local.autoscaling_compliance_common_tags
 }

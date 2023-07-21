@@ -9,18 +9,24 @@ benchmark "ec2" {
   description = "This benchmark provides a set of controls that detect Terraform AWS EC2 resources deviating from security best practices."
 
   children = [
+    control.ec2_ami_copy_encrypted,
+    control.ec2_ami_copy_encrypted_with_cmk,
     control.ec2_ami_imagebuilder_component_encrypted_with_cmk,
     control.ec2_ami_imagebuilder_distribution_configuration_encrypted_with_cmk,
     control.ec2_ami_imagebuilder_image_recipe_encrypted_with_cmk,
     control.ec2_ebs_default_encryption_enabled,
     control.ec2_instance_detailed_monitoring_enabled,
+    control.ec2_instance_ebs_encryption_check,
     control.ec2_instance_ebs_optimized,
     control.ec2_instance_not_publicly_accessible,
     control.ec2_instance_not_use_default_vpc,
     control.ec2_instance_not_use_multiple_enis,
     control.ec2_instance_termination_protection_enabled,
     control.ec2_instance_user_data_no_secrets,
-    control.ec2_instance_uses_imdsv2
+    control.ec2_instance_uses_imdsv2,
+    control.ec2_launch_configuration_ebs_encryption_check,
+    control.ec2_launch_configuration_metadata_hop_limit_check,
+    control.ec2_launch_template_metadata_hop_limit_check
   ]
 
   tags = merge(local.ec2_compliance_common_tags, {
@@ -143,6 +149,62 @@ control "ec2_ami_imagebuilder_image_recipe_encrypted_with_cmk" {
   title       = "EC2 AMI image builder image recipes should be encrypted with a customer-managed CMK"
   description = "Ensure that EC2 AMI image builder image recipes are encrypted with a customer-managed CMK."
   query       = query.ec2_ami_imagebuilder_image_recipe_encrypted_with_cmk
+
+  tags = local.ec2_compliance_common_tags
+}
+
+control "ec2_launch_template_metadata_hop_limit_check" {
+  title       = "EC2 launch template should not have a metadata response hop limit greater than 1"
+  description = "Ensure that EC2 launch templates do not have a metadata response hop limit greater than 1."
+  query       = query.ec2_launch_template_metadata_hop_limit_check
+
+  tags = local.ec2_compliance_common_tags
+}
+
+control "ec2_launch_configuration_metadata_hop_limit_check" {
+  title       = "EC2 launch configuration should not have a metadata response hop limit greater than 1"
+  description = "Ensure that EC2 launch configurations do not have a metadata response hop limit greater than 1."
+  query       = query.ec2_launch_configuration_metadata_hop_limit_check
+
+  tags = local.ec2_compliance_common_tags
+}
+
+control "ec2_launch_configuration_ebs_encryption_check" {
+  title       = "EC2 launch configuration EBS encryption should be enabled"
+  description = "Ensure that EC2 launch configuration EBS encryption is enabled."
+  query       = query.ec2_launch_configuration_ebs_encryption_check
+
+  tags = local.ec2_compliance_common_tags
+}
+
+control "ec2_instance_ebs_encryption_check" {
+  title       = "EC2 instance EBS encryption should be enabled"
+  description = "Ensure that EC2 instance EBS encryption is enabled."
+  query       = query.ec2_instance_ebs_encryption_check
+
+  tags = local.ec2_compliance_common_tags
+}
+
+control "ec2_ami_copy_encrypted" {
+  title       = "EC2 AMI copy should be encrypted"
+  description = "Ensure that EC2 AMI copy is encrypted."
+  query       = query.ec2_ami_copy_encrypted
+
+  tags = local.ec2_compliance_common_tags
+}
+
+control "ec2_ami_copy_encrypted_with_cmk" {
+  title       = "EC2 AMI copy should be encrypted with a customer-managed CMK"
+  description = "Ensure that EC2 AMI copy is encrypted with a customer-managed CMK."
+  query       = query.ec2_ami_copy_encrypted_with_cmk
+
+  tags = local.ec2_compliance_common_tags
+}
+
+control "ec2_ami_encrypted" {
+  title       = "EC2 AMI should be encrypted"
+  description = "Ensure that EC2 AMI is encrypted."
+  query       = query.ec2_ami_encrypted
 
   tags = local.ec2_compliance_common_tags
 }
