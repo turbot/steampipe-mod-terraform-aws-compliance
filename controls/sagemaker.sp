@@ -11,7 +11,10 @@ benchmark "sagemaker" {
   children = [
     control.sagemaker_endpoint_configuration_encryption_at_rest_enabled,
     control.sagemaker_notebook_instance_direct_internet_access_disabled,
-    control.sagemaker_notebook_instance_encryption_at_rest_enabled
+    control.sagemaker_notebook_instance_encryption_at_rest_enabled,
+    control.sagemaker_notebook_instance_in_vpc,
+    control.sagemaker_notebook_instance_root_access_disabled,
+    control.sagemaker_domain_encrypted_with_kms_cmk
   ]
 
   tags = merge(local.sagemaker_compliance_common_tags, {
@@ -60,4 +63,28 @@ control "sagemaker_notebook_instance_encryption_at_rest_enabled" {
     nist_csf           = "true"
     rbi_cyber_security = "true"
   })
+}
+
+control "sagemaker_notebook_instance_in_vpc" {
+  title       = "SageMaker notebook instances should be in a VPC"
+  description = "Manage access to the AWS Cloud by ensuring SageMaker notebook instances are within an Amazon Virtual Private Cloud (Amazon VPC)."
+  query       = query.sagemaker_notebook_instance_in_vpc
+
+  tags = local.sagemaker_compliance_common_tags
+}
+
+control "sagemaker_notebook_instance_root_access_disabled" {
+  title       = "SageMaker notebook instances root access should be disabled"
+  description = "Users with root access have administrator privileges and users can access and edit all files on a notebook instance. It is recommeneded to disable root access to restrict users from accessing and editing all the files."
+  query       = query.sagemaker_notebook_instance_root_access_disabled
+
+  tags = local.sagemaker_compliance_common_tags
+}
+
+control "sagemaker_domain_encrypted_with_kms_cmk" {
+  title       = "SageMaker domain should be encypted using KMS CMKs"
+  description = "To help protect data at rest, ensure encryption is enabled for your SageMaker domain using KMS."
+  query       = query.sagemaker_domain_encrypted_with_kms_cmk
+
+  tags = local.sagemaker_compliance_common_tags
 }

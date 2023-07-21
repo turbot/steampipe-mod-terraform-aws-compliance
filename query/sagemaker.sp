@@ -61,3 +61,66 @@ query "sagemaker_notebook_instance_encryption_at_rest_enabled" {
       type = 'aws_sagemaker_notebook_instance';
   EOQ
 }
+
+query "sagemaker_notebook_instance_in_vpc" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'subnet_id') is not null then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments -> 'subnet_id') is not null then ' in VPC'
+        else ' not in VPC'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_sagemaker_notebook_instance';
+  EOQ
+}
+
+query "sagemaker_notebook_instance_root_access_disabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'root_access') = 'Disabled' then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments ->> 'root_access') = 'Disabled' then ' root access disabled'
+        else ' root access enabled'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_sagemaker_notebook_instance';
+  EOQ
+}
+
+query "sagemaker_domain_encrypted_with_kms_cmk" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when arguments -> 'kms_key_id' is not null then 'ok'
+        else 'alarm'
+      end as status,
+      name || case
+        when arguments -> 'kms_key_id' is not null then ' encrypted with KMS'
+        else ' not encrypted with KMS'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_sagemaker_domain';
+  EOQ
+}
