@@ -9,6 +9,8 @@ benchmark "ebs" {
   description = "This benchmark provides a set of controls that detect Terraform AWS EBS resources deviating from security best practices."
 
   children = [
+    control.ebs_attached_volume_encryption_enabled,
+    control.ebs_snapshot_copy_encrypted_with_customer_key,
     control.ebs_volume_encryption_at_rest_enabled
   ]
 
@@ -43,4 +45,12 @@ control "ebs_volume_encryption_at_rest_enabled" {
     hipaa              = "true"
     rbi_cyber_security = "true"
   })
+}
+
+control "ebs_snapshot_copy_encrypted_with_customer_key" {
+  title       = "EBS snapshots should be encrypted with customer key"
+  description = "Ensure that EBS snapshots are encrypted with customer key."
+  query       = query.ebs_snapshot_copy_encrypted_with_customer_key
+
+  tags = local.ebs_compliance_common_tags
 }

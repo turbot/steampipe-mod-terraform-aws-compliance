@@ -9,7 +9,8 @@ benchmark "backup" {
   description = "This benchmark provides a set of controls that detect Terraform AWS Backup resources deviating from security best practices."
 
   children = [
-    control.backup_plan_min_retention_35_days
+    control.backup_plan_min_retention_35_days,
+    control.backup_vault_encryption_at_rest_enabled
   ]
 
   tags = merge(local.backup_compliance_common_tags, {
@@ -27,4 +28,12 @@ control "backup_plan_min_retention_35_days" {
     nist_csf = "true"
     soc_2    = "true"
   })
+}
+
+control "backup_vault_encryption_at_rest_enabled" {
+  title       = "Ensure AWS Backup vaults have encryption at rest enabled"
+  description = "Checks if AWS Backup vaults have encryption at rest enabled."
+  query       = query.backup_vault_encryption_at_rest_enabled
+
+  tags = local.backup_compliance_common_tags
 }
