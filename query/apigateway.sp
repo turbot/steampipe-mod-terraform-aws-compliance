@@ -152,3 +152,66 @@ query "apigateway_stage_logging_enabled" {
     all_stages;
   EOQ
 }
+
+query "aws_api_gateway_method_settings_cache_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'settings' ->> 'caching_enabled') = 'true' then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments -> 'settings' ->> 'caching_enabled') = 'true' then ' caching enabled'
+        else ' caching disabled'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_api_gateway_method_settings';
+  EOQ
+}
+
+query "aws_api_gateway_method_settings_cache_encrypted" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'settings' ->> 'cache_data_encrypted') = 'true' then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments -> 'settings' ->> 'cache_data_encrypted') = 'true' then ' cache encryption enabled'
+        else ' cache encryption disabled'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_api_gateway_method_settings';
+  EOQ
+}
+
+query "aws_api_gateway_method_settings_data_trace_enabled" {
+    sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'settings' ->> 'data_trace_enabled') = 'true' then 'alarm'
+        else 'ok'
+      end status,
+      name || case
+        when (arguments -> 'settings' ->> 'data_trace_enabled') = 'true' then ' data trace enabled'
+        else ' data trace disabled'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_api_gateway_method_settings';
+  EOQ
+}

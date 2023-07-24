@@ -12,7 +12,10 @@ benchmark "apigateway" {
     control.apigateway_rest_api_stage_use_ssl_certificate,
     control.apigateway_rest_api_stage_xray_tracing_enabled,
     control.apigateway_stage_cache_encryption_at_rest_enabled,
-    control.apigateway_stage_logging_enabled
+    control.apigateway_stage_logging_enabled,
+    control.aws_api_gateway_method_settings_cache_enabled,
+    control.aws_api_gateway_method_settings_cache_encrypted,
+    control.aws_api_gateway_method_settings_data_trace_enabled
   ]
 
   tags = merge(local.apigateway_compliance_common_tags, {
@@ -66,4 +69,28 @@ control "apigateway_stage_logging_enabled" {
     rbi_cyber_security = "true"
     soc_2              = "true"
   })
+}
+
+control "aws_api_gateway_method_settings_cache_enabled" {
+  title       = "AWS API Gateway Method Settings should have cache enabled"
+  description = "This control checks whether AWS API Gateway Method Settings has cache enabled. It is recommended to enable cache for all methods in API Gateway."
+  query       = query.aws_api_gateway_method_settings_cache_enabled
+
+  tags = local.apigateway_compliance_common_tags
+}
+
+control "aws_api_gateway_method_settings_cache_encrypted" {
+  title       = "AWS API Gateway Method Settings should have cache encrypted"
+  description = "This control checks whether AWS API Gateway Method Settings has cache encrypted. It is recommended to enable cache encryption for all methods in API Gateway."
+  query       = query.aws_api_gateway_method_settings_cache_encrypted
+
+  tags = local.apigateway_compliance_common_tags
+}
+
+control "aws_api_gateway_method_settings_data_trace_enabled" {
+  title       = "Ensure Data Trace is not enabled in API Gateway Method Setting"
+  description = "This control checks whether AWS API Gateway Method Settings has data trace enabled. It is recommended to disable data trace for all methods in API Gateway."
+  query       = query.aws_api_gateway_method_settings_data_trace_enabled
+
+  tags = local.apigateway_compliance_common_tags
 }
