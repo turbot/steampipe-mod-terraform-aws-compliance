@@ -204,3 +204,24 @@ query "redshift_cluster_prohibit_public_access" {
       type = 'aws_redshift_cluster';
   EOQ
 }
+
+query "redshift_cluster_no_default_database_name" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'database_name') is not null then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments ->> 'database_name') is not null then ' has database name defined'
+        else ' no database name defined'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_redshift_cluster';
+  EOQ
+}
