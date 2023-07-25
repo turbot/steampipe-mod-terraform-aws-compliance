@@ -44,7 +44,7 @@ control "autoscaling_launch_config_public_ip_disabled" {
 
 control "autoscaling_group_uses_launch_template" {
   title       = "Auto Scaling groups should use launch templates"
-  description = "Ensure EC2 Auto Scaling groups use EC2 launch templates"
+  description = "This control checks whether Amazon EC2 Auto Scaling groups use launch templates."
   query       = query.autoscaling_group_uses_launch_template
 
   tags = local.autoscaling_compliance_common_tags
@@ -52,7 +52,7 @@ control "autoscaling_group_uses_launch_template" {
 
 control "autoscaling_group_tagging_enabled" {
   title       = "Auto Scaling groups should have tagging enabled"
-  description = "Ensure EC2 Auto Scaling groups have tagging enabled"
+  description = "This control checks whether Amazon EC2 Auto Scaling groups have tagging enabled."
   query       = query.autoscaling_group_tagging_enabled
 
   tags = local.autoscaling_compliance_common_tags

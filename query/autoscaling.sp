@@ -51,8 +51,8 @@ query "autoscaling_group_uses_launch_template" {
         else 'ok'
       end status,
       name || case
-        when (arguments -> 'launch_template') is null then ' not using launch template.'
-        else ' using launch template.'
+        when (arguments -> 'launch_template') is null then ' not using launch template'
+        else ' using launch template'
       end || '.' reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -72,8 +72,8 @@ query "autoscaling_group_tagging_enabled" {
         else 'alarm'
       end status,
       name || case
-        when (arguments -> 'tag') is not null or (arguments -> 'tags') is not null then ' tagging enabled.'
-        else ' tagging disabled.'
+        when (arguments -> 'tag') is not null or (arguments -> 'tags') is not null then ' tagging enabled'
+        else ' tagging disabled'
       end || '.' reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}

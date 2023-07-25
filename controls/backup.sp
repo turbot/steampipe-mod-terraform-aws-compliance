@@ -31,8 +31,8 @@ control "backup_plan_min_retention_35_days" {
 }
 
 control "backup_vault_encryption_at_rest_enabled" {
-  title       = "Ensure AWS Backup vaults have encryption at rest enabled"
-  description = "Checks if AWS Backup vaults have encryption at rest enabled."
+  title       = "Backup vault encryption at rest enabled"
+  description = "Checks if AWS Backup vaults have encryption enabled. The rule is non complaint if the vault does not have encryption enabled."
   query       = query.backup_vault_encryption_at_rest_enabled
 
   tags = local.backup_compliance_common_tags

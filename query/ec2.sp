@@ -251,8 +251,8 @@ query "ec2_ami_imagebuilder_distribution_configuration_encrypted_with_cmk" {
         else 'ok'
       end as status,
       name || case
-        when (arguments -> 'distribution' -> 'ami_distribution_configuration' ->> 'kms_key_id') is null then ' is not encrypted with customer-managed CMK.'
-        else ' is encrypted with customer-managed CMK.'
+        when (arguments -> 'distribution' -> 'ami_distribution_configuration' ->> 'kms_key_id') is null then ' is not encrypted with customer-managed CMK'
+        else ' is encrypted with customer-managed CMK'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -272,8 +272,8 @@ query "ec2_ami_imagebuilder_image_recipe_encrypted_with_cmk" {
         else 'ok'
       end as status,
       name || case
-        when (arguments -> 'block_device_mapping' -> 'ebs' ->> 'kms_key_id') is null or (arguments -> 'block_device_mapping' -> 'ebs' ->> 'encrypted') <> 'true' or (arguments -> 'block_device_mapping' -> 'ebs' ->> 'encrypted') is null then ' is not encrypted with customer-managed CMK.'
-        else ' is encrypted with customer-managed CMK.'
+        when (arguments -> 'block_device_mapping' -> 'ebs' ->> 'kms_key_id') is null or (arguments -> 'block_device_mapping' -> 'ebs' ->> 'encrypted') <> 'true' or (arguments -> 'block_device_mapping' -> 'ebs' ->> 'encrypted') is null then ' is not encrypted with customer-managed CMK'
+        else ' is encrypted with customer-managed CMK'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -293,8 +293,8 @@ query "ec2_launch_template_metadata_hop_limit_check" {
         else 'ok'
       end as status,
       name || case
-        when (arguments -> 'metadata_options' ->> 'http_put_response_hop_limit')::int > 1 then ' metadata response hop limit value is greater than 1.'
-        else ' metadata response hop limit value is not greater than 1.'
+        when (arguments -> 'metadata_options' ->> 'http_put_response_hop_limit')::int > 1 then ' metadata response hop limit value is greater than 1'
+        else ' metadata response hop limit value is not greater than 1'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -314,8 +314,8 @@ query "ec2_launch_configuration_metadata_hop_limit_check" {
         else 'ok'
       end as status,
       name || case
-        when (arguments -> 'metadata_options' ->> 'http_put_response_hop_limit')::int > 1 then ' metadata response hop limit value is greater than 1.'
-        else ' metadata response hop limit value is not greater than 1.'
+        when (arguments -> 'metadata_options' ->> 'http_put_response_hop_limit')::int > 1 then ' metadata response hop limit value is greater than 1'
+        else ' metadata response hop limit value is not greater than 1'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -335,8 +335,8 @@ query "ec2_launch_configuration_ebs_encryption_check" {
         else 'alarm'
       end as status,
       name || case
-        when (arguments -> 'root_block_device') is not null and ((arguments -> 'root_block_device' ->> 'encrypted') = 'true' or (arguments -> 'root_block_device' ->> 'snapshot_id') is not null) and (((arguments -> 'ebs_block_device') is not null and ((arguments -> 'ebs_block_device' ->> 'encrypted') = 'true' or (arguments -> 'ebs_block_device' ->> 'snapshot_id') is not null)) or ((arguments -> 'ebs_block_device') is null))  then ' is securely encrypted.'
-        else ' is not securely encrypted.'
+        when (arguments -> 'root_block_device') is not null and ((arguments -> 'root_block_device' ->> 'encrypted') = 'true' or (arguments -> 'root_block_device' ->> 'snapshot_id') is not null) and (((arguments -> 'ebs_block_device') is not null and ((arguments -> 'ebs_block_device' ->> 'encrypted') = 'true' or (arguments -> 'ebs_block_device' ->> 'snapshot_id') is not null)) or ((arguments -> 'ebs_block_device') is null))  then ' is securely encrypted'
+        else ' is not securely encrypted'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -356,8 +356,8 @@ query "ec2_instance_ebs_encryption_check" {
         else 'alarm'
       end as status,
       name || case
-        when (arguments -> 'root_block_device') is not null and ((arguments -> 'root_block_device' ->> 'encrypted') = 'true' or (arguments -> 'root_block_device' ->> 'snapshot_id') is not null) and (((arguments -> 'ebs_block_device') is not null and ((arguments -> 'ebs_block_device' ->> 'encrypted') = 'true' or (arguments -> 'ebs_block_device' ->> 'snapshot_id') is not null)) or ((arguments -> 'ebs_block_device') is null))  then ' is securely encrypted.'
-        else ' is not securely encrypted.'
+        when (arguments -> 'root_block_device') is not null and ((arguments -> 'root_block_device' ->> 'encrypted') = 'true' or (arguments -> 'root_block_device' ->> 'snapshot_id') is not null) and (((arguments -> 'ebs_block_device') is not null and ((arguments -> 'ebs_block_device' ->> 'encrypted') = 'true' or (arguments -> 'ebs_block_device' ->> 'snapshot_id') is not null)) or ((arguments -> 'ebs_block_device') is null))  then ' is securely encrypted'
+        else ' is not securely encrypted'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -377,8 +377,8 @@ query "ec2_ami_copy_encrypted" {
         else 'alarm'
       end as status,
       name || case
-        when (arguments ->> 'encrypted') = 'true' then ' is encrypted.'
-        else ' is not encrypted.'
+        when (arguments ->> 'encrypted') = 'true' then ' is encrypted'
+        else ' is not encrypted'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -398,8 +398,8 @@ query "ec2_ami_copy_encrypted_with_cmk" {
         else 'alarm'
       end as status,
       name || case
-        when (arguments ->> 'kms_key_id') is not null then ' is encrypted.'
-        else ' is not encrypted.'
+        when (arguments ->> 'kms_key_id') is not null then ' is encrypted'
+        else ' is not encrypted'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -419,8 +419,8 @@ query "ec2_ami_encrypted" {
         else 'alarm'
       end as status,
       name || case
-        when (arguments -> 'ebs_block_device' ->> 'encrypted') = 'true' or (arguments -> 'ebs_block_device' ->> 'snapshot_id') is not null then ' is encrypted.'
-        else ' is not encrypted.'
+        when (arguments -> 'ebs_block_device' ->> 'encrypted') = 'true' or (arguments -> 'ebs_block_device' ->> 'snapshot_id') is not null then ' is encrypted'
+        else ' is not encrypted'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}

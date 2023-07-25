@@ -75,7 +75,7 @@ control "apigateway_stage_logging_enabled" {
 }
 
 control "apigateway_rest_api_create_before_destroy_enabled" {
-  title       = "AWS API Gateway REST API should have create_before_destroy enabled"
+  title       = "API Gateway REST API should have create_before_destroy enabled"
   description = "This control checks whether AWS API Gateway REST API has create_before_destroy enabled. It is recommended to enable the resource lifecycle configuration block create_before_destroy argument in this resource configuration to manage all requests that use this API, avoiding an outage."
   query       = query.apigateway_rest_api_create_before_destroy_enabled
 
@@ -83,7 +83,7 @@ control "apigateway_rest_api_create_before_destroy_enabled" {
 }
 
 control "apigateway_deployment_create_before_destroy_enabled" {
-  title       = "AWS API Gateway Deployment should have create_before_destroy enabled"
+  title       = "API Gateway Deployment should have create_before_destroy enabled"
   description = "This control checks whether AWS API Gateway Deployment has create_before_destroy enabled. It is recommended to enable the resource lifecycle configuration block create_before_destroy argument in this resource configuration to manage all requests that use this API, avoiding an outage."
   query       = query.apigateway_deployment_create_before_destroy_enabled
 
@@ -91,7 +91,7 @@ control "apigateway_deployment_create_before_destroy_enabled" {
 }
 
 control "apigateway_method_settings_cache_enabled" {
-  title       = "AWS API Gateway Method Settings should have cache enabled"
+  title       = "API Gateway Method Settings should have cache enabled"
   description = "This control checks whether AWS API Gateway Method Settings has cache enabled. It is recommended to enable cache for all methods in API Gateway."
   query       = query.apigateway_method_settings_cache_enabled
 
@@ -99,7 +99,7 @@ control "apigateway_method_settings_cache_enabled" {
 }
 
 control "apigateway_method_settings_cache_encrypted" {
-  title       = "AWS API Gateway Method Settings should have cache encrypted"
+  title       = "API Gateway Method Settings should have cache encrypted"
   description = "This control checks whether AWS API Gateway Method Settings has cache encrypted. It is recommended to enable cache encryption for all methods in API Gateway."
   query       = query.apigateway_method_settings_cache_encrypted
 
@@ -107,7 +107,7 @@ control "apigateway_method_settings_cache_encrypted" {
 }
 
 control "apigateway_method_settings_data_trace_enabled" {
-  title       = "Ensure Data Trace is not enabled in API Gateway Method Setting"
+  title       = "API Gateway Method Settings should have data trace enabled"
   description = "This control checks whether AWS API Gateway Method Settings has data trace enabled. It is recommended to disable data trace for all methods in API Gateway."
   query       = query.apigateway_method_settings_data_trace_enabled
 
@@ -115,7 +115,7 @@ control "apigateway_method_settings_data_trace_enabled" {
 }
 
 control "apigatewayv2_route_set_authorization_type" {
-  title       = "Ensure API GatewayV2 routes specify an authorization type"
+  title       = "API Gateway V2 Route should have authorization type set"
   description = "This control checks whether API Gateway V2 Route has authorization type set. It is recommended to set authorization type for all routes in API Gateway V2."
   query       = query.apigatewayv2_route_set_authorization_type
 

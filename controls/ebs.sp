@@ -49,7 +49,7 @@ control "ebs_volume_encryption_at_rest_enabled" {
 
 control "ebs_snapshot_copy_encrypted_with_customer_key" {
   title       = "EBS snapshots should be encrypted with customer key"
-  description = "Ensure that EBS snapshots are encrypted with customer key."
+  description = "This control checks whether EBS snapshots are encrypted with customer key."
   query       = query.ebs_snapshot_copy_encrypted_with_customer_key
 
   tags = local.ebs_compliance_common_tags
