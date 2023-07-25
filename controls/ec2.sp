@@ -11,6 +11,7 @@ benchmark "ec2" {
   children = [
     control.ec2_ami_copy_encrypted,
     control.ec2_ami_copy_encrypted_with_cmk,
+    control.ec2_ami_encrypted,
     control.ec2_ami_imagebuilder_component_encrypted_with_cmk,
     control.ec2_ami_imagebuilder_distribution_configuration_encrypted_with_cmk,
     control.ec2_ami_imagebuilder_image_recipe_encrypted_with_cmk,
