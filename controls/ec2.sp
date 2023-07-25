@@ -126,7 +126,9 @@ control "ec2_instance_user_data_no_secrets" {
   description = "Ensure that EC2 instances do not contain secrets in user data."
   query       = query.ec2_instance_user_data_no_secrets
 
-  tags = local.ec2_compliance_common_tags
+    tags = merge(local.ec2_compliance_common_tags, {
+    other_checks = "true"
+  })
 }
 
 control "ec2_ami_imagebuilder_component_encrypted_with_cmk" {
@@ -166,7 +168,11 @@ control "ec2_launch_configuration_metadata_hop_limit_check" {
   description = "Ensure that EC2 launch configurations do not have a metadata response hop limit greater than 1."
   query       = query.ec2_launch_configuration_metadata_hop_limit_check
 
-  tags = local.ec2_compliance_common_tags
+  
+  tags = merge(local.ec2_compliance_common_tags, {
+    aws_foundational_security = "true"
+    nist_800_53_rev_4         = "true"
+  })
 }
 
 control "ec2_launch_configuration_ebs_encryption_check" {
