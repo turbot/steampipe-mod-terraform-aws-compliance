@@ -9,16 +9,16 @@ benchmark "apigateway" {
   description = "This benchmark provides a set of controls that detect Terraform AWS API Gateway resources deviating from security best practices."
 
   children = [
+    control.apigateway_deployment_create_before_destroy_enabled,
+    control.apigateway_method_settings_cache_enabled,
+    control.apigateway_method_settings_cache_encrypted,
+    control.apigateway_method_settings_data_trace_enabled,
+    control.apigateway_rest_api_create_before_destroy_enabled,
     control.apigateway_rest_api_stage_use_ssl_certificate,
     control.apigateway_rest_api_stage_xray_tracing_enabled,
     control.apigateway_stage_cache_encryption_at_rest_enabled,
     control.apigateway_stage_logging_enabled,
-    control.aws_api_gateway_deployment_create_before_destroy_enabled,
-    control.aws_api_gateway_method_settings_cache_enabled,
-    control.aws_api_gateway_method_settings_cache_encrypted,
-    control.aws_api_gateway_method_settings_data_trace_enabled,
-    control.aws_api_gateway_rest_api_create_before_destroy_enabled,
-    control.aws_apigatewayv2_route_set_authorization_type
+    control.apigatewayv2_route_set_authorization_type
   ]
 
   tags = merge(local.apigateway_compliance_common_tags, {
@@ -74,50 +74,50 @@ control "apigateway_stage_logging_enabled" {
   })
 }
 
-control "aws_api_gateway_rest_api_create_before_destroy_enabled" {
+control "apigateway_rest_api_create_before_destroy_enabled" {
   title       = "AWS API Gateway REST API should have create_before_destroy enabled"
   description = "This control checks whether AWS API Gateway REST API has create_before_destroy enabled. It is recommended to enable the resource lifecycle configuration block create_before_destroy argument in this resource configuration to manage all requests that use this API, avoiding an outage."
-  query       = query.aws_api_gateway_rest_api_create_before_destroy_enabled
+  query       = query.apigateway_rest_api_create_before_destroy_enabled
 
   tags = local.apigateway_compliance_common_tags
 }
 
-control "aws_api_gateway_deployment_create_before_destroy_enabled" {
+control "apigateway_deployment_create_before_destroy_enabled" {
   title       = "AWS API Gateway Deployment should have create_before_destroy enabled"
   description = "This control checks whether AWS API Gateway Deployment has create_before_destroy enabled. It is recommended to enable the resource lifecycle configuration block create_before_destroy argument in this resource configuration to manage all requests that use this API, avoiding an outage."
-  query       = query.aws_api_gateway_deployment_create_before_destroy_enabled
+  query       = query.apigateway_deployment_create_before_destroy_enabled
 
   tags = local.apigateway_compliance_common_tags
 }
 
-control "aws_api_gateway_method_settings_cache_enabled" {
+control "apigateway_method_settings_cache_enabled" {
   title       = "AWS API Gateway Method Settings should have cache enabled"
   description = "This control checks whether AWS API Gateway Method Settings has cache enabled. It is recommended to enable cache for all methods in API Gateway."
-  query       = query.aws_api_gateway_method_settings_cache_enabled
+  query       = query.apigateway_method_settings_cache_enabled
 
   tags = local.apigateway_compliance_common_tags
 }
 
-control "aws_api_gateway_method_settings_cache_encrypted" {
+control "apigateway_method_settings_cache_encrypted" {
   title       = "AWS API Gateway Method Settings should have cache encrypted"
   description = "This control checks whether AWS API Gateway Method Settings has cache encrypted. It is recommended to enable cache encryption for all methods in API Gateway."
-  query       = query.aws_api_gateway_method_settings_cache_encrypted
+  query       = query.apigateway_method_settings_cache_encrypted
 
   tags = local.apigateway_compliance_common_tags
 }
 
-control "aws_api_gateway_method_settings_data_trace_enabled" {
+control "apigateway_method_settings_data_trace_enabled" {
   title       = "Ensure Data Trace is not enabled in API Gateway Method Setting"
   description = "This control checks whether AWS API Gateway Method Settings has data trace enabled. It is recommended to disable data trace for all methods in API Gateway."
-  query       = query.aws_api_gateway_method_settings_data_trace_enabled
+  query       = query.apigateway_method_settings_data_trace_enabled
 
   tags = local.apigateway_compliance_common_tags
 }
 
-control "aws_apigatewayv2_route_set_authorization_type" {
+control "apigatewayv2_route_set_authorization_type" {
   title       = "Ensure API GatewayV2 routes specify an authorization type"
   description = "This control checks whether API Gateway V2 Route has authorization type set. It is recommended to set authorization type for all routes in API Gateway V2."
-  query       = query.aws_apigatewayv2_route_set_authorization_type
+  query       = query.apigatewayv2_route_set_authorization_type
 
   tags = local.apigateway_compliance_common_tags
 }

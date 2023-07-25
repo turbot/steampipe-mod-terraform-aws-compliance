@@ -153,7 +153,7 @@ query "apigateway_stage_logging_enabled" {
   EOQ
 }
 
-query "aws_api_gateway_rest_api_create_before_destroy_enabled" {
+query "apigateway_rest_api_create_before_destroy_enabled" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,
@@ -174,7 +174,7 @@ query "aws_api_gateway_rest_api_create_before_destroy_enabled" {
   EOQ
 }
 
-query "aws_api_gateway_deployment_create_before_destroy_enabled" {
+query "apigateway_deployment_create_before_destroy_enabled" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,
@@ -193,7 +193,7 @@ query "aws_api_gateway_deployment_create_before_destroy_enabled" {
   EOQ
 }
 
-query "aws_api_gateway_method_settings_cache_enabled" {
+query "apigateway_method_settings_cache_enabled" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,
@@ -214,7 +214,7 @@ query "aws_api_gateway_method_settings_cache_enabled" {
   EOQ
 }
 
-query "aws_api_gateway_method_settings_cache_encrypted" {
+query "apigateway_method_settings_cache_encrypted" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,
@@ -235,7 +235,7 @@ query "aws_api_gateway_method_settings_cache_encrypted" {
   EOQ
 }
 
-query "aws_api_gateway_method_settings_data_trace_enabled" {
+query "apigateway_method_settings_data_trace_enabled" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,
@@ -256,7 +256,7 @@ query "aws_api_gateway_method_settings_data_trace_enabled" {
   EOQ
 }
 
-query "aws_apigatewayv2_route_set_authorization_type" {
+query "apigatewayv2_route_set_authorization_type" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,
