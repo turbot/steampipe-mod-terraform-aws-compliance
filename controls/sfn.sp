@@ -1,12 +1,12 @@
 locals {
   sfn_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
-    service = "AWS/SecretsManager"
+    service = "AWS/StepFunctions"
   })
 }
 
-benchmark "secretsmanager" {
-  title       = "Secrets Manager"
-  description = "This benchmark provides a set of controls that detect Terraform AWS Secrets Manager resources deviating from security best practices."
+benchmark "sfn" {
+  title       = "Step Functions"
+  description = "This benchmark provides a set of controls that detect Terraform AWS Step Functions resources deviating from security best practices."
 
   children = [
     control.sfn_state_machine_xray_tracing_enabled,

@@ -22,5 +22,5 @@ control "wafv2_web_acl_rule_attached" {
   description = "This control checks if a WAFV2 Web ACL contains any WAF rules or rule groups. The rule is non compliant if there are no WAF rules or rule groups present within a Web ACL."
   query       = query.wafv2_web_acl_rule_attached
 
-  tags = local.waf_compliance_common_tags
+  tags = local.wafv2_compliance_common_tags
 }

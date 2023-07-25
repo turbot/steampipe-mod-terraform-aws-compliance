@@ -1,6 +1,6 @@
 locals {
   timestream_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
-    service = "AWS/SSM"
+    service = "AWS/Timestream"
   })
 }
 
