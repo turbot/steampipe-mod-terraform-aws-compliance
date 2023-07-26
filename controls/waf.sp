@@ -12,9 +12,9 @@ benchmark "waf" {
     control.waf_web_acl_rule_attached,
     control.waf_regional_web_acl_rule_attached,
     control.waf_web_acl_logging_enabled,
-    control.wafregional_web_acl_logging_enabled,
+    control.waf_regional_web_acl_logging_enabled,
     control.waf_web_acl_rule_with_action,
-    control.wafregional_web_acl_rule_with_action
+    control.waf_regional_web_acl_rule_with_action
   ]
 
   tags = merge(local.waf_compliance_common_tags, {
@@ -46,10 +46,10 @@ control "waf_web_acl_logging_enabled" {
   tags = local.waf_compliance_common_tags
 }
 
-control "wafregional_web_acl_logging_enabled" {
+control "waf_regional_web_acl_logging_enabled" {
   title       = "WAF regional web ACL logging should be enabled"
   description = "To help with logging and monitoring within your environment, enable AWS WAF logging on regional and global web ACLs."
-  query       = query.wafregional_web_acl_logging_enabled
+  query       = query.waf_regional_web_acl_logging_enabled
 
   tags = local.waf_compliance_common_tags
 }
@@ -62,10 +62,10 @@ control "waf_web_acl_rule_with_action" {
   tags = local.waf_compliance_common_tags
 }
 
-control "wafregional_web_acl_rule_with_action" {
+control "waf_regional_web_acl_rule_with_action" {
   title       = "WAF regional web ACLs should have rules with actions"
   description = "Ensure WAF regional web ACLs have all have rules actions defined."
-  query       = query.wafregional_web_acl_rule_with_action
+  query       = query.waf_regional_web_acl_rule_with_action
 
   tags = local.waf_compliance_common_tags
 }

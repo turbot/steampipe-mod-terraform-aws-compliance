@@ -243,8 +243,8 @@ query "rds_db_cluster_encrypted_with_kms_cmk" {
         else 'ok'
       end status,
       name || case
-        when (arguments -> 'kms_key_id') is null then ' does not use KMS encryption'
-        else ' uses KMS encryption'
+        when (arguments -> 'kms_key_id') is null then ' is encrypted with KMS CMK'
+        else ' is not encrypted with KMS CMK'
       end || '.' reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}

@@ -9,7 +9,7 @@ benchmark "timestream" {
   description = "This benchmark provides a set of controls that detect Terraform AWS Timestream resources deviating from security best practices."
 
   children = [
-    control.timestream_database_encrypted_with_kms_cmk,
+    control.timestream_database_encrypted_with_kms_cmk
   ]
 
   tags = merge(local.timestream_compliance_common_tags, {

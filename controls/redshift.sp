@@ -124,7 +124,7 @@ control "redshift_cluster_prohibit_public_access" {
 
 control "redshift_cluster_no_default_database_name" {
   title       = "Redshift clusters should not use the default database name"
-  description = "This control checks whether an Amazon Redshift cluster has changed the database name from its default value. The control will fail if the database name for a Redshift cluster is set to dev."
+  description = "This control checks whether a Redshift cluster has changed the database name from its default value. The control will fail if the database name for a Redshift cluster is set to dev."
   query       = query.redshift_cluster_no_default_database_name
 
   tags = merge(local.redshift_compliance_common_tags, {

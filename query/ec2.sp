@@ -230,8 +230,8 @@ query "ec2_ami_imagebuilder_component_encrypted_with_kms_cmk" {
         else 'ok'
       end as status,
       name || case
-        when (arguments ->> 'kms_key_id') is null then ' is not encrypted with customer-managed CMK.'
-        else ' is encrypted with customer-managed CMK.'
+        when (arguments ->> 'kms_key_id') is null then ' is not encrypted with CMK'
+        else ' is encrypted with CMK'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -251,8 +251,8 @@ query "ec2_ami_imagebuilder_distribution_configuration_encrypted_with_kms_cmk" {
         else 'ok'
       end as status,
       name || case
-        when (arguments -> 'distribution' -> 'ami_distribution_configuration' ->> 'kms_key_id') is null then ' is not encrypted with customer-managed CMK'
-        else ' is encrypted with customer-managed CMK'
+        when (arguments -> 'distribution' -> 'ami_distribution_configuration' ->> 'kms_key_id') is null then ' is not encrypted with CMK'
+        else ' is encrypted with CMK'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -272,8 +272,8 @@ query "ec2_ami_imagebuilder_image_recipe_encrypted_with_kms_cmk" {
         else 'ok'
       end as status,
       name || case
-        when (arguments -> 'block_device_mapping' -> 'ebs' ->> 'kms_key_id') is null or (arguments -> 'block_device_mapping' -> 'ebs' ->> 'encrypted') <> 'true' or (arguments -> 'block_device_mapping' -> 'ebs' ->> 'encrypted') is null then ' is not encrypted with customer-managed CMK'
-        else ' is encrypted with customer-managed CMK'
+        when (arguments -> 'block_device_mapping' -> 'ebs' ->> 'kms_key_id') is null or (arguments -> 'block_device_mapping' -> 'ebs' ->> 'encrypted') <> 'true' or (arguments -> 'block_device_mapping' -> 'ebs' ->> 'encrypted') is null then ' is not encrypted with CMK'
+        else ' is encrypted with CMK'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -294,7 +294,7 @@ query "ec2_launch_template_metadata_hop_limit_check" {
       end as status,
       name || case
         when (arguments -> 'metadata_options' ->> 'http_put_response_hop_limit')::int > 1 then ' metadata response hop limit value is greater than 1'
-        else ' metadata response hop limit value is not greater than 1'
+        else ' metadata response hop limit value is not less than 1'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -315,7 +315,7 @@ query "ec2_launch_configuration_metadata_hop_limit_check" {
       end as status,
       name || case
         when (arguments -> 'metadata_options' ->> 'http_put_response_hop_limit')::int > 1 then ' metadata response hop limit value is greater than 1'
-        else ' metadata response hop limit value is not greater than 1'
+        else ' metadata response hop limit value is not less than 1'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -398,8 +398,8 @@ query "ec2_ami_copy_encrypted_with_kms_cmk" {
         else 'alarm'
       end as status,
       name || case
-        when (arguments ->> 'kms_key_id') is not null then ' is encrypted'
-        else ' is not encrypted'
+        when (arguments ->> 'kms_key_id') is not null then ' is encrypted with CMK'
+        else ' is not encrypted with CMK'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}

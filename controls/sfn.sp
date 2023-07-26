@@ -28,7 +28,7 @@ control "sfn_state_machine_xray_tracing_enabled" {
 
 control "sfn_state_machine_execution_history_logging_enabled" {
   title       = "Step Functions state machine should have execution history logging enabled"
-  description = "nsure State Machine have execution history logging enabled."
+  description = "Ensure State Machine have execution history logging enabled."
   query       = query.sfn_state_machine_execution_history_logging_enabled
 
   tags = local.sfn_compliance_common_tags

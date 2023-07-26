@@ -147,7 +147,7 @@ control "s3_public_access_block_account" {
 }
 
 control "s3_bucket_block_public_policy_enabled" {
-  title       = "S3 bucket should have block public policy enabled"
+  title       = "S3 bucket should not be publicly accessible"
   description = "Manage access to resources in the AWS Cloud by ensuring that Amazon Simple Storage Service (Amazon S3) buckets cannot be publicly accessed."
   query       = query.s3_bucket_block_public_policy_enabled
 
@@ -155,7 +155,7 @@ control "s3_bucket_block_public_policy_enabled" {
 }
 
 control "s3_bucket_object_encrypted_with_kms_cmk" {
-  title       = "S3 bucket object should be encrypted with KMS customer managed Key (CMK)"
+  title       = "S3 bucket object should be encrypted with KMS CMK"
   description = "Make sure that the object in the S3 bucket is encrypted using a customer managed Key (CMK) from KMS."
   query       = query.s3_bucket_object_encrypted_with_kms_cmk
 
@@ -163,15 +163,15 @@ control "s3_bucket_object_encrypted_with_kms_cmk" {
 }
 
 control "s3_bucket_ignore_public_acls_enabled" {
-  title       = "S3 bucket should have ignore public ACLs enabled"
-  description = "Manage access to resources in the AWS Cloud by ensuring that Amazon Simple Storage Service (Amazon S3) buckets cannot be publicly accessed."
+  title       = "S3 bucket should ignore public ACLs"
+  description = "Manage access to resources in the AWS Cloud by ensuring that Amazon Simple Storage Service (Amazon S3) buckets should ignore public ACLs."
   query       = query.s3_bucket_ignore_public_acls_enabled
 
   tags =local.s3_compliance_common_tags
 }
 
 control "s3_bucket_object_copy_encrypted_with_kms_cmk" {
-  title       = "S3 bucket object copy should be encrypted with KMS customer managed Key (CMK)"
+  title       = "S3 bucket object copy should be encrypted with KMS CMK"
   description = "Make sure that the object in the S3 bucket is encrypted using a customer managed Key (CMK) from KMS."
   query       = query.s3_bucket_object_copy_encrypted_with_kms_cmk
 
@@ -179,7 +179,7 @@ control "s3_bucket_object_copy_encrypted_with_kms_cmk" {
 }
 
 control "s3_bucket_abort_incomplete_multipart_upload_enabled" {
-  title       = "S3 bucket lifecycle configuration should have abort incomplete multipar uploads enabled"
+  title       = "S3 bucket lifecycle configuration should abort incomplete multipart uploads"
   description = "Ensure that the S3 lifecycle configuration includes a rule to set a specific period for automatically aborting failed uploads."
   query       = query.s3_bucket_abort_incomplete_multipart_upload_enabled
 

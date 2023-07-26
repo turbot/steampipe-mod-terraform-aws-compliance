@@ -214,7 +214,7 @@ query "redshift_cluster_no_default_database_name" {
         else 'alarm'
       end status,
       name || case
-        when (arguments ->> 'database_name') is not null then ' has database name defined'
+        when (arguments ->> 'database_name') is not null then ' database name defined'
         else ' no database name defined'
       end || '.' as reason
       ${local.tag_dimensions_sql}

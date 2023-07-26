@@ -19,7 +19,7 @@ benchmark "ssm" {
 }
 
 control "ssm_document_prohibit_public_access" {
-  title       = "SSM documents should not be public"
+  title       = "SSM documents should not be publicly accessible"
   description = "This control checks whether AWS Systems Manager documents that are owned by the account are public. This control fails if SSM documents with the owner Self are public."
   query       = query.ssm_document_prohibit_public_access
 
@@ -28,8 +28,8 @@ control "ssm_document_prohibit_public_access" {
 }
 
 control "ssm_parameter_encrypted_with_kms_cmk" {
-  title       = "SSM parameter should be encypted using KMS CMKs"
-  description = "To help protect data at rest, ensure encryption is enabled for your SSM parameter using KMS."
+  title       = "SSM parameter should be encypted using KMS CMK"
+  description = "To help protect data at rest, ensure encryption is enabled for your SSM parameter using KMS CMKs."
   query       = query.ssm_parameter_encrypted_with_kms_cmk
 
   tags = local.ssm_compliance_common_tags

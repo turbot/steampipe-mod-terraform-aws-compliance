@@ -32,8 +32,8 @@ control "ebs_volume_encryption_at_rest_enabled" {
 }
 
 control "ebs_snapshot_copy_encrypted_with_kms_cmk" {
-  title       = "EBS snapshots should be encrypted with customer key"
-  description = "This control checks whether EBS snapshots are encrypted with customer key."
+  title       = "EBS snapshots should be encrypted with CMK"
+  description = "This control checks whether EBS snapshots are encrypted with customer-managed key."
   query       = query.ebs_snapshot_copy_encrypted_with_kms_cmk
 
   tags = local.ebs_compliance_common_tags

@@ -15,7 +15,7 @@ query "waf_web_acl_rule_attached" {
     from
       terraform_resource
     where
-      type = 'aws_waf_web_acl'
+      type = 'aws_waf_web_acl';
   EOQ
 }
 
@@ -36,7 +36,7 @@ query "waf_regional_web_acl_rule_attached" {
     from
       terraform_resource
     where
-      type = 'aws_wafregional_web_acl'
+      type = 'aws_wafregional_web_acl';
   EOQ
 }
 
@@ -57,11 +57,11 @@ query "waf_web_acl_logging_enabled" {
     from
       terraform_resource
     where
-      type = 'aws_waf_web_acl'
+      type = 'aws_waf_web_acl';
   EOQ
 }
 
-query "wafregional_web_acl_logging_enabled" {
+query "waf_regional_web_acl_logging_enabled" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,
@@ -78,7 +78,7 @@ query "wafregional_web_acl_logging_enabled" {
     from
       terraform_resource
     where
-      type = 'aws_wafregional_web_acl'
+      type = 'aws_wafregional_web_acl';
   EOQ
 }
 
@@ -122,7 +122,7 @@ query "waf_web_acl_rule_with_action" {
   EOQ
 }
 
-query "wafregional_web_acl_rule_with_action" {
+query "waf_regional_web_acl_rule_with_action" {
   sql = <<-EOQ
     with rules_without_action as (
       select

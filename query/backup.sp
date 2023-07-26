@@ -7,7 +7,7 @@ query "backup_vault_encryption_at_rest_enabled" {
         else 'ok'
       end status,
       name || case
-        when (arguments -> 'kms_key_arn') is null then ' encryption at rest not enabled'
+        when (arguments -> 'kms_key_arn') is null then ' encryption at rest disabled'
         else ' encryption at rest enabled'
       end || '.' reason
       ${local.tag_dimensions_sql}

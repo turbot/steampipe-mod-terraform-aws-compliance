@@ -82,8 +82,8 @@ control "sagemaker_notebook_instance_root_access_disabled" {
 }
 
 control "sagemaker_domain_encrypted_with_kms_cmk" {
-  title       = "SageMaker domain should be encypted using KMS CMKs"
-  description = "To help protect data at rest, ensure encryption is enabled for your SageMaker domain using KMS."
+  title       = "SageMaker domain should be encypted using KMS CMK"
+  description = "To help protect data at rest, ensure encryption is enabled for your SageMaker domain using KMS CMKs."
   query       = query.sagemaker_domain_encrypted_with_kms_cmk
 
   tags = local.sagemaker_compliance_common_tags
