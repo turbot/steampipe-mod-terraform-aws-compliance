@@ -107,8 +107,8 @@ control "apigateway_method_settings_cache_encryption_enabled" {
 }
 
 control "apigateway_method_settings_data_trace_enabled" {
-  title       = "API Gateway Method Settings should have data trace enabled"
-  description = "This control checks whether AWS API Gateway Method Settings has data trace enabled. It is recommended to disable data trace for all methods in API Gateway."
+  title       = "API Gateway Method Settings should have data trace disabled"
+  description = "This control checks whether AWS API Gateway Method Settings has data trace disabled. It is recommended to disable data trace for all methods in API Gateway."
   query       = query.apigateway_method_settings_data_trace_enabled
 
   tags = local.apigateway_compliance_common_tags
