@@ -159,7 +159,7 @@ query "rds_db_cluster_instance_performance_insights_enabled" {
   EOQ
 }
 
-query "rds_db_cluster_instance_performance_insights_encrypted_with_cmk" {
+query "rds_db_cluster_instance_performance_insights_encrypted_with_kms_cmk" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,
@@ -180,7 +180,7 @@ query "rds_db_cluster_instance_performance_insights_encrypted_with_cmk" {
   EOQ
 }
 
-query "rds_db_instance_performance_insights_encrypted_with_cmk" {
+query "rds_db_instance_performance_insights_encrypted_with_kms_cmk" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,
@@ -266,7 +266,7 @@ query "rds_db_instance_and_cluster_enhanced_monitoring_enabled" {
   EOQ
 }
 
-query "rds_cluster_activity_stream_encrypted_with_cmk" {
+query "rds_cluster_activity_stream_encrypted_with_kms_cmk" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,
@@ -714,7 +714,7 @@ query "rds_db_instance_uses_recent_ca_cert" {
   EOQ
 }
 
-query "memorydb_snapshot_encrypted_with_cmk" {
+query "memorydb_snapshot_encrypted_with_kms_cmk" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,
@@ -735,7 +735,7 @@ query "memorydb_snapshot_encrypted_with_cmk" {
   EOQ
 }
 
-query "memorydb_cluster_encrypted_with_cmk" {
+query "memorydb_cluster_encrypted_with_kms_cmk" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,
@@ -774,5 +774,47 @@ query "memorydb_cluster_transit_encryption_enabled" {
       terraform_resource
     where
       type = 'aws_memorydb_cluster';
+  EOQ
+}
+
+query "rds_db_snapshot_not_publicly_accesible" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'shared_accounts') @> '["all"]' then 'alarm'
+        else 'ok'
+      end status,
+      name || case
+        when (arguments -> 'shared_accounts') @> '["all"]' then ' publicly accessible'
+        else ' not publicly accessible'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_db_snapshot';
+  EOQ
+}
+
+query "rds_db_snapshot_copy_encrypted_with_kms_cmk" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'kms_key_id') is null then 'alarm'
+        else 'ok'
+      end status,
+      name || case
+        when (arguments ->> 'kms_key_id') is null then ' not encrypted with a customer managed KMS key'
+        else ' encrypted with a customer managed KMS key'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_db_snapshot_copy';
   EOQ
 }
