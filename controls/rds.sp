@@ -14,6 +14,10 @@ benchmark "rds" {
     control.rds_db_cluster_deletion_protection_enabled,
     control.rds_db_cluster_encrypted_with_kms_cmk,
     control.rds_db_cluster_events_subscription,
+    control.rds_db_cluster_instance_performance_insights_enabled,
+    control.rds_db_cluster_instance_performance_insights_encrypted_with_cmk,
+    control.rds_db_instance_performance_insights_encrypted_with_cmk,
+    control.rds_db_instance_performance_insights_enabled,
     control.rds_db_cluster_iam_authentication_enabled,
     control.rds_db_cluster_multiple_az_enabled,
     control.rds_db_instance_and_cluster_enhanced_monitoring_enabled,
@@ -271,4 +275,36 @@ control "rds_db_security_group_events_subscription" {
   tags = merge(local.rds_compliance_common_tags, {
     aws_foundational_security = "true"
   })
+}
+
+control "rds_db_cluster_instance_performance_insights_enabled" {
+  title       = "RDS DB cluster instances should have performance insights enabled"
+  description = "This control checks whether Amazon Relational Database Service (Amazon RDS) DB cluster instances have Performance Insights enabled."
+  query       = query.rds_db_cluster_instance_performance_insights_enabled
+
+  tags = local.rds_compliance_common_tags
+}
+
+control "rds_db_cluster_instance_performance_insights_encrypted_with_cmk" {
+  title       = "RDS DB cluster instances should have performance insights encrypted with a customer managed key"
+  description = "This control checks whether Amazon Relational Database Service (Amazon RDS) DB cluster instances have Performance Insights encrypted with a customer managed key."
+  query       = query.rds_db_cluster_instance_performance_insights_encrypted_with_cmk
+
+  tags = local.rds_compliance_common_tags
+}
+
+control "rds_db_instance_performance_insights_encrypted_with_cmk" {
+  title       = "RDS DB instances should have performance insights encrypted with a customer managed key"
+  description = "This control checks whether Amazon Relational Database Service (Amazon RDS) DB instances have Performance Insights encrypted with a customer managed key."
+  query       = query.rds_db_instance_performance_insights_encrypted_with_cmk
+
+  tags = local.rds_compliance_common_tags
+}
+
+control "rds_db_instance_performance_insights_enabled" {
+  title       = "RDS DB instances should have performance insights enabled"
+  description = "This control checks whether Amazon Relational Database Service (Amazon RDS) DB instances have Performance Insights enabled."
+  query       = query.rds_db_instance_performance_insights_enabled
+
+  tags = local.rds_compliance_common_tags
 }

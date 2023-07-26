@@ -136,6 +136,94 @@ query "rds_db_cluster_multiple_az_enabled" {
   EOQ
 }
 
+query "rds_db_cluster_instance_performance_insights_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'performance_insights_enabled') is null then 'alarm'
+        when (arguments -> 'performance_insights_enabled')::boolean then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments -> 'performance_insights_enabled') is null then ' ''performance_insights_enabled'' disabled'
+        when (arguments -> 'performance_insights_enabled')::boolean then ' ''performance_insights_enabled'' enabled'
+        else ' ''performance_insights_enabled'' disabled'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_rds_cluster_instance';
+  EOQ
+}
+
+query "rds_db_cluster_instance_performance_insights_encrypted_with_cmk" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'performance_insights_kms_key_id') is null then 'alarm'
+        else 'ok'
+      end status,
+      name || case
+        when (arguments -> 'performance_insights_kms_key_id') is null then ' ''performance_insights_kms_key_id'' not set'
+        else ' ''performance_insights_kms_key_id'' set'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_rds_cluster_instance';
+  EOQ
+}
+
+query "rds_db_instance_performance_insights_encrypted_with_cmk" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'performance_insights_kms_key_id') is null then 'alarm'
+        else 'ok'
+      end status,
+      name || case
+        when (arguments -> 'performance_insights_kms_key_id') is null then ' ''performance_insights_kms_key_id'' not set'
+        else ' ''performance_insights_kms_key_id'' set'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_db_instance';
+  EOQ
+}
+
+query "rds_db_instance_performance_insights_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'performance_insights_enabled') is null then 'alarm'
+        when (arguments -> 'performance_insights_enabled')::boolean then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments -> 'performance_insights_enabled') is null then ' ''performance_insights_enabled'' disabled'
+        when (arguments -> 'performance_insights_enabled')::boolean then ' ''performance_insights_enabled'' enabled'
+        else ' ''performance_insights_enabled'' disabled'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_db_instance';
+  EOQ
+}
+
 query "rds_db_instance_and_cluster_enhanced_monitoring_enabled" {
   sql = <<-EOQ
     (
