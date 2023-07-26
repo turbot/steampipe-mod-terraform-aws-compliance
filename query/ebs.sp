@@ -21,7 +21,7 @@ query "ebs_volume_encryption_at_rest_enabled" {
   EOQ
 }
 
-query "ebs_snapshot_copy_encrypted_with_customer_key" {
+query "ebs_snapshot_copy_encrypted_with_kms_cmk" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,

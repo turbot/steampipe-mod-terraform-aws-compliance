@@ -214,7 +214,7 @@ query "apigateway_method_settings_cache_enabled" {
   EOQ
 }
 
-query "apigateway_method_settings_cache_encrypted" {
+query "apigateway_method_settings_cache_encryption_enabled" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,

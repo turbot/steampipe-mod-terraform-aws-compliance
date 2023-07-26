@@ -221,7 +221,7 @@ query "ec2_instance_user_data_no_secrets" {
   EOQ
 }
 
-query "ec2_ami_imagebuilder_component_encrypted_with_cmk" {
+query "ec2_ami_imagebuilder_component_encrypted_with_kms_cmk" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,
@@ -242,7 +242,7 @@ query "ec2_ami_imagebuilder_component_encrypted_with_cmk" {
   EOQ
 }
 
-query "ec2_ami_imagebuilder_distribution_configuration_encrypted_with_cmk" {
+query "ec2_ami_imagebuilder_distribution_configuration_encrypted_with_kms_cmk" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,
@@ -263,7 +263,7 @@ query "ec2_ami_imagebuilder_distribution_configuration_encrypted_with_cmk" {
   EOQ
 }
 
-query "ec2_ami_imagebuilder_image_recipe_encrypted_with_cmk" {
+query "ec2_ami_imagebuilder_image_recipe_encrypted_with_kms_cmk" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,
@@ -368,7 +368,7 @@ query "ec2_instance_ebs_encryption_check" {
   EOQ
 }
 
-query "ec2_ami_copy_encrypted" {
+query "ec2_ami_copy_encryption_enabled" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,
@@ -389,7 +389,7 @@ query "ec2_ami_copy_encrypted" {
   EOQ
 }
 
-query "ec2_ami_copy_encrypted_with_cmk" {
+query "ec2_ami_copy_encrypted_with_kms_cmk" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,
@@ -410,7 +410,7 @@ query "ec2_ami_copy_encrypted_with_cmk" {
   EOQ
 }
 
-query "ec2_ami_encrypted" {
+query "ec2_ami_encryption_enabled" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,

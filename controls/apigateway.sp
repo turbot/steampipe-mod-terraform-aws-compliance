@@ -11,7 +11,7 @@ benchmark "apigateway" {
   children = [
     control.apigateway_deployment_create_before_destroy_enabled,
     control.apigateway_method_settings_cache_enabled,
-    control.apigateway_method_settings_cache_encrypted,
+    control.apigateway_method_settings_cache_encryption_enabled,
     control.apigateway_method_settings_data_trace_enabled,
     control.apigateway_rest_api_create_before_destroy_enabled,
     control.apigateway_rest_api_stage_use_ssl_certificate,
@@ -98,10 +98,10 @@ control "apigateway_method_settings_cache_enabled" {
   tags = local.apigateway_compliance_common_tags
 }
 
-control "apigateway_method_settings_cache_encrypted" {
+control "apigateway_method_settings_cache_encryption_enabled" {
   title       = "API Gateway Method Settings should have cache encrypted"
   description = "This control checks whether AWS API Gateway Method Settings has cache encrypted. It is recommended to enable cache encryption for all methods in API Gateway."
-  query       = query.apigateway_method_settings_cache_encrypted
+  query       = query.apigateway_method_settings_cache_encryption_enabled
 
   tags = local.apigateway_compliance_common_tags
 }

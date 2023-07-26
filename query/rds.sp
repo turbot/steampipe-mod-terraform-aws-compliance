@@ -234,7 +234,7 @@ query "rds_db_instance_and_cluster_no_default_port" {
     EOQ
 }
 
-query "rds_db_cluster_kms_key_encryption_enabled" {
+query "rds_db_cluster_encrypted_with_kms_cmk" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,

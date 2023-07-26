@@ -9,12 +9,12 @@ benchmark "ec2" {
   description = "This benchmark provides a set of controls that detect Terraform AWS EC2 resources deviating from security best practices."
 
   children = [
-    control.ec2_ami_copy_encrypted,
-    control.ec2_ami_copy_encrypted_with_cmk,
-    control.ec2_ami_encrypted,
-    control.ec2_ami_imagebuilder_component_encrypted_with_cmk,
-    control.ec2_ami_imagebuilder_distribution_configuration_encrypted_with_cmk,
-    control.ec2_ami_imagebuilder_image_recipe_encrypted_with_cmk,
+    control.ec2_ami_copy_encryption_enabled,
+    control.ec2_ami_copy_encrypted_with_kms_cmk,
+    control.ec2_ami_encryption_enabled,
+    control.ec2_ami_imagebuilder_component_encrypted_with_kms_cmk,
+    control.ec2_ami_imagebuilder_distribution_configuration_encrypted_with_kms_cmk,
+    control.ec2_ami_imagebuilder_image_recipe_encrypted_with_kms_cmk,
     control.ec2_ebs_default_encryption_enabled,
     control.ec2_instance_detailed_monitoring_enabled,
     control.ec2_instance_ebs_encryption_check,
@@ -127,31 +127,31 @@ control "ec2_instance_user_data_no_secrets" {
   description = "To help protect sensitive information, ensure that Amazon Elastic Compute Cloud (Amazon EC2) instances do not contain secrets in user data."
   query       = query.ec2_instance_user_data_no_secrets
 
-    tags = merge(local.ec2_compliance_common_tags, {
+  tags = merge(local.ec2_compliance_common_tags, {
     other_checks = "true"
   })
 }
 
-control "ec2_ami_imagebuilder_component_encrypted_with_cmk" {
+control "ec2_ami_imagebuilder_component_encrypted_with_kms_cmk" {
   title       = "EC2 AMI image builder components should be encrypted with a customer-managed CMK"
   description = "This control checks whether EC2 AMI image builder components are encrypted with a customer-managed CMK."
-  query       = query.ec2_ami_imagebuilder_component_encrypted_with_cmk
+  query       = query.ec2_ami_imagebuilder_component_encrypted_with_kms_cmk
 
   tags = local.ec2_compliance_common_tags
 }
 
-control "ec2_ami_imagebuilder_distribution_configuration_encrypted_with_cmk" {
+control "ec2_ami_imagebuilder_distribution_configuration_encrypted_with_kms_cmk" {
   title       = "EC2 AMI image builder distribution configurations should be encrypted with a customer-managed CMK"
   description = "This control checks whether EC2 AMI image builder distribution configurations are encrypted with a customer-managed CMK."
-  query       = query.ec2_ami_imagebuilder_distribution_configuration_encrypted_with_cmk
+  query       = query.ec2_ami_imagebuilder_distribution_configuration_encrypted_with_kms_cmk
 
   tags = local.ec2_compliance_common_tags
 }
 
-control "ec2_ami_imagebuilder_image_recipe_encrypted_with_cmk" {
+control "ec2_ami_imagebuilder_image_recipe_encrypted_with_kms_cmk" {
   title       = "EC2 AMI image builder image recipes should be encrypted with a customer-managed CMK"
   description = "This control checks whether EC2 AMI image builder image recipes are encrypted with a customer-managed CMK."
-  query       = query.ec2_ami_imagebuilder_image_recipe_encrypted_with_cmk
+  query       = query.ec2_ami_imagebuilder_image_recipe_encrypted_with_kms_cmk
 
   tags = local.ec2_compliance_common_tags
 }
@@ -169,7 +169,7 @@ control "ec2_launch_configuration_metadata_hop_limit_check" {
   description = "This control checks whether EC2 launch configurations have a metadata response hop limit less than 1."
   query       = query.ec2_launch_configuration_metadata_hop_limit_check
 
-  
+
   tags = merge(local.ec2_compliance_common_tags, {
     aws_foundational_security = "true"
     nist_800_53_rev_4         = "true"
@@ -192,26 +192,26 @@ control "ec2_instance_ebs_encryption_check" {
   tags = local.ec2_compliance_common_tags
 }
 
-control "ec2_ami_copy_encrypted" {
+control "ec2_ami_copy_encryption_enabled" {
   title       = "EC2 AMI copy should be encrypted"
   description = "This control checks whether EC2 AMI copy is encrypted."
-  query       = query.ec2_ami_copy_encrypted
+  query       = query.ec2_ami_copy_encryption_enabled
 
   tags = local.ec2_compliance_common_tags
 }
 
-control "ec2_ami_copy_encrypted_with_cmk" {
+control "ec2_ami_copy_encrypted_with_kms_cmk" {
   title       = "EC2 AMI copy should be encrypted with a customer-managed CMK"
   description = "This control checks whether EC2 AMI copy is encrypted with a customer-managed CMK."
-  query       = query.ec2_ami_copy_encrypted_with_cmk
+  query       = query.ec2_ami_copy_encrypted_with_kms_cmk
 
   tags = local.ec2_compliance_common_tags
 }
 
-control "ec2_ami_encrypted" {
+control "ec2_ami_encryption_enabled" {
   title       = "EC2 AMI should be encrypted"
   description = "This control checks whether EC2 AMI is encrypted."
-  query       = query.ec2_ami_encrypted
+  query       = query.ec2_ami_encryption_enabled
 
   tags = local.ec2_compliance_common_tags
 }
