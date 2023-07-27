@@ -9,12 +9,12 @@ benchmark "waf" {
   description = "This benchmark provides a set of controls that detect Terraform AWS WAF deviating from security best practices."
 
   children = [
-    control.waf_web_acl_rule_attached,
-    control.waf_regional_web_acl_rule_attached,
-    control.waf_web_acl_logging_enabled,
     control.waf_regional_web_acl_logging_enabled,
-    control.waf_web_acl_rule_with_action,
-    control.waf_regional_web_acl_rule_with_action
+    control.waf_regional_web_acl_rule_attached,
+    control.waf_regional_web_acl_rule_with_action,
+    control.waf_web_acl_logging_enabled,
+    control.waf_web_acl_rule_attached,
+    control.waf_web_acl_rule_with_action
   ]
 
   tags = merge(local.waf_compliance_common_tags, {
