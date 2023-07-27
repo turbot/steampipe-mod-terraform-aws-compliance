@@ -17,8 +17,8 @@ benchmark "redshift" {
     control.redshift_cluster_kms_enabled,
     control.redshift_cluster_logging_enabled,
     control.redshift_cluster_maintenance_settings_check,
-    control.redshift_cluster_prohibit_public_access,
-    control.redshift_cluster_no_default_database_name
+    control.redshift_cluster_no_default_database_name,
+    control.redshift_cluster_prohibit_public_access
   ]
 
   tags = merge(local.redshift_compliance_common_tags, {

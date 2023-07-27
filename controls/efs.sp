@@ -10,7 +10,7 @@ benchmark "efs" {
 
   children = [
     control.efs_file_system_automatic_backups_enabled,
-    control.efs_file_system_encrypt_data_at_rest,
+    control.efs_file_system_encrypt_data_at_rest
   ]
 
   tags = merge(local.efs_compliance_common_tags, {

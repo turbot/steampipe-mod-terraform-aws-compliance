@@ -9,20 +9,20 @@ benchmark "s3" {
   description = "This benchmark provides a set of controls that detect Terraform AWS S3 resources deviating from security best practices."
 
   children = [
+    control.s3_bucket_abort_incomplete_multipart_upload_enabled,
+    control.s3_bucket_block_public_policy_enabled,
     control.s3_bucket_cross_region_replication_enabled,
-    control.s3_bucket_default_encryption_enabled_kms,
     control.s3_bucket_default_encryption_enabled,
+    control.s3_bucket_default_encryption_enabled_kms,
+    control.s3_bucket_ignore_public_acls_enabled,
     control.s3_bucket_logging_enabled,
     control.s3_bucket_mfa_delete_enabled,
+    control.s3_bucket_object_copy_encrypted_with_kms_cmk,
+    control.s3_bucket_object_encrypted_with_kms_cmk,
     control.s3_bucket_object_lock_enabled,
     control.s3_bucket_public_access_blocked,
     control.s3_bucket_versioning_enabled,
-    control.s3_public_access_block_account,
-    control.s3_bucket_block_public_policy_enabled,
-    control.s3_bucket_object_encrypted_with_kms_cmk,
-    control.s3_bucket_object_copy_encrypted_with_kms_cmk,
-    control.s3_bucket_ignore_public_acls_enabled,
-    control.s3_bucket_abort_incomplete_multipart_upload_enabled
+    control.s3_public_access_block_account
   ]
 
   tags = merge(local.s3_compliance_common_tags, {

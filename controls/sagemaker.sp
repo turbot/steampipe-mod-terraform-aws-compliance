@@ -9,12 +9,12 @@ benchmark "sagemaker" {
   description = "This benchmark provides a set of controls that detect Terraform AWS SageMaker resources deviating from security best practices."
 
   children = [
+    control.sagemaker_domain_encrypted_with_kms_cmk,
     control.sagemaker_endpoint_configuration_encryption_at_rest_enabled,
     control.sagemaker_notebook_instance_direct_internet_access_disabled,
     control.sagemaker_notebook_instance_encryption_at_rest_enabled,
     control.sagemaker_notebook_instance_in_vpc,
-    control.sagemaker_notebook_instance_root_access_disabled,
-    control.sagemaker_domain_encrypted_with_kms_cmk
+    control.sagemaker_notebook_instance_root_access_disabled
   ]
 
   tags = merge(local.sagemaker_compliance_common_tags, {
