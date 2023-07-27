@@ -9,8 +9,8 @@ benchmark "sfn" {
   description = "This benchmark provides a set of controls that detect Terraform AWS Step Functions resources deviating from security best practices."
 
   children = [
-    control.sfn_state_machine_xray_tracing_enabled,
-    control.sfn_state_machine_execution_history_logging_enabled
+    control.sfn_state_machine_execution_history_logging_enabled,
+    control.sfn_state_machine_xray_tracing_enabled
   ]
 
   tags = merge(local.sfn_compliance_common_tags, {
