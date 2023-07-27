@@ -15,6 +15,6 @@ query "wafv2_web_acl_rule_attached" {
     from
       terraform_resource
     where
-      type = 'aws_wafv2_web_acl'
+      type = 'aws_wafv2_web_acl';
   EOQ
 }
