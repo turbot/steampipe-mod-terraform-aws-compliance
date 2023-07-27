@@ -16,9 +16,11 @@ benchmark "rds" {
     control.rds_db_cluster_aurora_backtracking_enabled,
     control.rds_db_cluster_copy_tags_to_snapshot_enabled,
     control.rds_db_cluster_deletion_protection_enabled,
+    control.rds_db_cluster_encryption_enabled,
     control.rds_db_cluster_encrypted_with_kms_cmk,
     control.rds_db_cluster_events_subscription,
     control.rds_db_cluster_iam_authentication_enabled,
+    control.rds_db_cluster_instance_automatic_minor_version_upgrade_enabled,
     control.rds_db_cluster_instance_performance_insights_enabled,
     control.rds_db_cluster_instance_performance_insights_encrypted_with_kms_cmk,
     control.rds_db_cluster_kms_key_encryption_enabled,
@@ -41,7 +43,8 @@ benchmark "rds" {
     control.rds_db_parameter_group_events_subscription,
     control.rds_db_security_group_events_subscription,
     control.rds_db_snapshot_copy_encrypted_with_kms_cmk,
-    control.rds_db_snapshot_not_publicly_accesible
+    control.rds_db_snapshot_not_publicly_accesible,
+    control.rds_mysql_db_cluster_audit_logging_enabled
   ]
 
   tags = merge(local.rds_compliance_common_tags, {
@@ -381,10 +384,26 @@ control "rds_db_snapshot_copy_encrypted_with_kms_cmk" {
   tags = local.rds_compliance_common_tags
 }
 
-control "rds_db_instance_auto_minor_version_upgrade_enabled" {
-  title       = "RDS DB instances should have auto minor version upgrade enabled"
-  description = "This control checks whether Relational Database Service instances have auto minor version upgrade is enabled."
-  query       = query.rds_db_instance_auto_minor_version_upgrade_enabled
+control "rds_db_cluster_instance_automatic_minor_version_upgrade_enabled" {
+  title       = "RDS DB cluster instances should have auto minor version upgrade enabled"
+  description = "This control checks whether Relational Database Service cluster instances have auto minor version upgrade is enabled."
+  query       = query.rds_db_cluster_instance_automatic_minor_version_upgrade_enabled
+
+  tags = local.rds_compliance_common_tags
+}
+
+control "rds_db_cluster_encryption_enabled" {
+  title       = "RDS DB clusters should have encryption at rest enabled"
+  description = "This control checks whether Relational Database Service clusters have encryption at rest enabled."
+  query       = query.rds_db_cluster_encryption_enabled
+
+  tags = local.rds_compliance_common_tags
+}
+
+control "rds_mysql_db_cluster_audit_logging_enabled" {
+  title       = "RDS MySQL DB clusters should have audit logging enabled"
+  description = "This control checks whether Relational Database Service MySQL DB clusters have audit logging enabled."
+  query       = query.rds_mysql_db_cluster_audit_logging_enabled
 
   tags = local.rds_compliance_common_tags
 }

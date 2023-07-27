@@ -819,7 +819,7 @@ query "rds_db_snapshot_copy_encrypted_with_kms_cmk" {
   EOQ
 }
 
-query "rds_db_instance_auto_minor_version_upgrade_enabled" {
+query "rds_db_cluster_instance_automatic_minor_version_upgrade_enabled" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,
@@ -836,6 +836,50 @@ query "rds_db_instance_auto_minor_version_upgrade_enabled" {
     from
       terraform_resource
     where
-      type = 'aws_db_instance';
+      type = 'aws_rds_cluster_instance';
+  EOQ
+}
+
+query "rds_db_cluster_encryption_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'storage_encrypted') = 'true' or (arguments ->> 'engine_mode') = 'serverless' then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments ->> 'storage_encrypted') = 'true' or (arguments ->> 'engine_mode') = 'serverless' then ' encryption enabled'
+        else ' encryption disabled'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_rds_cluster';
+  EOQ
+}
+
+query "rds_mysql_db_cluster_audit_logging_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'engine')::text not like '%mysql' then 'skip'
+        when (arguments ->> 'engine')::text like '%mysql' and (arguments -> 'enabled_cloudwatch_logs_exports') @> '["audit"]' then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments ->> 'engine')::text not like '%mysql' then ' not a MySQL cluster'
+        when (arguments ->> 'engine')::text like '%mysql' and (arguments -> 'enabled_cloudwatch_logs_exports') @> '["audit"]' then ' audit logging enabled'
+        else ' audit logging disabled'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_rds_cluster';
   EOQ
 }
