@@ -818,3 +818,24 @@ query "rds_db_snapshot_copy_encrypted_with_kms_cmk" {
       type = 'aws_db_snapshot_copy';
   EOQ
 }
+
+query "rds_db_instance_auto_minor_version_upgrade_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'auto_minor_version_upgrade') = 'false' then 'alarm'
+        else 'ok'
+      end status,
+      name || case
+        when (arguments ->> 'auto_minor_version_upgrade') = 'false' then ' auto minor version upgrade not enabled'
+        else ' auto minor version upgrade enabled'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_db_instance';
+  EOQ
+}

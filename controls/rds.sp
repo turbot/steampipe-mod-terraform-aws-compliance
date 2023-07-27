@@ -380,3 +380,11 @@ control "rds_db_snapshot_copy_encrypted_with_kms_cmk" {
 
   tags = local.rds_compliance_common_tags
 }
+
+control "rds_db_instance_auto_minor_version_upgrade_enabled" {
+  title       = "RDS DB instances should have auto minor version upgrade enabled"
+  description = "This control checks whether Relational Database Service instances have auto minor version upgrade is enabled."
+  query       = query.rds_db_instance_auto_minor_version_upgrade_enabled
+
+  tags = local.rds_compliance_common_tags
+}
