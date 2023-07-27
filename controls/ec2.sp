@@ -133,7 +133,7 @@ control "ec2_instance_user_data_no_secrets" {
 }
 
 control "ec2_ami_imagebuilder_component_encrypted_with_kms_cmk" {
-  title       = "EC2 AMI image builder components should be encrypted with CMK"
+  title       = "EC2 AMI image builder components should be encrypted with KMS CMK"
   description = "This control checks whether EC2 AMI image builder components are encrypted with a customer-managed key."
   query       = query.ec2_ami_imagebuilder_component_encrypted_with_kms_cmk
 
@@ -141,7 +141,7 @@ control "ec2_ami_imagebuilder_component_encrypted_with_kms_cmk" {
 }
 
 control "ec2_ami_imagebuilder_distribution_configuration_encrypted_with_kms_cmk" {
-  title       = "EC2 AMI image builder distribution configurations should be encrypted with CMK"
+  title       = "EC2 AMI image builder distribution configurations should be encrypted with KMS CMK"
   description = "This control checks whether EC2 AMI image builder distribution configurations are encrypted with a customer-managed key."
   query       = query.ec2_ami_imagebuilder_distribution_configuration_encrypted_with_kms_cmk
 
@@ -149,7 +149,7 @@ control "ec2_ami_imagebuilder_distribution_configuration_encrypted_with_kms_cmk"
 }
 
 control "ec2_ami_imagebuilder_image_recipe_encrypted_with_kms_cmk" {
-  title       = "EC2 AMI image builder image recipes should be encrypted with CMK"
+  title       = "EC2 AMI image builder image recipes should be encrypted with KMS CMK"
   description = "This control checks whether EC2 AMI image builder image recipes are encrypted with a customer-managed key."
   query       = query.ec2_ami_imagebuilder_image_recipe_encrypted_with_kms_cmk
 
@@ -201,7 +201,7 @@ control "ec2_ami_copy_encryption_enabled" {
 }
 
 control "ec2_ami_copy_encrypted_with_kms_cmk" {
-  title       = "EC2 AMI copy should be encrypted with CMK"
+  title       = "EC2 AMI copy should be encrypted with KMS CMK"
   description = "This control checks whether EC2 AMI copy is encrypted with a customer-managed key."
   query       = query.ec2_ami_copy_encrypted_with_kms_cmk
 

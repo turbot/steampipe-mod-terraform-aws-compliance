@@ -345,20 +345,20 @@ query "s3_bucket_abort_incomplete_multipart_upload_enabled" {
         and type = 'aws_s3_bucket_lifecycle_configuration'
     )
     select
-        r.type || ' ' || r.name as resource,
-        case
-          when u.name is not null then 'ok'
-          else 'alarm'
-        end as status,
-        r.name || case
-          when u.name is not null then ' has abort incomplete multipart upload enabled'
-          else ' has abort incomplete multipart upload disabled'
-        end || '.' as reason
-        ${local.common_dimensions_sql}
-      from
-        terraform_resource as r
-        left join lifecycle_configuration_with_abort_incomplete_multipart_upload as u on u.name = concat(r.type || ' ' || r.name )
-      where
-        r.type = 'aws_s3_bucket_lifecycle_configuration';
+      r.type || ' ' || r.name as resource,
+      case
+        when u.name is not null then 'ok'
+        else 'alarm'
+      end as status,
+      r.name || case
+        when u.name is not null then ' has abort incomplete multipart upload enabled'
+        else ' has abort incomplete multipart upload disabled'
+      end || '.' as reason
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource as r
+      left join lifecycle_configuration_with_abort_incomplete_multipart_upload as u on u.name = concat(r.type || ' ' || r.name )
+    where
+      r.type = 'aws_s3_bucket_lifecycle_configuration';
   EOQ
 }

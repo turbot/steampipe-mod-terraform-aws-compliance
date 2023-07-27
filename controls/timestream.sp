@@ -18,8 +18,8 @@ benchmark "timestream" {
 }
 
 control "timestream_database_encrypted_with_kms_cmk" {
-  title       = "SSM documents should not be public"
-  description = "To help protect data at rest, ensure encryption with AWS Key Management Service (AWS KMS) is enabled for your SageMaker endpoint."
+  title       = "Timestream databases should be encrypted using KMS CMK"
+  description = "To help protect data at rest, ensure encryption with AWS Key Management Service (AWS KMS) is enabled for your Timestream database."
   query       = query.timestream_database_encrypted_with_kms_cmk
 
   tags = local.timestream_compliance_common_tags

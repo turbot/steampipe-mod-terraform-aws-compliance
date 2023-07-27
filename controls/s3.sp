@@ -147,7 +147,7 @@ control "s3_public_access_block_account" {
 }
 
 control "s3_bucket_block_public_policy_enabled" {
-  title       = "S3 bucket should not be publicly accessible"
+  title       = "S3 bucket should have block public policy enabled"
   description = "Manage access to resources in the AWS Cloud by ensuring that Amazon Simple Storage Service (Amazon S3) buckets cannot be publicly accessed."
   query       = query.s3_bucket_block_public_policy_enabled
 
