@@ -10,9 +10,9 @@ benchmark "sqs" {
 
   children = [
     control.sqs_queue_encrypted_at_rest,
-    control.sqs_vpc_endpoint_without_dns_resolution,
     control.sqs_queue_policy_no_action_star,
-    control.sqs_queue_policy_no_principal_star
+    control.sqs_queue_policy_no_principal_star,
+    control.sqs_vpc_endpoint_without_dns_resolution
   ]
 
   tags = merge(local.sqs_compliance_common_tags, {
