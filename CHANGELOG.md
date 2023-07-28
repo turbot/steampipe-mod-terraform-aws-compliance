@@ -2,7 +2,7 @@
 
 _What's new?_
 
-- 43 new controls have been added across the benchmarks. ([#54](https://github.com/turbot/steampipe-mod-terraform-aws-compliance/pull/54))
+- Added 43 new controls across the benchmarks. ([#54](https://github.com/turbot/steampipe-mod-terraform-aws-compliance/pull/54))
 
 _Bug fixes_
 
