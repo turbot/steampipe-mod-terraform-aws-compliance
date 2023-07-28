@@ -17,6 +17,7 @@ benchmark "redshift" {
     control.redshift_cluster_kms_enabled,
     control.redshift_cluster_logging_enabled,
     control.redshift_cluster_maintenance_settings_check,
+    control.redshift_cluster_no_default_database_name,
     control.redshift_cluster_prohibit_public_access
   ]
 
@@ -118,5 +119,15 @@ control "redshift_cluster_prohibit_public_access" {
     nist_csf                  = "true"
     pci                       = "true"
     rbi_cyber_security        = "true"
+  })
+}
+
+control "redshift_cluster_no_default_database_name" {
+  title       = "Redshift clusters should not use the default database name"
+  description = "This control checks whether a Redshift cluster has changed the database name from its default value. The control will fail if the database name for a Redshift cluster is set to dev."
+  query       = query.redshift_cluster_no_default_database_name
+
+  tags = merge(local.redshift_compliance_common_tags, {
+    nist_csf = "true"
   })
 }

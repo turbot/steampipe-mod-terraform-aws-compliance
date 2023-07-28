@@ -13,7 +13,7 @@ benchmark "lambda" {
     control.lambda_function_dead_letter_queue_configured,
     control.lambda_function_in_vpc,
     control.lambda_function_use_latest_runtime,
-    control.lambda_function_xray_tracing_enabled,
+    control.lambda_function_xray_tracing_enabled
   ]
 
   tags = merge(local.lambda_compliance_common_tags, {

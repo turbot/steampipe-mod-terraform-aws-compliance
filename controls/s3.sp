@@ -9,11 +9,16 @@ benchmark "s3" {
   description = "This benchmark provides a set of controls that detect Terraform AWS S3 resources deviating from security best practices."
 
   children = [
+    control.s3_bucket_abort_incomplete_multipart_upload_enabled,
+    control.s3_bucket_block_public_policy_enabled,
     control.s3_bucket_cross_region_replication_enabled,
-    control.s3_bucket_default_encryption_enabled_kms,
     control.s3_bucket_default_encryption_enabled,
+    control.s3_bucket_default_encryption_enabled_kms,
+    control.s3_bucket_ignore_public_acls_enabled,
     control.s3_bucket_logging_enabled,
     control.s3_bucket_mfa_delete_enabled,
+    control.s3_bucket_object_copy_encrypted_with_kms_cmk,
+    control.s3_bucket_object_encrypted_with_kms_cmk,
     control.s3_bucket_object_lock_enabled,
     control.s3_bucket_public_access_blocked,
     control.s3_bucket_versioning_enabled,
@@ -139,4 +144,44 @@ control "s3_public_access_block_account" {
     nist_800_53_rev_4         = "true"
     nist_csf                  = "true"
   })
+}
+
+control "s3_bucket_block_public_policy_enabled" {
+  title       = "S3 bucket should have block public policy enabled"
+  description = "Manage access to resources in the AWS Cloud by ensuring that Amazon Simple Storage Service (Amazon S3) buckets cannot be publicly accessed."
+  query       = query.s3_bucket_block_public_policy_enabled
+
+  tags =local.s3_compliance_common_tags
+}
+
+control "s3_bucket_object_encrypted_with_kms_cmk" {
+  title       = "S3 bucket object should be encrypted with KMS CMK"
+  description = "Make sure that the object in the S3 bucket is encrypted using a customer managed Key (CMK) from KMS."
+  query       = query.s3_bucket_object_encrypted_with_kms_cmk
+
+  tags =local.s3_compliance_common_tags
+}
+
+control "s3_bucket_ignore_public_acls_enabled" {
+  title       = "S3 bucket should ignore public ACLs"
+  description = "Manage access to resources in the AWS Cloud by ensuring that Amazon Simple Storage Service (Amazon S3) buckets should ignore public ACLs."
+  query       = query.s3_bucket_ignore_public_acls_enabled
+
+  tags =local.s3_compliance_common_tags
+}
+
+control "s3_bucket_object_copy_encrypted_with_kms_cmk" {
+  title       = "S3 bucket object copy should be encrypted with KMS CMK"
+  description = "Make sure that the object in the S3 bucket is encrypted using a customer managed Key (CMK) from KMS."
+  query       = query.s3_bucket_object_copy_encrypted_with_kms_cmk
+
+  tags =local.s3_compliance_common_tags
+}
+
+control "s3_bucket_abort_incomplete_multipart_upload_enabled" {
+  title       = "S3 bucket lifecycle configuration should abort incomplete multipart uploads"
+  description = "Ensure that the S3 lifecycle configuration includes a rule to set a specific period for automatically aborting failed uploads."
+  query       = query.s3_bucket_abort_incomplete_multipart_upload_enabled
+
+  tags =local.s3_compliance_common_tags
 }

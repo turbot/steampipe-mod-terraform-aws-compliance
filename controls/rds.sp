@@ -12,6 +12,7 @@ benchmark "rds" {
     control.rds_db_cluster_aurora_backtracking_enabled,
     control.rds_db_cluster_copy_tags_to_snapshot_enabled,
     control.rds_db_cluster_deletion_protection_enabled,
+    control.rds_db_cluster_encrypted_with_kms_cmk,
     control.rds_db_cluster_events_subscription,
     control.rds_db_cluster_iam_authentication_enabled,
     control.rds_db_cluster_multiple_az_enabled,
@@ -94,6 +95,14 @@ control "rds_db_cluster_multiple_az_enabled" {
   tags = merge(local.rds_compliance_common_tags, {
     aws_foundational_security = "true"
   })
+}
+
+control "rds_db_cluster_encrypted_with_kms_cmk" {
+  title       = "RDS DB clusters should be encrypted using KMS CMK"
+  description = "This control checks whether RDS DB clusters are encrypted using KMS CMK."
+  query       = query.rds_db_cluster_encrypted_with_kms_cmk
+
+  tags = local.rds_compliance_common_tags
 }
 
 control "rds_db_instance_and_cluster_enhanced_monitoring_enabled" {

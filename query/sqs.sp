@@ -44,3 +44,45 @@ query "sqs_vpc_endpoint_without_dns_resolution" {
       type = 'aws_vpc_endpoint';
   EOQ
 }
+
+query "sqs_queue_policy_no_action_star" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when ((arguments ->> 'policy')::jsonb ) -> 'Statement'  @> '[{"Action": "*"}]' then 'alarm'
+        else 'ok'
+      end as status,
+      name || case
+        when ((arguments ->> 'policy')::jsonb ) -> 'Statement'  @> '[{"Action": "*"}]'  then ' policy allow wildcard action'
+        else ' policy is ok'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_sqs_queue_policy';
+  EOQ
+}
+
+query "sqs_queue_policy_no_principal_star" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when ((arguments ->> 'policy')::jsonb ) -> 'Statement'  @> '[{"Principal": "*"}]' then 'alarm'
+        else 'ok'
+      end as status,
+      name || case
+        when ((arguments ->> 'policy')::jsonb ) -> 'Statement'  @> '[{"Principal": "*"}]'  then ' policy allow all principal'
+        else ' policy is ok'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_sqs_queue_policy';
+  EOQ
+}

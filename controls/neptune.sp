@@ -9,8 +9,8 @@ benchmark "neptune" {
   description = "This benchmark provides a set of controls that detect Terraform AWS Neptune resources deviating from security best practices."
 
   children = [
-    control.neptune_cluster_logging_enabled,
-    control.neptune_cluster_encryption_at_rest_enabled
+    control.neptune_cluster_encryption_at_rest_enabled,
+    control.neptune_cluster_logging_enabled
   ]
 
   tags = merge(local.neptune_compliance_common_tags, {
