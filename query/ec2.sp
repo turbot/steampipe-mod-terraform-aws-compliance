@@ -195,3 +195,238 @@ query "ec2_instance_uses_imdsv2" {
       type = 'aws_instance';
   EOQ
 }
+
+query "ec2_instance_user_data_no_secrets" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'user_data') is null then 'skip'
+        when (arguments ->> 'user_data') like any (array ['%pass%', '%secret%','%token%','%key%'])
+          or (arguments ->> 'user_data') ~ '(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]' then 'alarm'
+        else 'ok'
+      end as status,
+      name || case
+        when (arguments ->> 'user_data') is null then ' no user data defined.'
+        when (arguments ->> 'user_data') like any (array ['%pass%', '%secret%','%token%','%key%'])
+          or (arguments ->> 'user_data') ~ '(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]' then ' potential secret found in user data.'
+        else ' no secrets found in user data.'
+      end as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_instance';
+  EOQ
+}
+
+query "ec2_ami_imagebuilder_component_encrypted_with_kms_cmk" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'kms_key_id') is null then 'alarm'
+        else 'ok'
+      end as status,
+      name || case
+        when (arguments ->> 'kms_key_id') is null then ' is not encrypted with CMK'
+        else ' is encrypted with CMK'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_imagebuilder_component';
+  EOQ
+}
+
+query "ec2_ami_imagebuilder_distribution_configuration_encrypted_with_kms_cmk" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'distribution' -> 'ami_distribution_configuration' ->> 'kms_key_id') is null then 'alarm'
+        else 'ok'
+      end as status,
+      name || case
+        when (arguments -> 'distribution' -> 'ami_distribution_configuration' ->> 'kms_key_id') is null then ' is not encrypted with CMK'
+        else ' is encrypted with CMK'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_imagebuilder_distribution_configuration';
+  EOQ
+}
+
+query "ec2_ami_imagebuilder_image_recipe_encrypted_with_kms_cmk" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'block_device_mapping' -> 'ebs' ->> 'kms_key_id') is null or (arguments -> 'block_device_mapping' -> 'ebs' ->> 'encrypted') <> 'true' or (arguments -> 'block_device_mapping' -> 'ebs' ->> 'encrypted') is null then 'alarm'
+        else 'ok'
+      end as status,
+      name || case
+        when (arguments -> 'block_device_mapping' -> 'ebs' ->> 'kms_key_id') is null or (arguments -> 'block_device_mapping' -> 'ebs' ->> 'encrypted') <> 'true' or (arguments -> 'block_device_mapping' -> 'ebs' ->> 'encrypted') is null then ' is not encrypted with CMK'
+        else ' is encrypted with CMK'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_imagebuilder_image_recipe';
+  EOQ
+}
+
+query "ec2_launch_template_metadata_hop_limit_check" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'metadata_options' ->> 'http_put_response_hop_limit')::int > 1 then 'alarm'
+        else 'ok'
+      end as status,
+      name || case
+        when (arguments -> 'metadata_options' ->> 'http_put_response_hop_limit')::int > 1 then ' metadata response hop limit value is greater than 1'
+        else ' metadata response hop limit value is not less than 1'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_launch_template';
+  EOQ
+}
+
+query "ec2_launch_configuration_metadata_hop_limit_check" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'metadata_options' ->> 'http_put_response_hop_limit')::int > 1 then 'alarm'
+        else 'ok'
+      end as status,
+      name || case
+        when (arguments -> 'metadata_options' ->> 'http_put_response_hop_limit')::int > 1 then ' metadata response hop limit value is greater than 1'
+        else ' metadata response hop limit value is not less than 1'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_launch_configuration';
+  EOQ
+}
+
+query "ec2_launch_configuration_ebs_encryption_check" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'root_block_device') is not null and ((arguments -> 'root_block_device' ->> 'encrypted') = 'true' or (arguments -> 'root_block_device' ->> 'snapshot_id') is not null) and (((arguments -> 'ebs_block_device') is not null and ((arguments -> 'ebs_block_device' ->> 'encrypted') = 'true' or (arguments -> 'ebs_block_device' ->> 'snapshot_id') is not null)) or ((arguments -> 'ebs_block_device') is null))  then 'ok'
+        else 'alarm'
+      end as status,
+      name || case
+        when (arguments -> 'root_block_device') is not null and ((arguments -> 'root_block_device' ->> 'encrypted') = 'true' or (arguments -> 'root_block_device' ->> 'snapshot_id') is not null) and (((arguments -> 'ebs_block_device') is not null and ((arguments -> 'ebs_block_device' ->> 'encrypted') = 'true' or (arguments -> 'ebs_block_device' ->> 'snapshot_id') is not null)) or ((arguments -> 'ebs_block_device') is null))  then ' is securely encrypted'
+        else ' is not securely encrypted'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_launch_configuration';
+  EOQ
+}
+
+query "ec2_instance_ebs_encryption_check" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'root_block_device') is not null and ((arguments -> 'root_block_device' ->> 'encrypted') = 'true' or (arguments -> 'root_block_device' ->> 'snapshot_id') is not null) and (((arguments -> 'ebs_block_device') is not null and ((arguments -> 'ebs_block_device' ->> 'encrypted') = 'true' or (arguments -> 'ebs_block_device' ->> 'snapshot_id') is not null)) or ((arguments -> 'ebs_block_device') is null))  then 'ok'
+        else 'alarm'
+      end as status,
+      name || case
+        when (arguments -> 'root_block_device') is not null and ((arguments -> 'root_block_device' ->> 'encrypted') = 'true' or (arguments -> 'root_block_device' ->> 'snapshot_id') is not null) and (((arguments -> 'ebs_block_device') is not null and ((arguments -> 'ebs_block_device' ->> 'encrypted') = 'true' or (arguments -> 'ebs_block_device' ->> 'snapshot_id') is not null)) or ((arguments -> 'ebs_block_device') is null))  then ' is securely encrypted'
+        else ' is not securely encrypted'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_instance';
+  EOQ
+}
+
+query "ec2_ami_copy_encryption_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'encrypted') = 'true' then 'ok'
+        else 'alarm'
+      end as status,
+      name || case
+        when (arguments ->> 'encrypted') = 'true' then ' is encrypted'
+        else ' is not encrypted'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_ami_copy';
+  EOQ
+}
+
+query "ec2_ami_copy_encrypted_with_kms_cmk" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'kms_key_id') is not null then 'ok'
+        else 'alarm'
+      end as status,
+      name || case
+        when (arguments ->> 'kms_key_id') is not null then ' is encrypted with CMK'
+        else ' is not encrypted with CMK'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_ami_copy';
+  EOQ
+}
+
+query "ec2_ami_encryption_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'ebs_block_device' ->> 'encrypted') = 'true' or (arguments -> 'ebs_block_device' ->> 'snapshot_id') is not null then 'ok'
+        else 'alarm'
+      end as status,
+      name || case
+        when (arguments -> 'ebs_block_device' ->> 'encrypted') = 'true' or (arguments -> 'ebs_block_device' ->> 'snapshot_id') is not null then ' is encrypted'
+        else ' is not encrypted'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_ami';
+  EOQ
+}

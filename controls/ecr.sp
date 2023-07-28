@@ -9,9 +9,9 @@ benchmark "ecr" {
   description = "This benchmark provides a set of controls that detect Terraform AWS ECR resources deviating from security best practices."
 
   children = [
+    control.ecr_repository_encrypted_with_kms,
     control.ecr_repository_tags_immutable,
-    control.ecr_repository_use_image_scanning,
-    control.ecr_repository_encrypted_with_kms
+    control.ecr_repository_use_image_scanning
   ]
 
   tags = local.ecr_compliance_common_tags

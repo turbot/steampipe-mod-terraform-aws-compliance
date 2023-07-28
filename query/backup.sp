@@ -1,3 +1,24 @@
+query "backup_vault_encryption_at_rest_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'kms_key_arn') is null then 'alarm'
+        else 'ok'
+      end status,
+      name || case
+        when (arguments -> 'kms_key_arn') is null then ' encryption at rest disabled'
+        else ' encryption at rest enabled'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_backup_vault';
+  EOQ
+}
+
 query "backup_plan_min_retention_35_days" {
   sql = <<-EOQ
     select

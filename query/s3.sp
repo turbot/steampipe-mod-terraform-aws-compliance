@@ -248,3 +248,117 @@ query "s3_public_access_block_account" {
       type = 'aws_s3_account_public_access_block';
   EOQ
 }
+
+query "s3_bucket_block_public_policy_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'block_public_policy')::boolean then 'ok'
+        else 'alarm'
+      end as status,
+      name || case
+        when (arguments -> 'block_public_policy') is null then ' block_public_acls not defined'
+        when (arguments ->> 'block_public_policy')::boolean then ' block_public_policy enabled'
+        else ' block_public_policy disabled'
+      end || '.' as reason
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_s3_bucket_public_access_block';
+  EOQ
+}
+
+query "s3_bucket_object_encrypted_with_kms_cmk" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when arguments -> 'kms_key_id' is not null then 'ok'
+        else 'alarm'
+      end as status,
+      name || case
+        when arguments -> 'kms_key_id' is not null then ' encrypted with KMS'
+        else ' not encrypted with KMS'
+      end || '.' as reason
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_s3_bucket_object';
+  EOQ
+}
+
+query "s3_bucket_ignore_public_acls_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'ignore_public_acls')::boolean then 'ok'
+        else 'alarm'
+      end as status,
+      name || case
+        when (arguments -> 'ignore_public_acls') is null then ' ignore_public_acls not defined'
+        when (arguments ->> 'ignore_public_acls')::boolean then ' ignore_public_acls enabled'
+        else ' ignore_public_acls disabled'
+      end || '.' as reason
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_s3_bucket_public_access_block';
+  EOQ
+}
+
+query "s3_bucket_object_copy_encrypted_with_kms_cmk" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when arguments -> 'kms_key_id' is not null then 'ok'
+        else 'alarm'
+      end as status,
+      name || case
+        when arguments -> 'kms_key_id' is not null then ' encrypted with KMS'
+        else ' not encrypted with KMS'
+      end || '.' as reason
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_s3_object_copy';
+  EOQ
+}
+
+query "s3_bucket_abort_incomplete_multipart_upload_enabled" {
+  sql = <<-EOQ
+    with lifecycle_configuration_with_abort_incomplete_multipart_upload as (
+      select
+        concat(type || ' ' || name) as name
+      from
+        terraform_resource,
+        jsonb_array_elements(arguments -> 'rule') as r
+      where
+        r ->> 'id' = 'AbortIncompleteMultipartUploadRule'
+        and r ->> 'status' = 'Enabled'
+        and type = 'aws_s3_bucket_lifecycle_configuration'
+    )
+    select
+      r.type || ' ' || r.name as resource,
+      case
+        when u.name is not null then 'ok'
+        else 'alarm'
+      end as status,
+      r.name || case
+        when u.name is not null then ' has abort incomplete multipart upload enabled'
+        else ' has abort incomplete multipart upload disabled'
+      end || '.' as reason
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource as r
+      left join lifecycle_configuration_with_abort_incomplete_multipart_upload as u on u.name = concat(r.type || ' ' || r.name )
+    where
+      r.type = 'aws_s3_bucket_lifecycle_configuration';
+  EOQ
+}

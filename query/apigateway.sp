@@ -152,3 +152,127 @@ query "apigateway_stage_logging_enabled" {
     all_stages;
   EOQ
 }
+
+query "apigateway_rest_api_create_before_destroy_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (lifecycle ->> 'create_before_destroy') = 'true' then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (lifecycle ->> 'create_before_destroy') = 'true' then ' create before destroy enabled'
+        else ' create before destroy disabled'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_api_gateway_rest_api';
+  EOQ
+}
+
+query "apigateway_deployment_create_before_destroy_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (lifecycle ->> 'create_before_destroy') = 'true' then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (lifecycle ->> 'create_before_destroy') = 'true' then ' create before destroy enabled'
+        else ' create before destroy disabled'
+      end || '.' reason
+    from
+      terraform_resource
+    where
+      type = 'aws_api_gateway_deployment';
+  EOQ
+}
+
+query "apigateway_method_settings_cache_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'settings' ->> 'caching_enabled') = 'true' then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments -> 'settings' ->> 'caching_enabled') = 'true' then ' caching enabled'
+        else ' caching disabled'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_api_gateway_method_settings';
+  EOQ
+}
+
+query "apigateway_method_settings_cache_encryption_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'settings' ->> 'cache_data_encrypted') = 'true' then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments -> 'settings' ->> 'cache_data_encrypted') = 'true' then ' cache encryption enabled'
+        else ' cache encryption disabled'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_api_gateway_method_settings';
+  EOQ
+}
+
+query "apigateway_method_settings_data_trace_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'settings' ->> 'data_trace_enabled') = 'true' then 'alarm'
+        else 'ok'
+      end status,
+      name || case
+        when (arguments -> 'settings' ->> 'data_trace_enabled') = 'true' then ' data trace enabled'
+        else ' data trace disabled'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_api_gateway_method_settings';
+  EOQ
+}
+
+query "apigatewayv2_route_set_authorization_type" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'authorization_type') in ('AWS_IAM', 'CUSTOM', 'JWT') then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments ->> 'authorization_type') in ('AWS_IAM', 'CUSTOM', 'JWT') then ' defines an authorization type'
+        else ' does not define an authorization type'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_apigatewayv2_route';   
+  EOQ    
+}
