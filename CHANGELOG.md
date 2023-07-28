@@ -1,3 +1,13 @@
+## v0.12 [2023-07-28]
+
+_What's new?_
+
+- 43 new controls have been added across the benchmarks. ([#54](https://github.com/turbot/steampipe-mod-terraform-aws-compliance/pull/54))
+
+_Bug fixes_
+
+- Removed the duplicate `ebs_attached_volume_encryption_enabled` control. ([#54](https://github.com/turbot/steampipe-mod-terraform-aws-compliance/pull/54))
+
 ## v0.11 [2023-06-15]
 
 _What's new?_
