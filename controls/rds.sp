@@ -119,6 +119,14 @@ control "rds_db_cluster_encrypted_with_kms_cmk" {
   tags = local.rds_compliance_common_tags
 }
 
+control "rds_db_cluster_encrypted_with_kms_cmk" {
+  title       = "RDS DB clusters should be encrypted using KMS CMK"
+  description = "This control checks whether RDS DB clusters are encrypted using KMS CMK."
+  query       = query.rds_db_cluster_encrypted_with_kms_cmk
+
+  tags = local.rds_compliance_common_tags
+}
+
 control "rds_db_instance_and_cluster_enhanced_monitoring_enabled" {
   title       = "RDS DB instance and cluster enhanced monitoring should be enabled"
   description = "Enable Amazon Relational Database Service (Amazon RDS) to help monitor Amazon RDS availability. This provides detailed visibility into the health of your Amazon RDS database instances."
