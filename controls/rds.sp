@@ -9,12 +9,20 @@ benchmark "rds" {
   description = "This benchmark provides a set of controls that detect Terraform AWS RDS resources deviating from security best practices."
 
   children = [
+    control.memorydb_cluster_encrypted_with_kms_cmk,
+    control.memorydb_cluster_transit_encryption_enabled,
+    control.memorydb_snapshot_encrypted_with_kms_cmk,
+    control.rds_cluster_activity_stream_encrypted_with_kms_cmk,
     control.rds_db_cluster_aurora_backtracking_enabled,
     control.rds_db_cluster_copy_tags_to_snapshot_enabled,
     control.rds_db_cluster_deletion_protection_enabled,
     control.rds_db_cluster_encrypted_with_kms_cmk,
+    control.rds_db_cluster_encryption_enabled,
     control.rds_db_cluster_events_subscription,
     control.rds_db_cluster_iam_authentication_enabled,
+    control.rds_db_cluster_instance_automatic_minor_version_upgrade_enabled,
+    control.rds_db_cluster_instance_performance_insights_enabled,
+    control.rds_db_cluster_instance_performance_insights_encrypted_with_kms_cmk,
     control.rds_db_cluster_multiple_az_enabled,
     control.rds_db_instance_and_cluster_enhanced_monitoring_enabled,
     control.rds_db_instance_and_cluster_no_default_port,
@@ -27,9 +35,15 @@ benchmark "rds" {
     control.rds_db_instance_iam_authentication_enabled,
     control.rds_db_instance_logging_enabled,
     control.rds_db_instance_multiple_az_enabled,
+    control.rds_db_instance_performance_insights_enabled,
+    control.rds_db_instance_performance_insights_encrypted_with_kms_cmk,
     control.rds_db_instance_prohibit_public_access,
+    control.rds_db_instance_uses_recent_ca_cert,
     control.rds_db_parameter_group_events_subscription,
-    control.rds_db_security_group_events_subscription
+    control.rds_db_security_group_events_subscription,
+    control.rds_db_snapshot_copy_encrypted_with_kms_cmk,
+    control.rds_db_snapshot_not_publicly_accesible,
+    control.rds_mysql_db_cluster_audit_logging_enabled
   ]
 
   tags = merge(local.rds_compliance_common_tags, {
@@ -95,6 +109,14 @@ control "rds_db_cluster_multiple_az_enabled" {
   tags = merge(local.rds_compliance_common_tags, {
     aws_foundational_security = "true"
   })
+}
+
+control "rds_db_cluster_encrypted_with_kms_cmk" {
+  title       = "RDS DB clusters should be encrypted using KMS CMK"
+  description = "This control checks whether RDS DB clusters are encrypted using KMS CMK."
+  query       = query.rds_db_cluster_encrypted_with_kms_cmk
+
+  tags = local.rds_compliance_common_tags
 }
 
 control "rds_db_cluster_encrypted_with_kms_cmk" {
@@ -265,10 +287,130 @@ control "rds_db_parameter_group_events_subscription" {
 
 control "rds_db_security_group_events_subscription" {
   title       = "An RDS event notifications subscription should be configured for critical database security group events"
-  description = "This control checks whether an Amazon RDS event subscription exists with notifications enabled for the following source type, event category key-value pairs."
+  description = "This control checks whether an RDS event subscription exists with notifications enabled for the following source type, event category key-value pairs."
   query       = query.rds_db_security_group_events_subscription
 
   tags = merge(local.rds_compliance_common_tags, {
     aws_foundational_security = "true"
   })
+}
+
+control "rds_db_cluster_instance_performance_insights_enabled" {
+  title       = "RDS DB cluster instances should have performance insights enabled"
+  description = "This control checks whether Relational Database cluster instances have Performance Insights enabled."
+  query       = query.rds_db_cluster_instance_performance_insights_enabled
+
+  tags = local.rds_compliance_common_tags
+}
+
+control "rds_db_cluster_instance_performance_insights_encrypted_with_kms_cmk" {
+  title       = "RDS DB cluster instances should have performance insights encrypted with a customer managed key"
+  description = "This control checks whether Relational Database cluster instances have Performance Insights encrypted with a customer managed key."
+  query       = query.rds_db_cluster_instance_performance_insights_encrypted_with_kms_cmk
+
+  tags = local.rds_compliance_common_tags
+}
+
+control "rds_db_instance_performance_insights_encrypted_with_kms_cmk" {
+  title       = "RDS DB instances should have performance insights encrypted with a customer managed key"
+  description = "This control checks whether Relational Database instances have Performance Insights encrypted with a customer managed key."
+  query       = query.rds_db_instance_performance_insights_encrypted_with_kms_cmk
+
+  tags = local.rds_compliance_common_tags
+}
+
+control "rds_db_instance_performance_insights_enabled" {
+  title       = "RDS DB instances should have performance insights enabled"
+  description = "This control checks whether Amazon Relational Database Service (Amazon RDS) DB instances have Performance Insights enabled."
+  query       = query.rds_db_instance_performance_insights_enabled
+
+  tags = local.rds_compliance_common_tags
+}
+
+control "rds_cluster_activity_stream_encrypted_with_kms_cmk" {
+  title       = "RDS DB cluster activity stream should be encrypted with a customer managed key"
+  description = "This control checks whether Relational Database Service cluster activity stream is encrypted with a customer managed key."
+  query       = query.rds_cluster_activity_stream_encrypted_with_kms_cmk
+
+  tags = local.rds_compliance_common_tags
+}
+
+control "rds_db_instance_uses_recent_ca_cert" {
+  title       = "RDS DB instances should use recent CA certificates"
+  description = "This control checks whether Relational Database Service instances use recent CA certificates."
+  query       = query.rds_db_instance_uses_recent_ca_cert
+
+  tags = local.rds_compliance_common_tags
+}
+
+control "memorydb_snapshot_encrypted_with_kms_cmk" {
+  title       = "MemoryDB snapshots should be encrypted with a customer managed key"
+  description = "This control checks whether MemoryDB snapshots are encrypted with a customer managed key."
+  query       = query.memorydb_snapshot_encrypted_with_kms_cmk
+
+  tags = local.rds_compliance_common_tags
+}
+
+control "memorydb_cluster_encrypted_with_kms_cmk" {
+  title       = "MemoryDB clusters should be encrypted with a customer managed key"
+  description = "This control checks whether MemoryDB clusters are encrypted with a customer managed key."
+  query       = query.memorydb_cluster_encrypted_with_kms_cmk
+
+  tags = local.rds_compliance_common_tags
+}
+
+control "memorydb_cluster_transit_encryption_enabled" {
+  title       = "MemoryDB clusters should have encryption in transit enabled"
+  description = "This control checks whether MemoryDB clusters have encryption in transit enabled."
+  query       = query.memorydb_cluster_transit_encryption_enabled
+
+  tags = local.rds_compliance_common_tags
+}
+
+control "rds_db_snapshot_not_publicly_accesible" {
+  title       = "RDS DB snapshots should not be publicly accessible"
+  description = "This control checks whether Relational Database Service snapshots are not publicly accessible."
+  query       = query.rds_db_snapshot_not_publicly_accesible
+
+  tags = merge(local.rds_compliance_common_tags, {
+    aws_foundational_security = "true"
+    hipaa                     = "true"
+    nist_800_53_rev_4         = "true"
+    nist_csf                  = "true"
+    rbi_cyber_security        = "true"
+    pci                       = "true"
+    soc_2                     = "true"
+  })
+}
+
+control "rds_db_snapshot_copy_encrypted_with_kms_cmk" {
+  title       = "RDS DB snapshots should be encrypted with a customer managed key"
+  description = "This control checks whether Relational Database Service snapshots are encrypted with a customer managed key."
+  query       = query.rds_db_snapshot_copy_encrypted_with_kms_cmk
+
+  tags = local.rds_compliance_common_tags
+}
+
+control "rds_db_cluster_instance_automatic_minor_version_upgrade_enabled" {
+  title       = "RDS DB cluster instances should have auto minor version upgrade enabled"
+  description = "This control checks whether Relational Database Service cluster instances have auto minor version upgrade is enabled."
+  query       = query.rds_db_cluster_instance_automatic_minor_version_upgrade_enabled
+
+  tags = local.rds_compliance_common_tags
+}
+
+control "rds_db_cluster_encryption_enabled" {
+  title       = "RDS DB clusters should have encryption at rest enabled"
+  description = "This control checks whether Relational Database Service clusters have encryption at rest enabled."
+  query       = query.rds_db_cluster_encryption_enabled
+
+  tags = local.rds_compliance_common_tags
+}
+
+control "rds_mysql_db_cluster_audit_logging_enabled" {
+  title       = "RDS MySQL DB clusters should have audit logging enabled"
+  description = "This control checks whether Relational Database Service MySQL DB clusters have audit logging enabled."
+  query       = query.rds_mysql_db_cluster_audit_logging_enabled
+
+  tags = local.rds_compliance_common_tags
 }

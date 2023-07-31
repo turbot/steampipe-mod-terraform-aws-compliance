@@ -136,6 +136,94 @@ query "rds_db_cluster_multiple_az_enabled" {
   EOQ
 }
 
+query "rds_db_cluster_instance_performance_insights_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'performance_insights_enabled') is null then 'alarm'
+        when (arguments -> 'performance_insights_enabled')::boolean then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments -> 'performance_insights_enabled') is null then ' ''performance_insights_enabled'' disabled'
+        when (arguments -> 'performance_insights_enabled')::boolean then ' ''performance_insights_enabled'' enabled'
+        else ' ''performance_insights_enabled'' disabled'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_rds_cluster_instance';
+  EOQ
+}
+
+query "rds_db_cluster_instance_performance_insights_encrypted_with_kms_cmk" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'performance_insights_kms_key_id') is null then 'alarm'
+        else 'ok'
+      end status,
+      name || case
+        when (arguments -> 'performance_insights_kms_key_id') is null then ' ''performance_insights_kms_key_id'' not set'
+        else ' ''performance_insights_kms_key_id'' set'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_rds_cluster_instance';
+  EOQ
+}
+
+query "rds_db_instance_performance_insights_encrypted_with_kms_cmk" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'performance_insights_kms_key_id') is null then 'alarm'
+        else 'ok'
+      end status,
+      name || case
+        when (arguments -> 'performance_insights_kms_key_id') is null then ' ''performance_insights_kms_key_id'' not set'
+        else ' ''performance_insights_kms_key_id'' set'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_db_instance';
+  EOQ
+}
+
+query "rds_db_instance_performance_insights_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'performance_insights_enabled') is null then 'alarm'
+        when (arguments -> 'performance_insights_enabled')::boolean then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments -> 'performance_insights_enabled') is null then ' ''performance_insights_enabled'' disabled'
+        when (arguments -> 'performance_insights_enabled')::boolean then ' ''performance_insights_enabled'' enabled'
+        else ' ''performance_insights_enabled'' disabled'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_db_instance';
+  EOQ
+}
+
 query "rds_db_instance_and_cluster_enhanced_monitoring_enabled" {
   sql = <<-EOQ
     (
@@ -175,6 +263,27 @@ query "rds_db_instance_and_cluster_enhanced_monitoring_enabled" {
       where
         type = 'aws_rds_cluster'
     );
+  EOQ
+}
+
+query "rds_cluster_activity_stream_encrypted_with_kms_cmk" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'kms_key_id') is null then 'alarm'
+        else 'ok'
+      end status,
+      name || case
+        when (arguments -> 'kms_key_id') is null then ' not encrypted with a customer managed key'
+        else ' encrypted with a customer managed key'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_rds_cluster_activity_stream';
   EOQ
 }
 
@@ -579,5 +688,198 @@ query "rds_db_security_group_events_subscription" {
       terraform_resource
     where
       type = 'aws_db_event_subscription';
+  EOQ
+}
+
+query "rds_db_instance_uses_recent_ca_cert" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'ca_cert_identifier') in ('rds-ca-rsa2048-g1', 'rds-ca-rsa4096-g1', 'rds-ca-ecc384-g1') then 'ok'
+        when (arguments ->> 'ca_cert_identifier') is null then 'skip'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments ->> 'ca_cert_identifier') in ('rds-ca-rsa2048-g1', 'rds-ca-rsa4096-g1', 'rds-ca-ecc384-g1') then ' uses recent CA certificate'
+        when (arguments ->> 'ca_cert_identifier') is null then ' CA certificate not defined'
+        else ' uses an old CA certificate'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_db_instance';
+  EOQ
+}
+
+query "memorydb_snapshot_encrypted_with_kms_cmk" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'kms_key_arn') is null then 'alarm'
+        else 'ok'
+      end status,
+      name || case
+        when (arguments ->> 'kms_key_arn') is null then ' not encrypted with a customer managed KMS key'
+        else ' encrypted with a customer managed KMS key'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_memorydb_snapshot';
+  EOQ
+}
+
+query "memorydb_cluster_encrypted_with_kms_cmk" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'kms_key_arn') is null then 'alarm'
+        else 'ok'
+      end status,
+      name || case
+        when (arguments ->> 'kms_key_arn') is null then ' not encrypted with a customer managed KMS key'
+        else ' encrypted with a customer managed KMS key'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_memorydb_cluster';
+  EOQ
+}
+
+query "memorydb_cluster_transit_encryption_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'tls_enabled') = 'false' then 'alarm'
+        else 'ok'
+      end status,
+      name || case
+        when (arguments ->> 'tls_enabled') = 'false' then ' transit encryption not enabled'
+        else ' transit encryption enabled'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_memorydb_cluster';
+  EOQ
+}
+
+query "rds_db_snapshot_not_publicly_accesible" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'shared_accounts') @> '["all"]' then 'alarm'
+        else 'ok'
+      end status,
+      name || case
+        when (arguments -> 'shared_accounts') @> '["all"]' then ' publicly accessible'
+        else ' not publicly accessible'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_db_snapshot';
+  EOQ
+}
+
+query "rds_db_snapshot_copy_encrypted_with_kms_cmk" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'kms_key_id') is null then 'alarm'
+        else 'ok'
+      end status,
+      name || case
+        when (arguments ->> 'kms_key_id') is null then ' not encrypted with a customer managed KMS key'
+        else ' encrypted with a customer managed KMS key'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_db_snapshot_copy';
+  EOQ
+}
+
+query "rds_db_cluster_instance_automatic_minor_version_upgrade_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'auto_minor_version_upgrade') = 'false' then 'alarm'
+        else 'ok'
+      end status,
+      name || case
+        when (arguments ->> 'auto_minor_version_upgrade') = 'false' then ' auto minor version upgrade not enabled'
+        else ' auto minor version upgrade enabled'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_rds_cluster_instance';
+  EOQ
+}
+
+query "rds_db_cluster_encryption_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'storage_encrypted') = 'true' or (arguments ->> 'engine_mode') = 'serverless' then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments ->> 'storage_encrypted') = 'true' or (arguments ->> 'engine_mode') = 'serverless' then ' encryption enabled'
+        else ' encryption disabled'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_rds_cluster';
+  EOQ
+}
+
+query "rds_mysql_db_cluster_audit_logging_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'engine')::text not like '%mysql' then 'skip'
+        when (arguments ->> 'engine')::text like '%mysql' and (arguments -> 'enabled_cloudwatch_logs_exports') @> '["audit"]' then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments ->> 'engine')::text not like '%mysql' then ' not a MySQL cluster'
+        when (arguments ->> 'engine')::text like '%mysql' and (arguments -> 'enabled_cloudwatch_logs_exports') @> '["audit"]' then ' audit logging enabled'
+        else ' audit logging disabled'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_rds_cluster';
   EOQ
 }

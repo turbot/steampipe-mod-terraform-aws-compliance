@@ -225,3 +225,68 @@ query "redshift_cluster_no_default_database_name" {
       type = 'aws_redshift_cluster';
   EOQ
 }
+
+query "redshift_cluster_encryption_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'encrypted') is null then 'alarm'
+        when (arguments -> 'encrypted')::bool then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments -> 'encrypted') is null then ' not encrypted'
+        when (arguments -> 'encrypted')::bool then ' encrypted'
+        else ' not encrypted'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_redshift_cluster';
+  EOQ
+}
+
+query "redshiftserverless_namespace_encrypted_with_kms_cmk" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'kms_key_id') is not null then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments -> 'kms_key_id') is not null then ' encrypted with KMS CMK'
+        else ' not encrypted with KMS CMK'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_redshiftserverless_namespace';
+  EOQ
+}
+
+query "redshift_snapshot_copy_grant_encrypted_with_kms_cmk" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'kms_key_id') is not null then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments -> 'kms_key_id') is not null then ' encrypted with KMS CMK'
+        else ' not encrypted with KMS CMK'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_redshift_snapshot_copy_grant';
+  EOQ
+}
