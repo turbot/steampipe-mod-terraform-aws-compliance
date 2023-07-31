@@ -64,7 +64,12 @@ control "codebuild_project_s3_logs_encryption_enabled" {
   description = "Ensure that CodeBuild S3 logs are encrypted."
   query       = query.codebuild_project_s3_logs_encryption_enabled
 
-  tags = local.codebuild_compliance_common_tags
+  tags = merge(local.codebuild_compliance_common_tags, {
+    aws_foundational_security = "true"
+    gxp_21_cfr_part_11        = "true"
+    gxp_eu_annex_11           = "true"
+    nist_csf                  = "true"
+  })
 }
 
 control "codebuild_project_logging_enabled" {
@@ -72,5 +77,10 @@ control "codebuild_project_logging_enabled" {
   description = "Ensure CodeBuild project environments have a logging configuration."
   query       = query.codebuild_project_logging_enabled
 
-  tags = local.codebuild_compliance_common_tags
+  tags = merge(local.codebuild_compliance_common_tags, {
+    aws_foundational_security              = "true"
+    hipaa_final_omnibus_security_rule_2013 = "true"
+    hipaa_security_rule_2003               = "true"
+    nist_csf                               = "true"
+  })
 }
