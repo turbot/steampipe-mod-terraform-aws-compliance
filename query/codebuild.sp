@@ -105,11 +105,11 @@ query "codebuild_project_s3_logs_encryption_enabled" {
     select
       type || ' ' || name as resource,
       case
-        when jsonb_extract_path_text(arguments, 'logs_config', 's3_logs', 'encryption_disabled')::boolean then 'alarm'
+        when (arguments -> 'logs_config' -> 's3_logs' ->> 'encryption_disabled')::boolean then 'alarm'
         else 'ok'
       end as status,
       name || case
-        when jsonb_extract_path_text(arguments, 'logs_config', 's3_logs', 'encryption_disabled')::boolean then ' not encrypted at rest'
+        when (arguments -> 'logs_config' -> 's3_logs' ->> 'encryption_disabled')::boolean then ' not encrypted at rest'
         else ' encrypted at rest'
       end || '.' as reason
       ${local.tag_dimensions_sql}
@@ -117,7 +117,7 @@ query "codebuild_project_s3_logs_encryption_enabled" {
     from
       terraform_resource
     where
-      type = 'aws_codebuild_project'
+      type = 'aws_codebuild_project';
   EOQ
 }
 
@@ -126,13 +126,13 @@ query "codebuild_project_logging_enabled" {
     select
       type || ' ' || name as resource,
       case
-        when jsonb_extract_path_text(arguments, 'logs_config', 'cloudwatch_logs') is not null
-        or jsonb_extract_path_text(arguments, 'logs_config', 's3_logs') is not null then 'ok'
+        when (arguments -> 'logs_config' ->> 'cloudwatch_logs') is not null
+        or (arguments -> 'logs_config' ->> 's3_logs') is not null then 'ok'
         else 'alarm'
       end as status,
       name || case
-        when jsonb_extract_path_text(arguments, 'logs_config', 'cloudwatch_logs') is not null
-        or jsonb_extract_path_text(arguments, 'logs_config', 's3_logs') is not null then ' logging enabled'
+        when (arguments -> 'logs_config' ->> 'cloudwatch_logs') is not null
+        or (arguments -> 'logs_config' ->> 's3_logs') is not null then ' logging enabled'
         else ' logging disabled'
       end || '.' as reason
       ${local.tag_dimensions_sql}
@@ -140,6 +140,6 @@ query "codebuild_project_logging_enabled" {
     from
       terraform_resource
     where
-      type = 'aws_codebuild_project'
+      type = 'aws_codebuild_project';
   EOQ
 }
