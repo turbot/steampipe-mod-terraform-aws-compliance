@@ -137,7 +137,7 @@ control "redshift_cluster_no_default_database_name" {
 
 control "redshift_cluster_encryption_enabled" {
   title       = "Redshift clusters should be encrypted"
-  description = "Ensure that Amazon Redshift clusters are encrypted."
+  description = "Ensure that Redshift clusters are encrypted."
   query       = query.redshift_cluster_encryption_enabled
 
   tags = local.redshift_compliance_common_tags
