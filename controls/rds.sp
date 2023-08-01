@@ -287,7 +287,7 @@ control "rds_db_parameter_group_events_subscription" {
 
 control "rds_db_security_group_events_subscription" {
   title       = "An RDS event notifications subscription should be configured for critical database security group events"
-  description = "This control checks whether an RDS event subscription exists with notifications enabled for the following source type, event category key-value pairs."
+  description = "This control checks whether RDS event subscription exists with notifications enabled for the following source type, event category key-value pairs."
   query       = query.rds_db_security_group_events_subscription
 
   tags = merge(local.rds_compliance_common_tags, {
@@ -321,7 +321,7 @@ control "rds_db_instance_performance_insights_encrypted_with_kms_cmk" {
 
 control "rds_db_instance_performance_insights_enabled" {
   title       = "RDS DB instances should have performance insights enabled"
-  description = "This control checks whether Amazon Relational Database Service (Amazon RDS) DB instances have Performance Insights enabled."
+  description = "This control checks whether Relational Database Service instances have Performance Insights enabled."
   query       = query.rds_db_instance_performance_insights_enabled
 
   tags = local.rds_compliance_common_tags

@@ -91,11 +91,11 @@ query "cloudtrail_event_data_store_encrypted_with_kms_cmk" {
     select
       type || ' ' || name as resource,
       case
-        when (arguments -> 'kms_key_id') is not null then 'ok'
+        when (arguments ->> 'kms_key_id') is not null then 'ok'
         else 'alarm'
       end status,
       name || case
-        when (arguments -> 'kms_key_id') is not null then ' event data store encrypted using KMS CMK'
+        when (arguments ->> 'kms_key_id') is not null then ' event data store encrypted using KMS CMK'
         else ' event data store not encrypted using KMS CMK'
       end || '.' reason
       ${local.tag_dimensions_sql}
