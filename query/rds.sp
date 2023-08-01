@@ -185,11 +185,11 @@ query "rds_db_instance_performance_insights_encrypted_with_kms_cmk" {
     select
       type || ' ' || name as resource,
       case
-        when (arguments -> 'performance_insights_kms_key_id') is null then 'alarm'
+        when (arguments ->> 'performance_insights_kms_key_id') is null then 'alarm'
         else 'ok'
       end status,
       name || case
-        when (arguments -> 'performance_insights_kms_key_id') is null then ' ''performance_insights_kms_key_id'' not set'
+        when (arguments ->> 'performance_insights_kms_key_id') is null then ' ''performance_insights_kms_key_id'' not set'
         else ' ''performance_insights_kms_key_id'' set'
       end || '.' as reason
       ${local.tag_dimensions_sql}
@@ -206,13 +206,13 @@ query "rds_db_instance_performance_insights_enabled" {
     select
       type || ' ' || name as resource,
       case
-        when (arguments -> 'performance_insights_enabled') is null then 'alarm'
-        when (arguments -> 'performance_insights_enabled')::boolean then 'ok'
+        when (arguments ->> 'performance_insights_enabled') is null then 'alarm'
+        when (arguments ->> 'performance_insights_enabled')::boolean then 'ok'
         else 'alarm'
       end status,
       name || case
-        when (arguments -> 'performance_insights_enabled') is null then ' ''performance_insights_enabled'' disabled'
-        when (arguments -> 'performance_insights_enabled')::boolean then ' ''performance_insights_enabled'' enabled'
+        when (arguments ->> 'performance_insights_enabled') is null then ' ''performance_insights_enabled'' disabled'
+        when (arguments ->> 'performance_insights_enabled')::boolean then ' ''performance_insights_enabled'' enabled'
         else ' ''performance_insights_enabled'' disabled'
       end || '.' as reason
       ${local.tag_dimensions_sql}
@@ -271,12 +271,12 @@ query "rds_cluster_activity_stream_encrypted_with_kms_cmk" {
     select
       type || ' ' || name as resource,
       case
-        when (arguments -> 'kms_key_id') is null then 'alarm'
+        when (arguments ->> 'kms_key_id') is null then 'alarm'
         else 'ok'
       end status,
       name || case
-        when (arguments -> 'kms_key_id') is null then ' not encrypted with a customer managed key'
-        else ' encrypted with a customer managed key'
+        when (arguments ->> 'kms_key_id') is null then ' not encrypted with KMS CMK'
+        else ' encrypted with KMS CMK'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -723,8 +723,8 @@ query "memorydb_snapshot_encrypted_with_kms_cmk" {
         else 'ok'
       end status,
       name || case
-        when (arguments ->> 'kms_key_arn') is null then ' not encrypted with a customer managed KMS key'
-        else ' encrypted with a customer managed KMS key'
+        when (arguments ->> 'kms_key_arn') is null then ' not encrypted with KMS CMK'
+        else ' encrypted with KMS CMK'
       end || '.' reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -744,8 +744,8 @@ query "memorydb_cluster_encrypted_with_kms_cmk" {
         else 'ok'
       end status,
       name || case
-        when (arguments ->> 'kms_key_arn') is null then ' not encrypted with a customer managed KMS key'
-        else ' encrypted with a customer managed KMS key'
+        when (arguments ->> 'kms_key_arn') is null then ' not encrypted with KMS CMK'
+        else ' encrypted with KMS CMK'
       end || '.' reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -807,8 +807,8 @@ query "rds_db_snapshot_copy_encrypted_with_kms_cmk" {
         else 'ok'
       end status,
       name || case
-        when (arguments ->> 'kms_key_id') is null then ' not encrypted with a customer managed KMS key'
-        else ' encrypted with a customer managed KMS key'
+        when (arguments ->> 'kms_key_id') is null then ' not encrypted with KMS CMK'
+        else ' encrypted with KMS CMK'
       end || '.' reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}

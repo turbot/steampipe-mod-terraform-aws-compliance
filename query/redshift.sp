@@ -236,9 +236,9 @@ query "redshift_cluster_encryption_enabled" {
         else 'alarm'
       end status,
       name || case
-        when (arguments ->> 'encrypted') is null then ' not encrypted'
-        when (arguments ->> 'encrypted')::bool then ' encrypted'
-        else ' not encrypted'
+        when (arguments ->> 'encrypted') is null then ' encryption disabled'
+        when (arguments ->> 'encrypted')::bool then ' encryption enabled'
+        else ' encryption disabled'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}

@@ -94,8 +94,8 @@ query "kinesis_video_stream_encrypted_with_kms_cmk" {
         when (arguments ->> 'kms_key_id') is not null then ' encrypted by KMS CMK'
         else ' not encrypted by KMS CMK'
       end || '.' as reason
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       terraform_resource
     where
