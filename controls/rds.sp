@@ -185,7 +185,7 @@ control "rds_db_instance_copy_tags_to_snapshot_enabled" {
 
 control "rds_db_instance_deletion_protection_enabled" {
   title       = "RDS DB instances should have deletion protection enabled"
-  description = "Ensure Amazon Relational Database Service (Amazon RDS) instances have deletion protection enabled."
+  description = "Ensure Relational Database Service instances have deletion protection enabled."
   query       = query.rds_db_instance_deletion_protection_enabled
 
   tags = merge(local.rds_compliance_common_tags, {
@@ -261,7 +261,7 @@ control "rds_db_instance_multiple_az_enabled" {
 
 control "rds_db_instance_prohibit_public_access" {
   title       = "RDS DB instances should prohibit public access"
-  description = "Manage access to resources in the AWS Cloud by ensuring that Amazon Relational Database Service (Amazon RDS) instances are not public."
+  description = "Manage access to resources in the AWS Cloud by ensuring that Relational Database Service instances are not public."
   query       = query.rds_db_instance_prohibit_public_access
 
   tags = merge(local.rds_compliance_common_tags, {
