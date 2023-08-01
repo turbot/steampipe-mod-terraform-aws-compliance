@@ -64,3 +64,45 @@ query "cloudtrail_trail_validation_enabled" {
       type = 'aws_cloudtrail';
   EOQ
 }
+
+query "cloudtrail_trail_sns_topic_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'sns_topic_name') is not null then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments ->> 'sns_topic_name') is not null then ' sns topic enabled'
+        else ' sns topic disabled'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_cloudtrail';
+  EOQ
+}
+
+query "cloudtrail_event_data_store_encrypted_with_kms_cmk" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'kms_key_id') is not null then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments -> 'kms_key_id') is not null then ' event data store encrypted using KMS CMK'
+        else ' event data store not encrypted using KMS CMK'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_cloudtrail_event_data_store';
+  EOQ
+}

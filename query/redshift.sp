@@ -231,13 +231,13 @@ query "redshift_cluster_encryption_enabled" {
     select
       type || ' ' || name as resource,
       case
-        when (arguments -> 'encrypted') is null then 'alarm'
-        when (arguments -> 'encrypted')::bool then 'ok'
+        when (arguments ->> 'encrypted') is null then 'alarm'
+        when (arguments ->> 'encrypted')::bool then 'ok'
         else 'alarm'
       end status,
       name || case
-        when (arguments -> 'encrypted') is null then ' not encrypted'
-        when (arguments -> 'encrypted')::bool then ' encrypted'
+        when (arguments ->> 'encrypted') is null then ' not encrypted'
+        when (arguments ->> 'encrypted')::bool then ' encrypted'
         else ' not encrypted'
       end || '.' as reason
       ${local.tag_dimensions_sql}
@@ -254,11 +254,11 @@ query "redshiftserverless_namespace_encrypted_with_kms_cmk" {
     select
       type || ' ' || name as resource,
       case
-        when (arguments -> 'kms_key_id') is not null then 'ok'
+        when (arguments ->> 'kms_key_id') is not null then 'ok'
         else 'alarm'
       end status,
       name || case
-        when (arguments -> 'kms_key_id') is not null then ' encrypted with KMS CMK'
+        when (arguments ->> 'kms_key_id') is not null then ' encrypted with KMS CMK'
         else ' not encrypted with KMS CMK'
       end || '.' as reason
       ${local.tag_dimensions_sql}
@@ -275,11 +275,11 @@ query "redshift_snapshot_copy_grant_encrypted_with_kms_cmk" {
     select
       type || ' ' || name as resource,
       case
-        when (arguments -> 'kms_key_id') is not null then 'ok'
+        when (arguments ->> 'kms_key_id') is not null then 'ok'
         else 'alarm'
       end status,
       name || case
-        when (arguments -> 'kms_key_id') is not null then ' encrypted with KMS CMK'
+        when (arguments ->> 'kms_key_id') is not null then ' encrypted with KMS CMK'
         else ' not encrypted with KMS CMK'
       end || '.' as reason
       ${local.tag_dimensions_sql}
