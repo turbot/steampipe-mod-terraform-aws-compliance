@@ -9,10 +9,10 @@ benchmark "kinesis" {
   description = "This benchmark provides a set of controls that detect Terraform AWS Kinesis resources deviating from security best practices."
 
   children = [
-    control.kinesis_stream_encryption_at_rest_enabled,
-    control.kinesis_firehose_delivery_stream_server_side_encryption_enabled,
     control.kinesis_firehose_delivery_stream_encrypted_with_kms_cmk,
+    control.kinesis_firehose_delivery_stream_server_side_encryption_enabled,
     control.kinesis_stream_encrypted_with_kms_cmk,
+    control.kinesis_stream_encryption_at_rest_enabled,
     control.kinesis_video_stream_encrypted_with_kms_cmk
   ]
 
