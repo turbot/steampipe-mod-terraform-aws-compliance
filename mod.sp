@@ -69,7 +69,7 @@ mod "terraform_aws_compliance" {
 
   requires {
     plugin "terraform" {
-      version = "0.0.5"
+      min_version = "0.0.5"
     }
   }
 }
