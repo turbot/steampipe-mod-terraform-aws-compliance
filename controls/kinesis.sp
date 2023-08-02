@@ -31,7 +31,7 @@ control "kinesis_stream_encryption_at_rest_enabled" {
 
 control "kinesis_firehose_delivery_stream_server_side_encryption_enabled" {
   title       = "Kinesis firehose delivery streams should have server side encryption enabled"
-  description = "Enable server side encryption (SSE) of your AWS Kinesis Server data at rest, in order to protect your data and metadata from breaches or unauthorized access, and fulfill compliance requirements for data-at-rest encryption within your organization."
+  description = "Enable server-side-encryption (SSE) of your AWS Kinesis Server data at rest, in order to protect your data and metadata from breaches or unauthorized access, and fulfill compliance requirements for data-at-rest encryption within your organization."
   query       = query.kinesis_firehose_delivery_stream_server_side_encryption_enabled
 
   tags = local.kinesis_compliance_common_tags
