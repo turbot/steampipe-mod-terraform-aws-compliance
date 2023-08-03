@@ -205,3 +205,156 @@ query "vpc_subnet_auto_assign_public_ip_disabled" {
       type = 'aws_subnet';
   EOQ
 }
+
+query "vpc_endpoint_service_acceptance_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'acceptance_required') is null then 'alarm'
+        when (arguments ->> 'acceptance_required')::boolean then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments -> 'acceptance_required') is null then ' ''acceptance_required'' not defined'
+        when (arguments ->> 'acceptance_required')::boolean then ' ''acceptance_required'' enabled'
+        else ' ''acceptance_required'' disabled'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_vpc_endpoint_service';
+  EOQ
+}
+
+query "vpc_transfer_server_not_publicly_accesible" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'endpoint_type') is null then 'alarm'
+        when (arguments ->> 'endpoint_type') in ('VPC', 'VPC_ENDPOINT') then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments -> 'endpoint_type') is null then ' publicly accessible'
+        when (arguments ->> 'endpoint_type') in ('VPC', 'VPC_ENDPOINT')  then ' not publicly accessible'
+        else ' publicly accessible'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_transfer_server';
+  EOQ
+}
+
+
+query "vpc_network_firewall_encrypted_with_kms_cmk" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'encryption_configuration' ->> 'key_id') is null then 'alarm'
+        else 'ok'
+      end status,
+      name || case
+        when (arguments -> 'encryption_configuration' ->> 'key_id') is null then ' not encrypted with KMS CMK'
+        else ' encrypted with KMS CMK'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_networkfirewall_firewall';
+  EOQ
+}
+
+query "vpc_network_firewall_rule_group_encrypted_with_kms_cmk" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'encryption_configuration' ->> 'key_id') is null then 'alarm'
+        else 'ok'
+      end status,
+      name || case
+        when (arguments -> 'encryption_configuration' ->> 'key_id') is null then ' not encrypted with KMS CMK'
+        else ' encrypted with KMS CMK'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_networkfirewall_rule_group';
+  EOQ
+}
+
+query "vpc_network_firewall_policy_encrypted_with_kms_cmk" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'encryption_configuration' ->> 'key_id') is null then 'alarm'
+        else 'ok'
+      end status,
+      name || case
+        when (arguments -> 'encryption_configuration' ->> 'key_id') is null then ' not encrypted with KMS CMK'
+        else ' encrypted with KMS CMK'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_networkfirewall_firewall_policy';
+  EOQ
+}
+
+query "vpc_network_firewall_deletion_protection_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'delete_protection')::boolean then 'ok'
+        else 'alarm'
+      end as status,
+      name || case
+        when (arguments ->> 'delete_protection')::boolean is null then ' deletion protection not set'
+        when (arguments ->> 'delete_protection')::boolean then ' deletion protection enabled'
+        else ' deletion protection disabled'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_networkfirewall_firewall';
+  EOQ
+}
+
+query "vpc_ec2_transit_gateway_auto_accept_attachment_requests_disabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'auto_accept_shared_attachments') = 'enable' then 'alarm'
+        else 'ok'
+      end status,
+      name || case
+        when (arguments ->> 'auto_accept_shared_attachments') = 'enable' then ' automatically accept VPC attachment requests'
+        else ' do not automatically accept VPC attachment requests'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_ec2_transit_gateway';
+  EOQ
+}

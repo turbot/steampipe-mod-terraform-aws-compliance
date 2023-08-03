@@ -12,13 +12,16 @@ benchmark "redshift" {
     control.redshift_cluster_automatic_snapshots_min_7_days,
     control.redshift_cluster_automatic_upgrade_major_versions_enabled,
     control.redshift_cluster_deployed_in_ec2_classic_mode,
+    control.redshift_cluster_encryption_enabled,
     control.redshift_cluster_encryption_logging_enabled,
     control.redshift_cluster_enhanced_vpc_routing_enabled,
     control.redshift_cluster_kms_enabled,
     control.redshift_cluster_logging_enabled,
     control.redshift_cluster_maintenance_settings_check,
     control.redshift_cluster_no_default_database_name,
-    control.redshift_cluster_prohibit_public_access
+    control.redshift_cluster_prohibit_public_access,
+    control.redshift_snapshot_copy_grant_encrypted_with_kms_cmk,
+    control.redshift_serverless_namespace_encrypted_with_kms_cmk
   ]
 
   tags = merge(local.redshift_compliance_common_tags, {
@@ -130,4 +133,28 @@ control "redshift_cluster_no_default_database_name" {
   tags = merge(local.redshift_compliance_common_tags, {
     nist_csf = "true"
   })
+}
+
+control "redshift_cluster_encryption_enabled" {
+  title       = "Redshift clusters should be encrypted"
+  description = "Ensure that Redshift clusters are encrypted."
+  query       = query.redshift_cluster_encryption_enabled
+
+  tags = local.redshift_compliance_common_tags
+}
+
+control "redshift_serverless_namespace_encrypted_with_kms_cmk" {
+  title       = "Redshift serverless namespaces should be encrypted with KMS CMK"
+  description = "Ensure that Redshift serverless namespaces are encrypted with KMS CMK."
+  query       = query.redshift_serverless_namespace_encrypted_with_kms_cmk
+
+  tags = local.redshift_compliance_common_tags
+}
+
+control "redshift_snapshot_copy_grant_encrypted_with_kms_cmk" {
+  title       = "Redshift snapshot copy grant should be encrypted with KMS CMK"
+  description = "Ensure that Redshift snapshot copy grant is encrypted with KMS CMK."
+  query       = query.redshift_snapshot_copy_grant_encrypted_with_kms_cmk
+
+  tags = local.redshift_compliance_common_tags
 }

@@ -9,6 +9,8 @@ benchmark "efs" {
   description = "This benchmark provides a set of controls that detect Terraform AWS EFS resources deviating from security best practices."
 
   children = [
+    control.efs_access_point_has_root_directory,
+    control.efs_access_point_has_user_identity,
     control.efs_file_system_automatic_backups_enabled,
     control.efs_file_system_encrypt_data_at_rest
   ]
@@ -46,4 +48,20 @@ control "efs_file_system_encrypt_data_at_rest" {
     nist_csf                  = "true"
     rbi_cyber_security        = "true"
   })
+}
+
+control "efs_access_point_has_user_identity" {
+  title       = "EFS access point should have a user identity"
+  description = "This control checks whether the Elastic File System access point has a user identity associated with it."
+  query       = query.efs_access_point_has_user_identity
+
+  tags = local.efs_compliance_common_tags
+}
+
+control "efs_access_point_has_root_directory" {
+  title       = "EFS access point should have a root directory"
+  description = "This control checks whether the Elastic File System access point has a root directory associated with it."
+  query       = query.efs_access_point_has_root_directory
+
+  tags = local.efs_compliance_common_tags
 }
