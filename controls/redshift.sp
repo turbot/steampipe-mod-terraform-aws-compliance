@@ -21,7 +21,7 @@ benchmark "redshift" {
     control.redshift_cluster_no_default_database_name,
     control.redshift_cluster_prohibit_public_access,
     control.redshift_snapshot_copy_grant_encrypted_with_kms_cmk,
-    control.redshiftserverless_namespace_encrypted_with_kms_cmk
+    control.redshift_serverless_namespace_encrypted_with_kms_cmk
   ]
 
   tags = merge(local.redshift_compliance_common_tags, {
@@ -143,10 +143,10 @@ control "redshift_cluster_encryption_enabled" {
   tags = local.redshift_compliance_common_tags
 }
 
-control "redshiftserverless_namespace_encrypted_with_kms_cmk" {
+control "redshift_serverless_namespace_encrypted_with_kms_cmk" {
   title       = "Redshift serverless namespaces should be encrypted with KMS CMK"
   description = "Ensure that Redshift serverless namespaces are encrypted with KMS CMK."
-  query       = query.redshiftserverless_namespace_encrypted_with_kms_cmk
+  query       = query.redshift_serverless_namespace_encrypted_with_kms_cmk
 
   tags = local.redshift_compliance_common_tags
 }

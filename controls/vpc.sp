@@ -170,7 +170,7 @@ control "vpc_network_firewall_rule_group_encrypted_with_kms_cmk" {
 }
 
 control "vpc_network_firewall_policy_encrypted_with_kms_cmk" {
-  title       = "VPC network firewall policy should define a encryption configuration that uses a customer managed Key (CMK)"
+  title       = "VPC network firewall policy should define a encryption configuration that uses a KMS CMK"
   description = "This control checks whether the Network Firewall Policy is encrypted with a KMS CMK."
   query       = query.vpc_network_firewall_policy_encrypted_with_kms_cmk
 

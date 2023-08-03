@@ -49,8 +49,8 @@ query "kinesis_firehose_delivery_stream_encrypted_with_kms_cmk" {
         else 'alarm'
       end as status,
       name || case
-        when (arguments -> 'server_side_encryption' ->> 'key_type') = 'CUSTOMER_MANAGED_CMK' and (arguments -> 'server_side_encryption' ->> 'key_arn') is not null then ' encrypted by KMS CMK'
-        else ' not encrypted by KMS CMK'
+        when (arguments -> 'server_side_encryption' ->> 'key_type') = 'CUSTOMER_MANAGED_CMK' and (arguments -> 'server_side_encryption' ->> 'key_arn') is not null then ' encrypted with KMS CMK'
+        else ' not encrypted with KMS CMK'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -70,8 +70,8 @@ query "kinesis_stream_encrypted_with_kms_cmk" {
         else 'alarm'
       end as status,
       name || case
-        when (arguments ->> 'kms_key_id') is not null then ' encrypted by KMS CMK'
-        else ' not encrypted by KMS CMK'
+        when (arguments ->> 'kms_key_id') is not null then ' encrypted with KMS CMK'
+        else ' not encrypted with KMS CMK'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -91,8 +91,8 @@ query "kinesis_video_stream_encrypted_with_kms_cmk" {
         else 'alarm'
       end as status,
       name || case
-        when (arguments ->> 'kms_key_id') is not null then ' encrypted by KMS CMK'
-        else ' not encrypted by KMS CMK'
+        when (arguments ->> 'kms_key_id') is not null then ' encrypted with KMS CMK'
+        else ' not encrypted with KMS CMK'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}

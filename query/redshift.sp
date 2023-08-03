@@ -249,7 +249,7 @@ query "redshift_cluster_encryption_enabled" {
   EOQ
 }
 
-query "redshiftserverless_namespace_encrypted_with_kms_cmk" {
+query "redshift_serverless_namespace_encrypted_with_kms_cmk" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,

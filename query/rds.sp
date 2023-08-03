@@ -691,7 +691,7 @@ query "rds_db_security_group_events_subscription" {
   EOQ
 }
 
-query "rds_db_instance_uses_recent_ca_cert" {
+query "rds_db_instance_uses_recent_ca_certificate" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,

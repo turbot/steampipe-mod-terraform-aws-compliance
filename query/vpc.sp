@@ -262,8 +262,8 @@ query "vpc_network_firewall_encrypted_with_kms_cmk" {
         else 'ok'
       end status,
       name || case
-        when (arguments -> 'encryption_configuration' ->> 'key_id') is null then ' not encrypted by KMS CMK'
-        else ' encrypted by KMS CMK'
+        when (arguments -> 'encryption_configuration' ->> 'key_id') is null then ' not encrypted with KMS CMK'
+        else ' encrypted with KMS CMK'
       end || '.' reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -283,8 +283,8 @@ query "vpc_network_firewall_rule_group_encrypted_with_kms_cmk" {
         else 'ok'
       end status,
       name || case
-        when (arguments -> 'encryption_configuration' ->> 'key_id') is null then ' not encrypted by KMS CMK'
-        else ' encrypted by KMS CMK'
+        when (arguments -> 'encryption_configuration' ->> 'key_id') is null then ' not encrypted with KMS CMK'
+        else ' encrypted with KMS CMK'
       end || '.' reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -304,8 +304,8 @@ query "vpc_network_firewall_policy_encrypted_with_kms_cmk" {
         else 'ok'
       end status,
       name || case
-        when (arguments -> 'encryption_configuration' ->> 'key_id') is null then ' not encrypted by KMS CMK'
-        else ' encrypted by KMS CMK'
+        when (arguments -> 'encryption_configuration' ->> 'key_id') is null then ' not encrypted with KMS CMK'
+        else ' encrypted with KMS CMK'
       end || '.' reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
