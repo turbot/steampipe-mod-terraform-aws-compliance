@@ -75,7 +75,7 @@ control "cloudtrail_trail_sns_topic_enabled" {
 }
 
 control "cloudtrail_event_data_store_encrypted_with_kms_cmk" {
-  title      = "CloudTrail event data should be stored encrypted with KMS CMK"
+  title       = "CloudTrail event data should be stored encrypted with KMS CMK"
   description = "This control checks whether CloudTrail event data is stored encrypted with KMS CMK."
   query       = query.cloudtrail_event_data_store_encrypted_with_kms_cmk
 

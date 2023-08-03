@@ -347,7 +347,7 @@ query "vpc_ec2_transit_gateway_auto_accept_attachment_requests_disabled" {
         else 'ok'
       end status,
       name || case
-        when (arguments ->> 'auto_accept_shared_attachments') = 'enable' then ' automatically accept VPC attachment requests.'
+        when (arguments ->> 'auto_accept_shared_attachments') = 'enable' then ' automatically accept VPC attachment requests'
         else ' do not automatically accept VPC attachment requests'
       end || '.' reason
       ${local.tag_dimensions_sql}

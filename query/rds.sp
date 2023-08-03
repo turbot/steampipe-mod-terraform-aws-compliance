@@ -168,8 +168,8 @@ query "rds_db_cluster_instance_performance_insights_encrypted_with_kms_cmk" {
         else 'ok'
       end status,
       name || case
-        when (arguments -> 'performance_insights_kms_key_id') is null then ' ''performance_insights_kms_key_id'' not set'
-        else ' ''performance_insights_kms_key_id'' set'
+        when (arguments -> 'performance_insights_kms_key_id') is null then ' performance insights not encrypted with KMS CMK'
+        else ' performance insights encrypted with KMS CMK'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
