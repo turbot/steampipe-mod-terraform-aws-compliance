@@ -60,8 +60,8 @@ control "codebuild_project_encryption_at_rest_enabled" {
 }
 
 control "codebuild_project_s3_logs_encryption_enabled" {
-  title       = "CodeBuild S3 logs encryption should be enabled"
-  description = "Ensure that CodeBuild S3 logs are encrypted."
+  title       = "CodeBuild project S3 logs encryption should be enabled"
+  description = "This control checks whether CodeBuild project S3 logs are encrypted."
   query       = query.codebuild_project_s3_logs_encryption_enabled
 
   tags = merge(local.codebuild_compliance_common_tags, {
@@ -73,8 +73,8 @@ control "codebuild_project_s3_logs_encryption_enabled" {
 }
 
 control "codebuild_project_logging_enabled" {
-  title       = "CodeBuild project environments should have a logging configuration"
-  description = "Ensure CodeBuild project environments have a logging configuration."
+  title       = "CodeBuild project environments should have logging enabled"
+  description = "This control checks whether CodeBuild project environments have logging enabled."
   query       = query.codebuild_project_logging_enabled
 
   tags = merge(local.codebuild_compliance_common_tags, {

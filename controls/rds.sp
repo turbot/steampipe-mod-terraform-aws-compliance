@@ -321,7 +321,7 @@ control "rds_db_instance_performance_insights_encrypted_with_kms_cmk" {
 
 control "rds_db_instance_performance_insights_enabled" {
   title       = "RDS DB instances should have performance insights enabled"
-  description = "This control checks whether Relational Database Service (RDS) instances have Performance Insights enabled."
+  description = "This control checks whether Relational Database Service (RDS) instances have performance insights enabled."
   query       = query.rds_db_instance_performance_insights_enabled
 
   tags = local.rds_compliance_common_tags

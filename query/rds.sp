@@ -765,8 +765,8 @@ query "memorydb_cluster_transit_encryption_enabled" {
         else 'ok'
       end status,
       name || case
-        when (arguments ->> 'tls_enabled') = 'false' then ' transit encryption not enabled'
-        else ' transit encryption enabled'
+        when (arguments ->> 'tls_enabled') = 'false' then ' encryption at transit disabled'
+        else ' encryption at transit enabled'
       end || '.' reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -828,7 +828,7 @@ query "rds_db_cluster_instance_automatic_minor_version_upgrade_enabled" {
         else 'ok'
       end status,
       name || case
-        when (arguments ->> 'auto_minor_version_upgrade') = 'false' then ' auto minor version upgrade not enabled'
+        when (arguments ->> 'auto_minor_version_upgrade') = 'false' then ' auto minor version upgrade disabled'
         else ' auto minor version upgrade enabled'
       end || '.' reason
       ${local.tag_dimensions_sql}

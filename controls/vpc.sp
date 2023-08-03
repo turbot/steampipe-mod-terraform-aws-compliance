@@ -147,7 +147,7 @@ control "vpc_transfer_server_not_publicly_accesible" {
 
 control "vpc_endpoint_service_acceptance_enabled" {
   title       = "VPC endpoint service acceptance should be enabled"
-  description = "This control checks whether the VPC endpoint service acceptance is enabled  for manual acceptance."
+  description = "This control checks whether the VPC endpoint service acceptance is enabled for manual acceptance."
   query       = query.vpc_endpoint_service_acceptance_enabled
 
   tags = local.vpc_compliance_common_tags

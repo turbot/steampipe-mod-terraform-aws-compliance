@@ -39,7 +39,7 @@ control "kinesis_firehose_delivery_stream_server_side_encryption_enabled" {
 
 control "kinesis_firehose_delivery_stream_encrypted_with_kms_cmk" {
   title       = "Kinesis firehose delivery streams should be encrypted with KMS CMK"
-  description = "Ensure that Kinesis Firehose Delivery Streams are encrypted with KMS CMK."
+  description = "This control checks whether Kinesis Firehose Delivery Streams are encrypted with KMS CMK."
   query       = query.kinesis_firehose_delivery_stream_encrypted_with_kms_cmk
 
   tags = local.kinesis_compliance_common_tags
