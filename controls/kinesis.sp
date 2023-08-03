@@ -47,7 +47,7 @@ control "kinesis_firehose_delivery_stream_encrypted_with_kms_cmk" {
 
 control "kinesis_stream_encrypted_with_kms_cmk" {
   title       = "Kinesis streams should be encrypted with KMS CMK"
-  description = "Ensure that Kinesis streams are encrypted with KMS CMK."
+  description = "This control checks whether Kinesis Streams are encrypted with KMS CMK."
   query       = query.kinesis_stream_encrypted_with_kms_cmk
 
   tags = local.kinesis_compliance_common_tags
@@ -55,7 +55,7 @@ control "kinesis_stream_encrypted_with_kms_cmk" {
 
 control "kinesis_video_stream_encrypted_with_kms_cmk" {
   title       = "Kinesis vidoe streams should be encrypted with KMS CMK"
-  description = "Ensure that Kinesis video streams are encrypted with KMS CMK."
+  description = "This control checks whether Kinesis Video Streams are encrypted with KMS CMK."
   query       = query.kinesis_video_stream_encrypted_with_kms_cmk
 
   tags = local.kinesis_compliance_common_tags
