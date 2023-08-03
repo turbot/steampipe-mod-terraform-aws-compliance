@@ -1,3 +1,9 @@
+## v0.13 [2023-08-03]
+
+_What's new?_
+
+- Added 34 new controls across the benchmarks. ([#61](https://github.com/turbot/steampipe-mod-terraform-aws-compliance/pull/61))
+
 ## v0.12 [2023-07-28]
 
 _What's new?_
