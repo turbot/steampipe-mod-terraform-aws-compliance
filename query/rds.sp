@@ -146,9 +146,9 @@ query "rds_db_cluster_instance_performance_insights_enabled" {
         else 'alarm'
       end status,
       name || case
-        when (arguments -> 'performance_insights_enabled') is null then ' ''performance_insights_enabled'' disabled'
-        when (arguments -> 'performance_insights_enabled')::boolean then ' ''performance_insights_enabled'' enabled'
-        else ' ''performance_insights_enabled'' disabled'
+        when (arguments -> 'performance_insights_enabled') is null then ' performance insights disabled'
+        when (arguments -> 'performance_insights_enabled')::boolean then ' performance insights enabled'
+        else ' performance insights disabled'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -189,8 +189,8 @@ query "rds_db_instance_performance_insights_encrypted_with_kms_cmk" {
         else 'ok'
       end status,
       name || case
-        when (arguments ->> 'performance_insights_kms_key_id') is null then ' ''performance_insights_kms_key_id'' not set'
-        else ' ''performance_insights_kms_key_id'' set'
+        when (arguments ->> 'performance_insights_kms_key_id') is null then ' performance insights not encrypted with kms key'
+        else ' performance insights encrypted with kms key'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -211,9 +211,9 @@ query "rds_db_instance_performance_insights_enabled" {
         else 'alarm'
       end status,
       name || case
-        when (arguments ->> 'performance_insights_enabled') is null then ' ''performance_insights_enabled'' disabled'
-        when (arguments ->> 'performance_insights_enabled')::boolean then ' ''performance_insights_enabled'' enabled'
-        else ' ''performance_insights_enabled'' disabled'
+        when (arguments ->> 'performance_insights_enabled') is null then ' performance insights disabled'
+        when (arguments ->> 'performance_insights_enabled')::boolean then ' performance insights enabled'
+        else ' performance insights disabled'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
