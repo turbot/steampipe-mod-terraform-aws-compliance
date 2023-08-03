@@ -10,7 +10,9 @@ benchmark "cloudtrail" {
 
   children = [
     control.cloudtrail_enabled_all_regions,
+    control.cloudtrail_event_data_store_encrypted_with_kms_cmk,
     control.cloudtrail_trail_logs_encrypted_with_kms_cmk,
+    control.cloudtrail_trail_sns_topic_enabled,
     control.cloudtrail_trail_validation_enabled
   ]
 
@@ -62,4 +64,20 @@ control "cloudtrail_trail_validation_enabled" {
     pci                       = "true"
     soc_2                     = "true"
   })
+}
+
+control "cloudtrail_trail_sns_topic_enabled" {
+  title       = "CloudTrail trail should have SNS topic enabled"
+  description = "Enable SNS topic for CloudTrail trails to notify when new log files are delivered."
+  query       = query.cloudtrail_trail_sns_topic_enabled
+
+  tags = local.cloudtrail_compliance_common_tags
+}
+
+control "cloudtrail_event_data_store_encrypted_with_kms_cmk" {
+  title       = "CloudTrail event data should be stored encrypted with KMS CMK"
+  description = "This control checks whether a CloudTrail event data store is encrypted with KMS CMK."
+  query       = query.cloudtrail_event_data_store_encrypted_with_kms_cmk
+
+  tags = local.cloudtrail_compliance_common_tags
 }

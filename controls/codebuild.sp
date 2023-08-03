@@ -10,7 +10,9 @@ benchmark "codebuild" {
 
   children = [
     control.codebuild_project_encryption_at_rest_enabled,
+    control.codebuild_project_logging_enabled,
     control.codebuild_project_plaintext_env_variables_no_sensitive_aws_values,
+    control.codebuild_project_s3_logs_encryption_enabled,
     control.codebuild_project_source_repo_oauth_configured
   ]
 
@@ -55,4 +57,30 @@ control "codebuild_project_encryption_at_rest_enabled" {
   query       = query.codebuild_project_encryption_at_rest_enabled
 
   tags = local.codebuild_compliance_common_tags
+}
+
+control "codebuild_project_s3_logs_encryption_enabled" {
+  title       = "CodeBuild project S3 logs encryption should be enabled"
+  description = "This control checks whether CodeBuild project S3 logs are encrypted."
+  query       = query.codebuild_project_s3_logs_encryption_enabled
+
+  tags = merge(local.codebuild_compliance_common_tags, {
+    aws_foundational_security = "true"
+    gxp_21_cfr_part_11        = "true"
+    gxp_eu_annex_11           = "true"
+    nist_csf                  = "true"
+  })
+}
+
+control "codebuild_project_logging_enabled" {
+  title       = "CodeBuild project environments should have logging enabled"
+  description = "This control checks whether CodeBuild project environments have logging enabled."
+  query       = query.codebuild_project_logging_enabled
+
+  tags = merge(local.codebuild_compliance_common_tags, {
+    aws_foundational_security              = "true"
+    hipaa_final_omnibus_security_rule_2013 = "true"
+    hipaa_security_rule_2003               = "true"
+    nist_csf                               = "true"
+  })
 }

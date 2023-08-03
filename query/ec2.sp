@@ -315,7 +315,7 @@ query "ec2_launch_configuration_metadata_hop_limit_check" {
       end as status,
       name || case
         when (arguments -> 'metadata_options' ->> 'http_put_response_hop_limit')::int > 1 then ' metadata response hop limit value is greater than 1'
-        else ' metadata response hop limit value is not less than 1'
+        else ' metadata response hop limit value is less than 1'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}

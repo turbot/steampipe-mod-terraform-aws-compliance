@@ -10,14 +10,21 @@ benchmark "vpc" {
 
   children = [
     control.vpc_default_security_group_restricts_all_traffic,
+    control.vpc_ec2_transit_gateway_auto_accept_attachment_requests_disabled,
     control.vpc_eip_associated,
+    control.vpc_endpoint_service_acceptance_enabled,
     control.vpc_flow_logs_enabled,
     control.vpc_igw_attached_to_authorized_vpc,
     control.vpc_network_acl_unused,
+    control.vpc_network_firewall_deletion_protection_enabled,
+    control.vpc_network_firewall_encrypted_with_kms_cmk,
+    control.vpc_network_firewall_policy_encrypted_with_kms_cmk,
+    control.vpc_network_firewall_rule_group_encrypted_with_kms_cmk,
     control.vpc_security_group_associated_to_eni,
     control.vpc_security_group_description_for_rules,
     control.vpc_security_group_rule_description_for_rules,
-    control.vpc_subnet_auto_assign_public_ip_disabled
+    control.vpc_subnet_auto_assign_public_ip_disabled,
+    control.vpc_transfer_server_not_publicly_accesible
   ]
 
   tags = merge(local.vpc_compliance_common_tags, {
@@ -128,4 +135,60 @@ control "vpc_subnet_auto_assign_public_ip_disabled" {
     nist_csf                  = "true"
     rbi_cyber_security        = "true"
   })
+}
+
+control "vpc_transfer_server_not_publicly_accesible" {
+  title       = "VPC transfer server should not be publicly accessible"
+  description = "This control checks whether the VPC transfer server is not publicly accessible."
+  query       = query.vpc_transfer_server_not_publicly_accesible
+
+  tags = local.vpc_compliance_common_tags
+}
+
+control "vpc_endpoint_service_acceptance_enabled" {
+  title       = "VPC endpoint service acceptance should be enabled"
+  description = "This control checks whether the VPC endpoint service acceptance is enabled for manual acceptance."
+  query       = query.vpc_endpoint_service_acceptance_enabled
+
+  tags = local.vpc_compliance_common_tags
+}
+
+control "vpc_network_firewall_encrypted_with_kms_cmk" {
+  title       = "VPC network firewall should be encrypted with KMS CMK"
+  description = "This control checks whether the Network Firewall is encrypted with a KMS CMK."
+  query       = query.vpc_network_firewall_encrypted_with_kms_cmk
+
+  tags = local.vpc_compliance_common_tags
+}
+
+control "vpc_network_firewall_rule_group_encrypted_with_kms_cmk" {
+  title       = "VPC network firewall rule group should be encrypted with KMS CMK"
+  description = "This control checks whether the Network Firewall Rule Group is encrypted with a KMS CMK."
+  query       = query.vpc_network_firewall_rule_group_encrypted_with_kms_cmk
+
+  tags = local.vpc_compliance_common_tags
+}
+
+control "vpc_network_firewall_policy_encrypted_with_kms_cmk" {
+  title       = "VPC network firewall policy should define a encryption configuration that uses a KMS CMK"
+  description = "This control checks whether the Network Firewall Policy is encrypted with a KMS CMK."
+  query       = query.vpc_network_firewall_policy_encrypted_with_kms_cmk
+
+  tags = local.vpc_compliance_common_tags
+}
+
+control "vpc_network_firewall_deletion_protection_enabled" {
+  title       = "VPC network firewall should have deletion protection enabled"
+  description = "This control checks whether the Network Firewall has deletion protection enabled."
+  query       = query.vpc_network_firewall_deletion_protection_enabled
+
+  tags = local.vpc_compliance_common_tags
+}
+
+control "vpc_ec2_transit_gateway_auto_accept_attachment_requests_disabled" {
+  title       = "VPC EC2 transit gateway should not automatically accept VPC attachment requests"
+  description = "This control checks whether the EC2 Transit Gateway has auto accept attachment requests disabled."
+  query       = query.vpc_ec2_transit_gateway_auto_accept_attachment_requests_disabled
+
+  tags = local.vpc_compliance_common_tags
 }

@@ -99,3 +99,47 @@ query "codebuild_project_source_repo_oauth_configured" {
       left join codebuild_source_credential as b on (b.arguments -> 'server_type') = (a.arguments -> 'source' -> 'type');
   EOQ
 }
+
+query "codebuild_project_s3_logs_encryption_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'logs_config' -> 's3_logs' ->> 'encryption_disabled')::boolean then 'alarm'
+        else 'ok'
+      end as status,
+      name || case
+        when (arguments -> 'logs_config' -> 's3_logs' ->> 'encryption_disabled')::boolean then ' not encrypted at rest'
+        else ' encrypted at rest'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_codebuild_project';
+  EOQ
+}
+
+query "codebuild_project_logging_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'logs_config' ->> 'cloudwatch_logs') is not null
+        or (arguments -> 'logs_config' ->> 's3_logs') is not null then 'ok'
+        else 'alarm'
+      end as status,
+      name || case
+        when (arguments -> 'logs_config' ->> 'cloudwatch_logs') is not null
+        or (arguments -> 'logs_config' ->> 's3_logs') is not null then ' logging enabled'
+        else ' logging disabled'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_codebuild_project';
+  EOQ
+}
