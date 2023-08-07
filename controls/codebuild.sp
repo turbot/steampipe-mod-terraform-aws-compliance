@@ -84,3 +84,11 @@ control "codebuild_project_logging_enabled" {
     nist_csf                               = "true"
   })
 }
+
+control "codebuild_project_privileged_mode_disabled" {
+  title       = "CodeBuild project privileged mode should be disabled"
+  description = "This control checks whether CodeBuild project privileged mode is disabled."
+  query       = query.codebuild_project_privileged_mode_disabled
+
+  tags = local.codebuild_compliance_common_tags
+}
