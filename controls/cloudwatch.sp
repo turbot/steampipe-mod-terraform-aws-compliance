@@ -11,6 +11,7 @@ benchmark "cloudwatch" {
   children = [
     control.cloudwatch_alarm_action_enabled,
     control.cloudwatch_destination_policy_wildcards,
+    control.cloudwatch_log_group_retention,
     control.cloudwatch_log_group_retention_period_365,
     control.log_group_encryption_at_rest_enabled
   ]
@@ -67,4 +68,12 @@ control "log_group_encryption_at_rest_enabled" {
     rbi_cyber_security = "true"
     soc_2              = "true"
   })
+}
+
+control "cloudwatch_log_group_retention" {
+  title       = "Log group retention period should be set"
+  description = "Ensure that CloudWatch Log Group specifies retention days."
+  query       = query.cloudwatch_log_group_retention
+
+  tags = local.cloudwatch_compliance_common_tags
 }

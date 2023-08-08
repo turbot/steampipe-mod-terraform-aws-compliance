@@ -10,6 +10,11 @@ benchmark "elasticache" {
 
   children = [
     control.elasticache_redis_cluster_automatic_backup_retention_15_days,
+    control.elasticache_replication_group_encryption_in_transit_enabled_auth_token,
+    control.elasticache_replication_group_encryption_at_rest_enabled,
+    control.elasticache_replication_group_encrypted_with_kms_cmk,
+    control.elasticache_redis_cluster_auto_minor_version_upgrade,
+    control.elasticache_cluster_has_subnet_group,
     control.elasticache_replication_group_encryption_in_transit_enabled
   ]
 
@@ -36,6 +41,46 @@ control "elasticache_replication_group_encryption_in_transit_enabled" {
   title       = "ElastiCache replication group should be encrypted at transit"
   description = "Ensure all data stored in the Elasticache Replication Group is securely encrypted at transit"
   query       = query.elasticache_replication_group_encryption_in_transit_enabled
+
+  tags = local.elasticache_compliance_common_tags
+}
+
+control "elasticache_replication_group_encryption_in_transit_enabled_auth_token" {
+  title       = "ElastiCache replication group should be encrypted at transit"
+  description = "This control checks whether all data stored in the Elasticache Replication Group is securely encrypted at transit."
+  query       = query.elasticache_replication_group_encryption_in_transit_enabled_auth_token
+
+  tags = local.elasticache_compliance_common_tags
+}
+
+control "elasticache_replication_group_encryption_at_rest_enabled" {
+  title       = "ElastiCache replication group should be encrypted at rest"
+  description = "This control checks whether all data stored in the Elasticache Replication Group is securely encrypted at rest."
+  query       = query.elasticache_replication_group_encryption_at_rest_enabled
+
+  tags = local.elasticache_compliance_common_tags
+}
+
+control "elasticache_replication_group_encrypted_with_kms_cmk" {
+  title       = "ElastiCache replication group should be encrypted with KMS CMK"
+  description = "This control checks whether all data stored in the Elasticache Replication Group is securely encrypted with KMS CMK."
+  query       = query.elasticache_replication_group_encrypted_with_kms_cmk
+
+  tags = local.elasticache_compliance_common_tags
+}
+
+control "elasticache_redis_cluster_auto_minor_version_upgrade" {
+  title       = "ElastiCache Redis cluster should have auto minor version upgrade enabled"
+  description = "This control checks whether the ElastiCache Redis cluster has auto minor version upgrade enabled."
+  query       = query.elasticache_redis_cluster_auto_minor_version_upgrade
+
+  tags = local.elasticache_compliance_common_tags
+}
+
+control "elasticache_cluster_has_subnet_group" {
+  title       = "ElastiCache cluster should have subnet group"
+  description = "This control checks whether the ElastiCache cluster has subnet group."
+  query       = query.elasticache_cluster_has_subnet_group
 
   tags = local.elasticache_compliance_common_tags
 }
