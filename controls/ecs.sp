@@ -10,6 +10,8 @@ benchmark "ecs" {
 
   children = [
     control.ecs_cluster_container_insights_enabled,
+    control.ecs_cluster_logging_enabled,
+    control.ecs_cluster_logging_encrypted_with_kms_cmk,
     control.ecs_task_definition_encryption_in_transit_enabled
   ]
 
@@ -30,6 +32,22 @@ control "ecs_task_definition_encryption_in_transit_enabled" {
   title       = "ECS task definition encryption in transit should be enabled"
   description = "Ensure encryption in transit is enabled for EFS volumes in ECS Task definitions."
   query       = query.ecs_task_definition_encryption_in_transit_enabled
+
+  tags = local.ecs_compliance_common_tags
+}
+
+control "ecs_cluster_logging_enabled" {
+  title       = "ECS cluster logging should be enabled"
+  description = "This control checks whether logging is enabled for the ECS cluster."
+  query       = query.ecs_cluster_logging_enabled
+
+  tags = local.ecs_compliance_common_tags
+}
+
+control "ecs_cluster_logging_encrypted_with_kms_cmk" {
+  title       = "ECS cluster logging should be encrypted with KMS CMK"
+  description = "This control checks whether logging is encrypted with KMS CMK for the ECS cluster."
+  query       = query.ecs_cluster_logging_encrypted_with_kms_cmk
 
   tags = local.ecs_compliance_common_tags
 }

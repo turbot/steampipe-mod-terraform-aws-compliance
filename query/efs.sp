@@ -86,3 +86,24 @@ query "efs_access_point_has_root_directory" {
       type = 'aws_efs_access_point';
   EOQ
 }
+
+query "efs_file_system_encrypted_with_kms_cmk" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'kms_key_id') is null then 'alarm'
+        else 'ok'
+      end as status,
+      name || case
+        when (arguments -> 'kms_key_id') is null then ' not encrypted with KMS CMK'
+        else ' encrypted with KMS CMK'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_efs_file_system';
+  EOQ
+}
