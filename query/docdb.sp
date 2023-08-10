@@ -48,7 +48,7 @@ query "docdb_cluster_encrypted_with_kms" {
   EOQ
 }
 
-query "docdb_paramater_group_with_logging" {
+query "docdb_cluster_paramater_group_with_logging" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,
@@ -100,7 +100,7 @@ query "docdb_global_cluster_encrypted" {
   EOQ
 }
 
-query "docdb_log_exports_enabled" {
+query "docdb_cluster_log_exports_enabled" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,
@@ -125,7 +125,7 @@ query "docdb_log_exports_enabled" {
   EOQ
 }
 
-query "docdb_tls_enabled" {
+query "docdb_cluster_parameter_group_tls_enabled" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,
@@ -140,8 +140,8 @@ query "docdb_tls_enabled" {
         when
           (arguments -> 'parameter'->> 'name') = 'tls'
           and (arguments -> 'parameter'->> 'value') = 'enabled'
-        then ' tls enabled'
-        else ' tls disabled'
+        then ' TLS enabled'
+        else ' TLS disabled'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}

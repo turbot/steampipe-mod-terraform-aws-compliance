@@ -18,8 +18,8 @@ benchmark "cloudformation" {
 }
 
 control "cloudformation_stack_notifications_enabled" {
-  title       = "CloudFormation stacks should have notifications enabled"
-  description = "This control checks whether CloudFormation stacks are associated with an SNS topic to receive notifications when an event occurs."
+  title       = "CloudFormation Stacks should have notifications enabled"
+  description = "This control checks whether CloudFormation Stacks are associated with an SNS topic to receive notifications when an event occurs."
   query       = query.cloudformation_stack_notifications_enabled
 
   tags = merge(local.cloudformation_compliance_common_tags, {

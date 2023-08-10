@@ -11,10 +11,10 @@ benchmark "docdb" {
   children = [
     control.docdb_cluster_audit_logs_enabled,
     control.docdb_cluster_encrypted_with_kms,
+    control.docdb_cluster_log_exports_enabled,
     control.docdb_global_cluster_encrypted,
-    control.docdb_log_exports_enabled,
-    control.docdb_paramater_group_with_logging,
-    control.docdb_tls_enabled
+    control.docdb_cluster_paramater_group_with_logging,
+    control.docdb_cluster_parameter_group_tls_enabled
   ]
 
   tags = merge(local.docdb_compliance_common_tags, {
@@ -46,26 +46,26 @@ control "docdb_global_cluster_encrypted" {
   tags = local.docdb_compliance_common_tags
 }
 
-control "docdb_log_exports_enabled" {
-  title       = "DocDB cluster has log export enabled"
-  description = "This control checks whether DocDB cluster log export is enabled."
-  query       = query.docdb_log_exports_enabled
+control "docdb_cluster_log_exports_enabled" {
+  title       = "DocDB cluster should have log export enabled"
+  description = "This control checks whether DocDB cluster has log export enabled."
+  query       = query.docdb_cluster_log_exports_enabled
 
   tags = local.docdb_compliance_common_tags
 }
 
-control "docdb_paramater_group_with_logging" {
-  title       = "DocDB has audit logs enabled"
-  description = "This control checks whether DocDB logging is enabled through its parameter group."
-  query       = query.docdb_paramater_group_with_logging
+control "docdb_cluster_paramater_group_with_logging" {
+  title       = "DocDB parameter group should have audit logs enabled"
+  description = "This control checks whether DocDB parameter group has logging enabled."
+  query       = query.docdb_cluster_paramater_group_with_logging
 
   tags = local.docdb_compliance_common_tags
 }
 
-control "docdb_tls_enabled" {
+control "docdb_cluster_parameter_group_tls_enabled" {
   title       = "DocDB TLS should be enabled"
   description = "This control checks whether DocDB TLS is enabled through its parameter group."
-  query       = query.docdb_tls_enabled
+  query       = query.docdb_cluster_parameter_group_tls_enabled
 
   tags = local.docdb_compliance_common_tags
 }

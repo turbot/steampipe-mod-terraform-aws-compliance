@@ -18,8 +18,8 @@ benchmark "codepipeline" {
 }
 
 control "codepipeline_artifacts_encrypted_with_kms_cmk" {
-  title       = "CodePipeline artifacts encrypted with KMS CMK"
-  description = "This control checks whether the CodePipeline artifacts are encrypted."
+  title       = "CodePipeline Artifacts encrypted with KMS CMK"
+  description = "This control checks whether the CodePipeline Artifacts are encrypted."
   query       = query.codepipeline_artifacts_encrypted_with_kms_cmk
 
   tags = local.codepipeline_compliance_common_tags
