@@ -47,3 +47,30 @@ query "docdb_cluster_encrypted_with_kms" {
       type = 'aws_docdb_cluster';
   EOQ
 }
+
+query "docdb_paramater_group_with_logging" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when
+         (arguments -> 'parameter'->> 'name') = 'audit_logs'
+         and (arguments -> 'parameter'->> 'value') = 'enabled'
+        then 'ok'
+        else 'alarm'
+      end as status,
+      name || case
+        when
+          (arguments -> 'parameter'->> 'name') = 'audit_logs'
+          and (arguments -> 'parameter'->> 'value') = 'enabled'
+        then ' paramarter group enabled with audit log'
+        else ' not enabled with audit log'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_docdb_cluster_parameter_group';
+  EOQ
+}
