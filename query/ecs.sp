@@ -43,3 +43,93 @@ query "ecs_task_definition_encryption_in_transit_enabled" {
       type = 'aws_ecs_task_definition';
   EOQ
 }
+
+query "ecs_cluster_logging_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'configuration' -> 'execute_command_configuration' ->> 'logging') in ('DEFAULT','OVERRIDE') then 'ok'
+        else 'alarm'
+      end as status,
+      name || case
+        when (arguments -> 'configuration' -> 'execute_command_configuration' ->> 'logging') in ('DEFAULT','OVERRIDE') then ' logging enabled'
+        else ' logging disabled'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_ecs_cluster';
+  EOQ
+}
+
+query "ecs_cluster_logging_encrypted_with_kms_cmk" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'configuration' -> 'execute_command_configuration' ->> 'logging') <> 'NONE' and (arguments -> 'configuration' -> 'execute_command_configuration' ->> 'kms_key_id') is not null and ((arguments -> 'configuration' -> 'execute_command_configuration' -> 'log_configuration' ->> 'cloud_watch_encryption_enabled')::boolean or (arguments -> 'configuration' -> 'execute_command_configuration' -> 'log_configuration' ->> 's3_bucket_encryption_enabled')::boolean) then 'ok'
+        else 'alarm'
+      end as status,
+      name || case
+        when (arguments -> 'configuration' -> 'execute_command_configuration' ->> 'logging') <> 'NONE' and (arguments -> 'configuration' -> 'execute_command_configuration' ->> 'kms_key_id') is not null and ((arguments -> 'configuration' -> 'execute_command_configuration' -> 'log_configuration' ->> 'cloud_watch_encryption_enabled')::boolean or (arguments -> 'configuration' -> 'execute_command_configuration' -> 'log_configuration' ->> 's3_bucket_encryption_enabled')::boolean) then ' cluster logging encrypted with kms cmk'
+        when (arguments -> 'configuration' -> 'execute_command_configuration' ->> 'logging') = 'NONE' or (arguments -> 'configuration' -> 'execute_command_configuration' ->> 'logging') is null then ' cluster logging disabled'
+        else ' cluster logging not encrypted with kms cmk'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_ecs_cluster';
+  EOQ
+}
+
+query "ecs_task_definition_role_check" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'execution_role_arn') is null then 'skip'
+        when (arguments ->> 'task_role_arn') is null then 'skip'
+        when (arguments ->> 'execution_role_arn') is not null and (arguments ->> 'task_role_arn') is not null and (arguments ->> 'execution_role_arn') <> (arguments ->> 'task_role_arn') then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments ->> 'execution_role_arn') is null then ' execution_role_arn not set'
+        when (arguments ->> 'task_role_arn') is null then ' task_role_arn not set'
+        when (arguments ->> 'execution_role_arn') is not null and (arguments ->> 'task_role_arn') is not null and (arguments ->> 'execution_role_arn') <> (arguments ->> 'task_role_arn') then ' execution_role_arn and task_role_arn are different'
+        else ' execution_role_arn and task_role_arn are the same'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_ecs_task_definition';
+  EOQ
+}
+
+query "ecs_service_fargate_uses_latest_version" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'launch_type') = 'FARGATE' and (arguments ->> 'platform_version') = 'LATEST' then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments ->> 'launch_type') = 'FARGATE' and (arguments ->> 'platform_version') = 'LATEST' then ' fargate latest'
+        when (arguments ->> 'launch_type') = 'FARGATE' and (arguments ->> 'platform_version') <> 'LATEST' then ' fargate not latest'
+        else ' not fargate'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_ecs_task_definition';
+  EOQ
+}

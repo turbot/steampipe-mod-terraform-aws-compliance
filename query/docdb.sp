@@ -47,3 +47,107 @@ query "docdb_cluster_encrypted_with_kms" {
       type = 'aws_docdb_cluster';
   EOQ
 }
+
+query "docdb_cluster_paramater_group_logging_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when
+         (arguments -> 'parameter'->> 'name') = 'audit_logs'
+         and (arguments -> 'parameter'->> 'value') = 'enabled'
+        then 'ok'
+        else 'alarm'
+      end as status,
+      name || case
+        when
+          (arguments -> 'parameter'->> 'name') = 'audit_logs'
+          and (arguments -> 'parameter'->> 'value') = 'enabled'
+        then ' logging enabled'
+        else ' logging disabled'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_docdb_cluster_parameter_group';
+  EOQ
+}
+
+query "docdb_global_cluster_encrypted" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when
+          (arguments ->> 'storage_encrypted')::boolean
+        then 'ok'
+        else 'alarm'
+      end as status,
+      name || case
+        when
+          (arguments ->> 'storage_encrypted')::boolean
+        then ' Global Cluster is encrypted'
+        else ' Global Cluster is not encrypted'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_docdb_global_cluster';
+  EOQ
+}
+
+query "docdb_cluster_log_exports_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when
+         (arguments -> 'enabled_cloudwatch_logs_exports') is not null
+        then 'ok'
+        else 'alarm'
+      end as status,
+      name || case
+        when
+          (arguments -> 'enabled_cloudwatch_logs_exports') is not null
+        then ' cloudwatch log exports enabled'
+        else ' cloudwatch log exports disabled'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_docdb_cluster';
+  EOQ
+}
+
+query "docdb_cluster_parameter_group_tls_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when
+         (arguments -> 'parameter'->> 'name') = 'tls'
+         and (arguments -> 'parameter'->> 'value') = 'enabled'
+        then 'ok'
+        else 'alarm'
+      end as status,
+      name || case
+        when
+          (arguments -> 'parameter'->> 'name') = 'tls'
+          and (arguments -> 'parameter'->> 'value') = 'enabled'
+        then ' TLS enabled'
+        else ' TLS disabled'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_docdb_cluster_parameter_group';
+  EOQ
+}

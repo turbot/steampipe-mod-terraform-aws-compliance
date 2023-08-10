@@ -9,6 +9,7 @@ benchmark "codebuild" {
   description = "This benchmark provides a set of controls that detect Terraform AWS CodeBuild resources deviating from security best practices."
 
   children = [
+    codebuild_project_privileged_mode_disabled,
     control.codebuild_project_encryption_at_rest_enabled,
     control.codebuild_project_logging_enabled,
     control.codebuild_project_plaintext_env_variables_no_sensitive_aws_values,
@@ -83,4 +84,12 @@ control "codebuild_project_logging_enabled" {
     hipaa_security_rule_2003               = "true"
     nist_csf                               = "true"
   })
+}
+
+control "codebuild_project_privileged_mode_disabled" {
+  title       = "CodeBuild project privileged mode should be disabled"
+  description = "This control checks whether CodeBuild project privileged mode is disabled."
+  query       = query.codebuild_project_privileged_mode_disabled
+
+  tags = local.codebuild_compliance_common_tags
 }
