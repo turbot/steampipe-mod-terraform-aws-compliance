@@ -22,7 +22,8 @@ control "acm_certificate_create_before_destroy_enabled" {
   title       = "ACM certificate should have create before destroy enabled"
   description = "This control checks whether ACM certificate has create before destroy enabled. It is recommended to enable the resource lifecycle configuration block create_before_destroy argument in this resource configuration to manage all requests that use this certificate, avoiding an outage."
   query       = query.acm_certificate_create_before_destroy_enabled
-  tags        = local.acm_compliance_common_tags
+
+  tags = local.acm_compliance_common_tags
 }
 
 control "acm_certificate_transparency_logging_enabled" {
