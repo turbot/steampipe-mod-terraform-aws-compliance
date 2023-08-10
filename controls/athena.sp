@@ -39,7 +39,7 @@ control "athena_workgroup_encryption_at_rest_enabled" {
 
 control "athena_workgroup_enforce_workgroup_configuration" {
   title       = "Athena workgroup configuration should be enforced"
-  description = "Ensure Athena Workgroup should enforce configuration to prevent client disabling encryption."
+  description = "This control checks whether Athena Workgroup should enforce configuration to prevent client disabling encryption."
   query       = query.athena_workgroup_enforce_workgroup_configuration
 
   tags = local.athena_compliance_common_tags

@@ -21,5 +21,6 @@ control "codepipeline_artifacts_encrypted_with_kms_cmk" {
   title       = "CodePipeline artifacts encrypted with KMS CMK"
   description = "This control checks whether the CodePipeline artifacts are encrypted."
   query       = query.codepipeline_artifacts_encrypted_with_kms_cmk
-  tags        = local.codepipeline_compliance_common_tags
+
+  tags = local.codepipeline_compliance_common_tags
 }

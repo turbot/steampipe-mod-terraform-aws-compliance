@@ -37,7 +37,7 @@ control "docdb_cluster_encrypted_with_kms" {
 
 control "docdb_paramater_group_with_logging" {
   title       = "DocDB has audit logs enabled"
-  description = "Ensure DocDB pamater group is associated with audit log."
+  description = "This control checks whether DocDB parameter group has audit logs enabled."
   query       = query.docdb_paramater_group_with_logging
 
   tags = local.docdb_compliance_common_tags

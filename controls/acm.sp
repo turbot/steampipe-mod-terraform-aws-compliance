@@ -27,7 +27,7 @@ control "acm_certificate_create_before_destroy_enabled" {
 
 control "acm_certificate_transparency_logging_enabled" {
   title       = "ACM certificates should have transparency logging preference enabled"
-  description = "Ensure ACM certificates transparency logging preference is enabled as certificate transparency logging guards against SSL/TLS certificates issued by mistake or by a compromised certificate authority."
+  description = "This control checks whether ACM certificates transparency logging preference is enabled as certificate transparency logging guards against SSL/TLS certificates issued by mistake or by a compromised certificate authority."
   query       = query.acm_certificate_transparency_logging_enabled
 
   tags = merge(local.acm_compliance_common_tags, {

@@ -9,8 +9,7 @@ benchmark "cloudformation" {
   description = "This benchmark provides a set of controls that detect Terraform AWS CloudFormation resources deviating from security best practices."
 
   children = [
-    control.acm_certificate_create_before_destroy_enabled,
-    control.cloudsearch_domain_uses_latest_tls_version
+    control.cloudformation_stack_notifications_enabled
   ]
 
   tags = merge(local.cloudformation_compliance_common_tags, {

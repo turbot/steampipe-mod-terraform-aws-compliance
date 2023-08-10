@@ -9,7 +9,11 @@ benchmark "dms" {
   description = "This benchmark provides a set of controls that detect Terraform AWS DMS resources deviating from security best practices."
 
   children = [
-    control.dms_replication_instance_not_publicly_accessible
+    control.dms_replication_instance_automatic_minor_version_upgrade_enabled,
+    control.dms_replication_instance_encrypted_with_kms_cmk,
+    control.dms_replication_instance_not_publicly_accessible,
+    control.dms_s3_endpoint_encrypted_with_kms_cmk,
+    control.dms_s3_endpoint_encryption_in_transit_enabled
   ]
 
   tags = merge(local.dms_compliance_common_tags, {

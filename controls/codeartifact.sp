@@ -21,5 +21,6 @@ control "codeartifact_domain_encrypted_with_kms_cmk" {
   title       = "CodeArtifactDomain should be encrypted with KMS CMK"
   description = "This control checks whether CodeArtifactDomain is encrypted with KMS CMK."
   query       = query.codeartifact_domain_encrypted_with_kms_cmk
-  tags        = local.codeartifact_domain_compliance_common_tags
+
+  tags = local.codeartifact_domain_compliance_common_tags
 }

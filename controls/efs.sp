@@ -12,7 +12,8 @@ benchmark "efs" {
     control.efs_access_point_has_root_directory,
     control.efs_access_point_has_user_identity,
     control.efs_file_system_automatic_backups_enabled,
-    control.efs_file_system_encrypt_data_at_rest
+    control.efs_file_system_encrypt_data_at_rest,
+    control.efs_file_system_encrypted_with_kms_cmk
   ]
 
   tags = merge(local.efs_compliance_common_tags, {
