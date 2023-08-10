@@ -12,8 +12,9 @@ benchmark "docdb" {
     control.docdb_cluster_audit_logs_enabled,
     control.docdb_cluster_encrypted_with_kms,
     control.docdb_global_cluster_encrypted,
+    control.docdb_logging_enabled,
     control.docdb_paramater_group_with_logging,
-    control.docdb_logging_enabled
+    control.docdb_tls_enabled
   ]
 
   tags = merge(local.docdb_compliance_common_tags, {
@@ -45,18 +46,26 @@ control "docdb_global_cluster_encrypted" {
   tags = local.docdb_compliance_common_tags
 }
 
+control "docdb_logging_enabled" {
+  title       = "DocDB cluster has logging enabled"
+  description = "This control checks whether DocDB cluster logging is enabled."
+  query       = query.docdb_logging_enabled
+
+  tags = local.docdb_compliance_common_tags
+}
+
 control "docdb_paramater_group_with_logging" {
   title       = "DocDB has audit logs enabled"
-  description = "This control checks whether DocDB parameter group has audit logs enabled."
+  description = "This control checks whether DocDB logging is enabled through its parameter group."
   query       = query.docdb_paramater_group_with_logging
 
   tags = local.docdb_compliance_common_tags
 }
 
-control "docdb_logging_enabled" {
-  title       = "DocDB has logging enabled"
-  description = "This control checks whether DocDB clsuter logging is enabled."
-  query       = query.docdb_logging_enabled
+control "docdb_tls_enabled" {
+  title       = "DocDB TLS should be enabled"
+  description = "This control checks whether DocDB TLS is enabled through its parameter group."
+  query       = query.docdb_tls_enabled
 
   tags = local.docdb_compliance_common_tags
 }

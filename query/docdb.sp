@@ -124,3 +124,30 @@ query "docdb_logging_enabled" {
       type = 'aws_docdb_cluster';
   EOQ
 }
+
+query "docdb_tls_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when
+         (arguments -> 'parameter'->> 'name') = 'tls'
+         and (arguments -> 'parameter'->> 'value') = 'enabled'
+        then 'ok'
+        else 'alarm'
+      end as status,
+      name || case
+        when
+          (arguments -> 'parameter'->> 'name') = 'tls'
+          and (arguments -> 'parameter'->> 'value') = 'enabled'
+        then ' tls enabled'
+        else ' tls disabled'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_docdb_cluster_parameter_group';
+  EOQ
+}
