@@ -74,3 +74,28 @@ query "docdb_paramater_group_with_logging" {
       type = 'aws_docdb_cluster_parameter_group';
   EOQ
 }
+
+query "docdb_global_cluster_encrypted" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when
+          (arguments ->> 'storage_encrypted')::boolean
+        then 'ok'
+        else 'alarm'
+      end as status,
+      name || case
+        when
+          (arguments ->> 'storage_encrypted')::boolean
+        then ' global cluster is encrypted'
+        else ' global cluster is not encrypted'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_docdb_global_cluster';
+  EOQ
+}

@@ -11,6 +11,7 @@ benchmark "docdb" {
   children = [
     control.docdb_cluster_audit_logs_enabled,
     control.docdb_cluster_encrypted_with_kms,
+    control.docdb_global_cluster_encrypted,
     control.docdb_paramater_group_with_logging
   ]
 
@@ -31,6 +32,14 @@ control "docdb_cluster_encrypted_with_kms" {
   title       = "DocDB cluster should be encrypted using KMS"
   description = "Ensure DocDB clusters being created are set to be encrypted at rest using customer-managed CMK."
   query       = query.docdb_cluster_encrypted_with_kms
+
+  tags = local.docdb_compliance_common_tags
+}
+
+control "docdb_global_cluster_encrypted" {
+  title       = "DocDB Global Cluster encryption at rest enabled"
+  description = "This control checks whether DocDB Global Cluster is enabled with encryption at rest (default is unencrypted)."
+  query       = query.docdb_global_cluster_encrypted
 
   tags = local.docdb_compliance_common_tags
 }
