@@ -88,8 +88,8 @@ query "docdb_global_cluster_encrypted" {
       name || case
         when
           (arguments ->> 'storage_encrypted')::boolean
-        then ' global cluster is encrypted'
-        else ' global cluster is not encrypted'
+        then ' Global Cluster is encrypted'
+        else ' Global Cluster is not encrypted'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -97,5 +97,30 @@ query "docdb_global_cluster_encrypted" {
       terraform_resource
     where
       type = 'aws_docdb_global_cluster';
+  EOQ
+}
+
+query "docdb_logging_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when
+         (arguments -> 'enabled_cloudwatch_logs_exports') is not null
+        then 'ok'
+        else 'alarm'
+      end as status,
+      name || case
+        when
+          (arguments -> 'enabled_cloudwatch_logs_exports') is not null
+        then ' logging enabled'
+        else ' logging disabled'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_docdb_cluster';
   EOQ
 }
