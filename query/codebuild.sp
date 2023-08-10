@@ -143,3 +143,24 @@ query "codebuild_project_logging_enabled" {
       type = 'aws_codebuild_project';
   EOQ
 }
+
+query "codebuild_project_privileged_mode_disabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'environment' ->> 'privileged_mode')::boolean then 'alarm'
+        else 'ok'
+      end as status,
+      name || case
+        when (arguments -> 'environment' ->> 'privileged_mode')::boolean then ' has privileged mode enabled'
+        else ' has privileged mode disabled'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_codebuild_project';
+  EOQ
+}

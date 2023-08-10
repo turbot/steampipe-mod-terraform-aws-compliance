@@ -40,3 +40,24 @@ query "athena_workgroup_encryption_at_rest_enabled" {
       type = 'aws_athena_workgroup';
   EOQ
 }
+
+query "athena_workgroup_enforce_workgroup_configuration" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'configuration' -> 'enforce_workgroup_configuration')::boolean then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments -> 'configuration' -> 'enforce_workgroup_configuration')::boolean then ' enforce workgroup configuration set'
+        else ' enforce workgroup configuration not set'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_athena_workgroup';
+  EOQ
+}

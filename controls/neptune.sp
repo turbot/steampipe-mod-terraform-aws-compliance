@@ -9,8 +9,12 @@ benchmark "neptune" {
   description = "This benchmark provides a set of controls that detect Terraform AWS Neptune resources deviating from security best practices."
 
   children = [
+    control.neptune_cluster_encrypted_with_kms_cmk,
     control.neptune_cluster_encryption_at_rest_enabled,
-    control.neptune_cluster_logging_enabled
+    control.neptune_cluster_instance_publicly_accessible,
+    control.neptune_cluster_logging_enabled,
+    control.neptune_snapshot_encrypted_with_kms_cmk,
+    control.neptune_snapshot_storage_encryption_enabled
   ]
 
   tags = merge(local.neptune_compliance_common_tags, {
@@ -30,6 +34,38 @@ control "neptune_cluster_encryption_at_rest_enabled" {
   title       = "Neptune cluster encryption at rest should be enabled"
   description = "Ensure Neptune clusters being created are set to be encrypted at rest to protect sensitive data."
   query       = query.neptune_cluster_encryption_at_rest_enabled
+
+  tags = local.neptune_compliance_common_tags
+}
+
+control "neptune_cluster_encrypted_with_kms_cmk" {
+  title       = "Neptune cluster should be encrypted with KMS CMK"
+  description = "This control checks whether Neptune clusters are encrypted with a KMS CMK."
+  query       = query.neptune_cluster_encrypted_with_kms_cmk
+
+  tags = local.neptune_compliance_common_tags
+}
+
+control "neptune_cluster_instance_publicly_accessible" {
+  title       = "Neptune cluster instance should not be publicly accessible"
+  description = "This control checks whether Neptune cluster instances are not publicly accessible."
+  query       = query.neptune_cluster_instance_publicly_accessible
+
+  tags = local.neptune_compliance_common_tags
+}
+
+control "neptune_snapshot_storage_encryption_enabled" {
+  title       = "Neptune snapshot storage encryption should be enabled"
+  description = "This control checks whether Neptune snapshot storage encryption is enabled. These snapshots contain sensitive data and should be encrypted at rest."
+  query       = query.neptune_snapshot_storage_encryption_enabled
+
+  tags = local.neptune_compliance_common_tags
+}
+
+control "neptune_snapshot_encrypted_with_kms_cmk" {
+  title       = "Neptune snapshot should be encrypted with KMS CMK"
+  description = "This control checks whether Neptune snapshots are encrypted with a KMS CMK."
+  query       = query.neptune_snapshot_encrypted_with_kms_cmk
 
   tags = local.neptune_compliance_common_tags
 }

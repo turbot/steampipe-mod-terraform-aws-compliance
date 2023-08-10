@@ -108,3 +108,24 @@ query "log_group_encryption_at_rest_enabled" {
       type = 'aws_cloudwatch_log_group';
   EOQ
 }
+
+query "cloudwatch_log_group_retention" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'retention_in_days') is null then 'alarm'
+        else 'ok'
+      end status,
+      name || case
+        when (arguments -> 'retention_in_days') is null then ' retention period not set'
+        else ' retention period set'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_cloudwatch_log_group';
+  EOQ
+}
