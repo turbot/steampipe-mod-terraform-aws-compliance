@@ -100,7 +100,7 @@ query "docdb_global_cluster_encrypted" {
   EOQ
 }
 
-query "docdb_logging_enabled" {
+query "docdb_log_exports_enabled" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,
@@ -113,8 +113,8 @@ query "docdb_logging_enabled" {
       name || case
         when
           (arguments -> 'enabled_cloudwatch_logs_exports') is not null
-        then ' logging enabled'
-        else ' logging disabled'
+        then ' cloudwatch log exports enabled'
+        else ' cloudwatch log exports disabled'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
