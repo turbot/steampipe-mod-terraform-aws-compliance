@@ -48,7 +48,7 @@ query "docdb_cluster_encrypted_with_kms" {
   EOQ
 }
 
-query "docdb_cluster_paramater_group_with_logging" {
+query "docdb_cluster_paramater_group_logging_enabled" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,
@@ -63,8 +63,8 @@ query "docdb_cluster_paramater_group_with_logging" {
         when
           (arguments -> 'parameter'->> 'name') = 'audit_logs'
           and (arguments -> 'parameter'->> 'value') = 'enabled'
-        then ' paramarter group enabled with audit log'
-        else ' not enabled with audit log'
+        then ' logging enabled'
+        else ' logging disabled'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}

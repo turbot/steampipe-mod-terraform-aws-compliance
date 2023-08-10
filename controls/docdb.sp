@@ -13,7 +13,7 @@ benchmark "docdb" {
     control.docdb_cluster_encrypted_with_kms,
     control.docdb_cluster_log_exports_enabled,
     control.docdb_global_cluster_encrypted,
-    control.docdb_cluster_paramater_group_with_logging,
+    control.docdb_cluster_paramater_group_logging_enabled,
     control.docdb_cluster_parameter_group_tls_enabled
   ]
 
@@ -54,10 +54,10 @@ control "docdb_cluster_log_exports_enabled" {
   tags = local.docdb_compliance_common_tags
 }
 
-control "docdb_cluster_paramater_group_with_logging" {
+control "docdb_cluster_paramater_group_logging_enabled" {
   title       = "DocDB parameter group should have audit logs enabled"
   description = "This control checks whether DocDB parameter group has logging enabled."
-  query       = query.docdb_cluster_paramater_group_with_logging
+  query       = query.docdb_cluster_paramater_group_logging_enabled
 
   tags = local.docdb_compliance_common_tags
 }
