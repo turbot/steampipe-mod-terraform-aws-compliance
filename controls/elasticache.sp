@@ -9,13 +9,13 @@ benchmark "elasticache" {
   description = "This benchmark provides a set of controls that detect Terraform AWS ElastiCache resources deviating from security best practices."
 
   children = [
-    control.elasticache_redis_cluster_automatic_backup_retention_15_days,
-    control.elasticache_replication_group_encryption_in_transit_enabled_auth_token,
-    control.elasticache_replication_group_encryption_at_rest_enabled,
-    control.elasticache_replication_group_encrypted_with_kms_cmk,
-    control.elasticache_redis_cluster_auto_minor_version_upgrade,
     control.elasticache_cluster_has_subnet_group,
-    control.elasticache_replication_group_encryption_in_transit_enabled
+    control.elasticache_redis_cluster_auto_minor_version_upgrade,
+    control.elasticache_redis_cluster_automatic_backup_retention_15_days,
+    control.elasticache_replication_group_encrypted_with_kms_cmk,
+    control.elasticache_replication_group_encryption_at_rest_enabled,
+    control.elasticache_replication_group_encryption_in_transit_enabled,
+    control.elasticache_replication_group_encryption_in_transit_enabled_auth_token
   ]
 
   tags = merge(local.elasticache_compliance_common_tags, {
