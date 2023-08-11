@@ -1,3 +1,9 @@
+## v0.15 [2023-08-11]
+
+_Bug fixes_
+
+- Fix the `codebuild` benchmark to correctly reference the `codebuild_project_privileged_mode_disabled` control. ([#69](https://github.com/turbot/steampipe-mod-terraform-aws-compliance/pull/69))
+
 ## v0.14 [2023-08-10]
 
 _What's new?_
