@@ -9,7 +9,7 @@ benchmark "codebuild" {
   description = "This benchmark provides a set of controls that detect Terraform AWS CodeBuild resources deviating from security best practices."
 
   children = [
-    codebuild_project_privileged_mode_disabled,
+    control.codebuild_project_privileged_mode_disabled,
     control.codebuild_project_encryption_at_rest_enabled,
     control.codebuild_project_logging_enabled,
     control.codebuild_project_plaintext_env_variables_no_sensitive_aws_values,
