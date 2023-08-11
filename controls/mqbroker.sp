@@ -4,6 +4,24 @@ locals {
   })
 }
 
+benchmark "mqbroker" {
+  title       = "MQBroker"
+  description = "This benchmark provides a set of controls that detect Terraform AWS MQBroker resources deviating from security best practices."
+
+  children = [
+    control.mq_broker_audit_logging_enabled,
+    control.mq_broker_automatic_minor_upgrade_enabled,
+    control.mq_broker_currect_broker_version,
+    control.mq_broker_encrypted_with_kms_cmk,
+    control.mq_broker_general_logging_enabled,
+    control.mq_broker_publicly_accessible
+  ]
+
+  tags = merge(local.mqbroker_compliance_common_tags, {
+    type = "Benchmark"
+  })
+}
+
 control "mq_broker_audit_logging_enabled" {
   title       = "MQ Broker should have audit logging enabled"
   description = "This control checks whether audit logging is enabled for the MQ Broker."
