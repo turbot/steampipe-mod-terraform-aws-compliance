@@ -9,9 +9,11 @@ benchmark "lambda" {
   description = "This benchmark provides a set of controls that detect Terraform AWS Lambda resources deviating from security best practices."
 
   children = [
+    control.lambda_function_code_signing_configured,
     control.lambda_function_concurrent_execution_limit_configured,
     control.lambda_function_dead_letter_queue_configured,
     control.lambda_function_in_vpc,
+    control.lambda_function_url_auth_type_configured,
     control.lambda_function_use_latest_runtime,
     control.lambda_function_xray_tracing_enabled
   ]
@@ -73,6 +75,22 @@ control "lambda_function_xray_tracing_enabled" {
   title       = "Lambda functions xray tracing should be enabled"
   description = "X-Ray tracing in lambda functions allows you to visualize and troubleshoot errors and performance bottlenecks, and investigate requests that resulted in an error."
   query       = query.lambda_function_xray_tracing_enabled
+
+  tags = local.lambda_compliance_common_tags
+}
+
+control "lambda_function_url_auth_type_configured" {
+  title       = "Lambda functions should not have URLs AuthType as 'None'"
+  description = "This control checks that lambda function should not have URL AuthType set to 'None'."
+  query       = query.lambda_function_url_auth_type_configured
+
+  tags = local.lambda_compliance_common_tags
+}
+
+control "lambda_function_code_signing_configured" {
+  title       = "Lambda functions should have code signing configured"
+  description = "This control checks whether code signing is configured for lambda function."
+  query       = query.lambda_function_code_signing_configured
 
   tags = local.lambda_compliance_common_tags
 }

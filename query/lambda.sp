@@ -108,3 +108,45 @@ query "lambda_function_xray_tracing_enabled" {
       type = 'aws_lambda_function';
   EOQ
 }
+
+query "lambda_function_url_auth_type_configured" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'authorization_type') = 'NONE' then 'alarm'
+        else 'ok'
+      end as status,
+      name || case
+        when (arguments ->> 'authorization_type') = 'NONE' then ' URLs AuthType is not configured'
+        else ' URLs AuthType is configured'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_lambda_function_url';
+  EOQ
+}
+
+query "lambda_function_code_signing_configured" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'code_signing_config_arn') is null then 'alarm'
+        else 'ok'
+      end as status,
+      name || case
+        when (arguments -> 'code_signing_config_arn') is null then ' code signing not configured'
+        else ' code signing is configured'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_lambda_function';
+  EOQ
+}
