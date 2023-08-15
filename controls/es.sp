@@ -12,8 +12,11 @@ benchmark "es" {
     control.es_domain_audit_logging_enabled,
     control.es_domain_data_nodes_min_3,
     control.es_domain_dedicated_master_nodes_min_3,
+    control.es_domain_default_security_group_not_set,
     control.es_domain_encrypted_using_tls_1_2,
+    control.es_domain_encrypted_with_kms_cmk,
     control.es_domain_encryption_at_rest_enabled,
+    control.es_domain_enforce_https,
     control.es_domain_error_logging_enabled,
     control.es_domain_in_vpc,
     control.es_domain_logs_to_cloudwatch,
@@ -128,4 +131,28 @@ control "es_domain_node_to_node_encryption_enabled" {
     nist_800_53_rev_4         = "true"
     rbi_cyber_security        = "true"
   })
+}
+
+control "es_domain_default_security_group_not_set" {
+  title       = "Elasticsearch domain should not use the default security group"
+  description = "This control checks whether Elasticsearch domains are configured to use the default security group. This control fails if the Elasticsearch domain uses the default security group."
+  query       = query.es_domain_default_security_group_not_set
+
+  tags = local.es_compliance_common_tags
+}
+
+control "es_domain_enforce_https" {
+  title       = "Elasticsearch domain should enforce HTTPS"
+  description = "This control checks whether Elasticsearch domains are configured to enforce HTTPS. This control fails if the Elasticsearch domain does not enforce HTTPS."
+  query       = query.es_domain_enforce_https
+
+  tags = local.es_compliance_common_tags
+}
+
+control "es_domain_encrypted_with_kms_cmk" {
+  title       = "Elasticsearch domain should be encrypted with KMS CMK"
+  description = "This control checks whether Elasticsearch domains are configured to use a KMS CMK for encryption at rest. This control fails if the Elasticsearch domain does not use a KMS CMK for encryption at rest."
+  query       = query.es_domain_encrypted_with_kms_cmk
+
+  tags = local.es_compliance_common_tags
 }

@@ -201,3 +201,66 @@ query "es_domain_node_to_node_encryption_enabled" {
       type = 'aws_elasticsearch_domain';
   EOQ
 }
+
+query "es_domain_default_security_group_not_set" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'vpc_options' ->> 'security_group_ids') is not null then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments -> 'vpc_options' ->> 'security_group_ids') is not null then ' default security group not set'
+        else ' default security group set'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_elasticsearch_domain';
+  EOQ
+}
+
+query "es_domain_enforce_https" {
+    sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'domain_endpoint_options' ->> 'enforce_https')::boolean or (arguments -> 'domain_endpoint_options') is null then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments -> 'domain_endpoint_options' ->> 'enforce_https')::boolean or (arguments -> 'domain_endpoint_options') is null  then ' https enforced'
+        else ' https not enforced'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_elasticsearch_domain';
+  EOQ
+}
+
+query "es_domain_encrypted_with_kms_cmk" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'encrypt_at_rest' -> 'kms_key_id') is not null then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments -> 'encrypt_at_rest' -> 'kms_key_id') is not null then ' encrypted with KMS CMK'
+        else ' not encrypted with KMS CMK'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_elasticsearch_domain';
+  EOQ
+}
