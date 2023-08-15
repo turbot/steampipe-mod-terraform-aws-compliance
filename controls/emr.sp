@@ -28,3 +28,11 @@ control "emr_cluster_kerberos_enabled" {
     nist_csf          = "true"
   })
 }
+
+control "emr_cluster_security_configuration_encryption_in_transit_enabled" {
+  title       = "EMR cluster security configurations should have encryption in transit enabled"
+  description = "This control checks whether EMR cluster security configurations are encrypted in transit."
+  query       = query.emr_cluster_security_configuration_encryption_in_transit_enabled
+
+  tags = local.emr_compliance_common_tags
+}
