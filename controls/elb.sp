@@ -10,17 +10,17 @@ benchmark "elb" {
 
   children = [
     control.ec2_classic_lb_connection_draining_enabled,
-    control.elb_application_classic_lb_logging_enabled,
+    control.elb_all_lb_logging_enabled,
     control.elb_application_lb_deletion_protection_enabled,
     control.elb_application_lb_drop_http_headers,
     control.elb_application_lb_drop_invalid_header_fields,
-    control.elb_application_lb_use_desync_mitigation_mode,
     control.elb_application_lb_waf_enabled,
     control.elb_application_network_gateway_lb_use_desync_mitigation_mode,
     control.elb_classic_lb_cross_zone_load_balancing_enabled,
     control.elb_classic_lb_use_desync_mitigation_mode,
     control.elb_classic_lb_use_ssl_certificate,
-    control.elb_classic_lb_use_tls_https_listeners
+    control.elb_classic_lb_use_tls_https_listeners,
+    control.elb_lb_use_secure_protocol_listener
   ]
 
   tags = merge(local.elb_compliance_common_tags, {
@@ -38,10 +38,10 @@ control "ec2_classic_lb_connection_draining_enabled" {
   })
 }
 
-control "elb_application_classic_lb_logging_enabled" {
+control "elb_all_lb_logging_enabled" {
   title       = "ELB application and classic load balancer logging should be enabled"
   description = "Elastic Load Balancing activity is a central point of communication within an environment. Ensure that logging is enabled to track the activities of the load balancer."
-  query       = query.elb_application_classic_lb_logging_enabled
+  query       = query.elb_all_lb_logging_enabled
 
   tags = merge(local.elb_compliance_common_tags, {
     aws_foundational_security = "true"
@@ -139,14 +139,6 @@ control "elb_application_network_gateway_lb_use_desync_mitigation_mode" {
   tags = local.elb_compliance_common_tags
 }
 
-control "elb_application_lb_use_desync_mitigation_mode" {
-  title       = "ELB application load balancers should have defensive or strictest desync mitigation mode configured"
-  description = "Ensure that your application load aalancers are configured with defensive or strictest desync mitigation mode."
-  query       = query.elb_application_lb_use_desync_mitigation_mode
-
-  tags = local.elb_compliance_common_tags
-}
-
 control "elb_classic_lb_use_desync_mitigation_mode" {
   title       = "ELB classic load balancers should have defensive or strictest desync mitigation mode configured"
   description = "Ensure that your classic load balancers (ELBs) are configured with defensive or strictest desync mitigation mode."
@@ -159,6 +151,14 @@ control "elb_application_lb_drop_invalid_header_fields" {
   title       = "ELB application load balancers should have drop invalid header fields configured"
   description = "Ensure that your application load balancers are configured to drop invalid header fields."
   query       = query.elb_application_lb_drop_invalid_header_fields
+
+  tags = local.elb_compliance_common_tags
+}
+
+control "elb_lb_use_secure_protocol_listener" {
+  title       = "ELB load balancer listeners should use a secure protocol"
+  description = "Ensure that your load balancer listener are configured with secure protocol including redirections."
+  query       = query.elb_lb_use_secure_protocol_listener
 
   tags = local.elb_compliance_common_tags
 }

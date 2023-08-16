@@ -1,4 +1,4 @@
-query "elb_application_classic_lb_logging_enabled" {
+query "elb_all_lb_logging_enabled" {
   sql = <<-EOQ
   (
     select
@@ -18,7 +18,7 @@ query "elb_application_classic_lb_logging_enabled" {
     from
       terraform_resource
     where
-      type = 'aws_lb'
+      type in ('aws_lb', 'aws_alb')
   )
   union
   (
@@ -192,35 +192,14 @@ query "elb_application_network_gateway_lb_use_desync_mitigation_mode" {
       end status,
       name || case
         when (arguments ->> 'desync_mitigation_mode') like any (array ['defensive', 'strictest']) then ' configured with ' || (arguments ->> 'desync_mitigation_mode') || ' mitigation mode'
-        else ' not configured with with defensive or strictest desync mitigation mode'
-        end || '.' reason
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
-    from
-      terraform_resource
-    where
-      type = 'aws_lb';
-  EOQ
-}
-
-query "elb_application_lb_use_desync_mitigation_mode" {
-  sql = <<-EOQ
-    select
-      type || ' ' || name as resource,
-      case
-        when (arguments ->> 'desync_mitigation_mode') like any (array ['defensive', 'strictest']) then 'ok'
-        else 'alarm'
-      end status,
-      name || case
-        when (arguments ->> 'desync_mitigation_mode') like any (array ['defensive', 'strictest']) then ' configured with ' || (arguments ->> 'desync_mitigation_mode') || ' mitigation mode'
-        else ' not configured with with defensive or strictest desync mitigation mode'
+        else ' not configured with defensive or strictest desync mitigation mode'
         end || '.' reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       terraform_resource
     where
-      type = 'aws_alb';
+      type in ('aws_lb', 'aws_alb');
   EOQ
 }
 
@@ -234,7 +213,7 @@ query "elb_classic_lb_use_desync_mitigation_mode" {
       end status,
       name || case
         when (arguments ->> 'desync_mitigation_mode') like any (array ['defensive', 'strictest']) then ' configured with ' || (arguments ->> 'desync_mitigation_mode') || ' mitigation mode'
-        else ' not configured with with defensive or strictest desync mitigation mode'
+        else ' not configured with defensive or strictest desync mitigation mode'
         end || '.' reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -245,28 +224,10 @@ query "elb_classic_lb_use_desync_mitigation_mode" {
   EOQ
 }
 
+# Note: Even aws_alb is known as aws_lb, the functionality is identical.
+# We are still keeping the union queries, as users can still use aws_alb or aws_lb or user may have scripts using both the resourct types
 query "elb_application_lb_drop_invalid_header_fields" {
   sql = <<-EOQ
-  (
-    select
-      type || ' ' || name as resource,
-      case
-        when (arguments ->> 'drop_invalid_header_fields')::boolean then 'ok'
-        else 'alarm'
-      end status,
-      name || case
-        when (arguments ->> 'drop_invalid_header_fields')::boolean then ' configured to drop invalid http header field(s)'
-        else ' not configured to drop invalid http header field(s)'
-        end || '.' reason
-      ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
-    from
-      terraform_resource
-    where
-      type = 'aws_alb'
-  )
-  union
-  (
     select
       type || ' ' || name as resource,
       case
@@ -287,7 +248,29 @@ query "elb_application_lb_drop_invalid_header_fields" {
     from
       terraform_resource
     where
-      type = 'aws_lb'
-  );
+      type in ('aws_lb', 'aws_alb')
+  EOQ
+}
+
+query "elb_lb_use_secure_protocol_listener" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'protocol') like any (array ['HTTPS', 'TLS', 'TCP', 'UDP', 'TCP_UDP']) then 'ok'
+        when (arguments -> 'default_action' ->> 'type') = 'redirect' and (arguments -> 'default_action' -> 'redirect' ->> 'protocol') = 'HTTPS' then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments ->> 'protocol') like any (array ['HTTPS', 'TLS', 'TCP', 'UDP', 'TCP_UDP']) then ' listener configured with ' || (arguments ->> 'protocol') || ' secure protocol'
+        when (arguments -> 'default_action' ->> 'type') = 'redirect' and (arguments -> 'default_action' -> 'redirect' ->> 'protocol') = 'HTTPS' then ' listener configured with ' || (arguments -> 'default_action' ->> 'type') || ' and ' || (arguments -> 'default_action' -> 'redirect' ->> 'protocol') ||  ' secure protocol'
+        else ' listener not configured with any secured protocol'
+        end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type in ('aws_lb_listener', 'aws_alb_listener')
   EOQ
 }
