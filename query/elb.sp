@@ -244,3 +244,50 @@ query "elb_classic_lb_use_desync_mitigation_mode" {
       type = 'aws_elb';
   EOQ
 }
+
+query "elb_application_lb_drop_invalid_header_fields" {
+  sql = <<-EOQ
+  (
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'drop_invalid_header_fields')::boolean then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments ->> 'drop_invalid_header_fields')::boolean then ' configured to drop invalid http header field(s)'
+        else ' not configured to drop invalid http header field(s)'
+        end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_alb'
+  )
+  union
+  (
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'load_balancer_type') like any (array ['gateway', 'network']) then 'skip'
+        when (arguments ->> 'drop_invalid_header_fields')::boolean and ((arguments ->> 'load_balancer_type') is null or (arguments ->> 'load_balancer_type') = 'application')
+        then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments ->> 'load_balancer_type') like any (array ['gateway', 'network']) then ' load balancer is of ' || (arguments ->> 'load_balancer_type') || ' type'
+        when (arguments ->> 'drop_invalid_header_fields')::boolean
+        and ((arguments ->> 'load_balancer_type') is null or (arguments ->> 'load_balancer_type') = 'application')
+        then ' configured to drop invalid http header field(s)'
+        else ' not configured to drop invalid http header field(s)'
+        end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_lb'
+  );
+  EOQ
+}
