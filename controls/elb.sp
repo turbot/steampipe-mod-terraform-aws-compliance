@@ -13,8 +13,11 @@ benchmark "elb" {
     control.elb_application_classic_lb_logging_enabled,
     control.elb_application_lb_deletion_protection_enabled,
     control.elb_application_lb_drop_http_headers,
+    control.elb_application_lb_use_desync_mitigation_mode,
     control.elb_application_lb_waf_enabled,
+    control.elb_application_network_gateway_lb_use_desync_mitigation_mode,
     control.elb_classic_lb_cross_zone_load_balancing_enabled,
+    control.elb_classic_lb_use_desync_mitigation_mode,
     control.elb_classic_lb_use_ssl_certificate,
     control.elb_classic_lb_use_tls_https_listeners
   ]
@@ -125,4 +128,28 @@ control "elb_classic_lb_use_tls_https_listeners" {
     nist_800_53_rev_4         = "true"
     rbi_cyber_security        = "true"
   })
+}
+
+control "elb_application_network_gateway_lb_use_desync_mitigation_mode" {
+  title       = "ELB application, network and gateway load balancers should have defensive or strictest desync mitigation mode configured"
+  description = "Ensure that your Elastic Load Balancers (ELBs) are configured with defensive or strictest desync mitigation mode."
+  query       = query.elb_application_network_gateway_lb_use_desync_mitigation_mode
+
+  tags = local.elb_compliance_common_tags
+}
+
+control "elb_application_lb_use_desync_mitigation_mode" {
+  title       = "ELB application load balancers should have defensive or strictest desync mitigation mode configured"
+  description = "Ensure that your application load aalancers are configured with defensive or strictest desync mitigation mode."
+  query       = query.elb_application_lb_use_desync_mitigation_mode
+
+  tags = local.elb_compliance_common_tags
+}
+
+control "elb_classic_lb_use_desync_mitigation_mode" {
+  title       = "ELB classic load balancers should have defensive or strictest desync mitigation mode configured"
+  description = "Ensure that your classic load balancers (ELBs) are configured with defensive or strictest desync mitigation mode."
+  query       = query.elb_classic_lb_use_desync_mitigation_mode
+
+  tags = local.elb_compliance_common_tags
 }

@@ -181,3 +181,66 @@ query "elb_classic_lb_use_tls_https_listeners" {
       type = 'aws_elb';
   EOQ
 }
+
+query "elb_application_network_gateway_lb_use_desync_mitigation_mode" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'desync_mitigation_mode') like any (array ['defensive', 'strictest']) then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments ->> 'desync_mitigation_mode') like any (array ['defensive', 'strictest']) then ' configured with ' || (arguments ->> 'desync_mitigation_mode') || ' mitigation mode'
+        else ' not configured with with defensive or strictest desync mitigation mode'
+        end || '.' reason
+      --${local.tag_dimensions_sql}
+      --${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_lb';
+  EOQ
+}
+
+query "elb_application_lb_use_desync_mitigation_mode" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'desync_mitigation_mode') like any (array ['defensive', 'strictest']) then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments ->> 'desync_mitigation_mode') like any (array ['defensive', 'strictest']) then ' configured with ' || (arguments ->> 'desync_mitigation_mode') || ' mitigation mode'
+        else ' not configured with with defensive or strictest desync mitigation mode'
+        end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_alb';
+  EOQ
+}
+
+query "elb_classic_lb_use_desync_mitigation_mode" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'desync_mitigation_mode') like any (array ['defensive', 'strictest']) then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments ->> 'desync_mitigation_mode') like any (array ['defensive', 'strictest']) then ' configured with ' || (arguments ->> 'desync_mitigation_mode') || ' mitigation mode'
+        else ' not configured with with defensive or strictest desync mitigation mode'
+        end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_elb';
+  EOQ
+}
