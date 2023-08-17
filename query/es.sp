@@ -202,7 +202,7 @@ query "es_domain_node_to_node_encryption_enabled" {
   EOQ
 }
 
-query "es_domain_default_security_group_not_set" {
+query "es_domain_use_default_security_group" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,
@@ -224,7 +224,7 @@ query "es_domain_default_security_group_not_set" {
 }
 
 query "es_domain_enforce_https" {
-    sql = <<-EOQ
+  sql = <<-EOQ
     select
       type || ' ' || name as resource,
       case
@@ -232,8 +232,8 @@ query "es_domain_enforce_https" {
         else 'alarm'
       end status,
       name || case
-        when (arguments -> 'domain_endpoint_options' ->> 'enforce_https')::boolean or (arguments -> 'domain_endpoint_options') is null  then ' https enforced'
-        else ' https not enforced'
+        when (arguments -> 'domain_endpoint_options' ->> 'enforce_https')::boolean or (arguments -> 'domain_endpoint_options') is null  then ' enforce HTTPS'
+        else ' does not enforce HTTPS'
       end || '.' reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}

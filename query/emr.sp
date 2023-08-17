@@ -72,8 +72,8 @@ query "emr_cluster_security_configuration_ebs_encryption_enabled" {
         else 'alarm'
       end as status,
       name || case
-        when ((arguments ->> 'configuration')::jsonb -> 'EncryptionConfiguration' ->> 'EnableAtRestEncryption')::bool and ((arguments ->> 'configuration')::jsonb -> 'EncryptionConfiguration' -> 'AtRestEncryptionConfiguration' -> 'LocalDiskEncryptionConfiguration' ->> 'EnableEbsEncryption')::bool then ' ebs encryption enabled'
-        else ' ebs encryption disabled'
+        when ((arguments ->> 'configuration')::jsonb -> 'EncryptionConfiguration' ->> 'EnableAtRestEncryption')::bool and ((arguments ->> 'configuration')::jsonb -> 'EncryptionConfiguration' -> 'AtRestEncryptionConfiguration' -> 'LocalDiskEncryptionConfiguration' ->> 'EnableEbsEncryption')::bool then ' EBS encryption enabled'
+        else ' EBS encryption disabled'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}

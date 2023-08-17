@@ -19,20 +19,20 @@ control "mwaa_environment_scheduler_logs_enabled" {
   title       = "MWAA environment should have scheduler logs enabled"
   description = "This control checks whether MWAA environment has scheduler logs enabled."
   query       = query.mwaa_environment_scheduler_logs_enabled
-  
+
   tags = local.mwaa_compliance_common_tags
 }
 control "mwaa_environment_webserver_logs_enabled" {
   title       = "MWAA environment should have webserver logs enabled"
   description = "This control checks whether MWAA environment has webserver logs enabled."
   query       = query.mwaa_environment_webserver_logs_enabled
-  
+
   tags = local.mwaa_compliance_common_tags
 }
 control "mwaa_environment_worker_logs_enabled" {
   title       = "MWAA environment should have worker logs enabled"
-  description = "This control checks whether MWAA environment has worker logs enabled"
+  description = "This control checks whether MWAA environment has worker logs enabled."
   query       = query.mwaa_environment_worker_logs_enabled
-  
+
   tags = local.mwaa_compliance_common_tags
 }

@@ -7,8 +7,8 @@ query "glue_crawler_security_configuration_enabled" {
         else 'ok'
       end status,
       name || case
-        when (arguments -> 'security_configuration') is null then ' security configuration enabled'
-        else ' security configuration disabled'
+        when (arguments -> 'security_configuration') is null then ' security configuration disabled'
+        else ' security configuration enabled'
       end || '.' reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -16,7 +16,7 @@ query "glue_crawler_security_configuration_enabled" {
       terraform_resource
     where
       type = 'aws_glue_crawler';
-  EOQ 
+  EOQ
 }
 
 query "glue_dev_endpoint_security_configuration_enabled" {
@@ -28,8 +28,8 @@ query "glue_dev_endpoint_security_configuration_enabled" {
         else 'ok'
       end status,
       name || case
-        when (arguments -> 'security_configuration') is null then ' security configuration enabled'
-        else ' security configuration disabled'
+        when (arguments -> 'security_configuration') is null then ' security configuration disabled'
+        else ' security configuration enabled'
       end || '.' reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -37,7 +37,7 @@ query "glue_dev_endpoint_security_configuration_enabled" {
       terraform_resource
     where
       type = 'aws_glue_dev_endpoint';
-  EOQ 
+  EOQ
 }
 
 query "glue_job_security_configuration_enabled" {
@@ -49,8 +49,8 @@ query "glue_job_security_configuration_enabled" {
         else 'ok'
       end status,
       name || case
-        when (arguments -> 'security_configuration') is null then ' security configuration enabled'
-        else ' security configuration disabled'
+        when (arguments -> 'security_configuration') is null then ' security configuration disabled'
+        else ' security configuration enabled'
       end || '.' reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -58,5 +58,5 @@ query "glue_job_security_configuration_enabled" {
       terraform_resource
     where
       type = 'aws_glue_job';
-  EOQ 
+  EOQ
 }

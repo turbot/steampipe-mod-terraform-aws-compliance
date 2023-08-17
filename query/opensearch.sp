@@ -1,5 +1,5 @@
 
-query "opensearch_domain_security_group_not_set" {
+query "opensearch_domain_use_default_security_group" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,
@@ -21,7 +21,7 @@ query "opensearch_domain_security_group_not_set" {
 }
 
 query "opensearch_domain_enforce_https" {
-    sql = <<-EOQ
+  sql = <<-EOQ
     select
       type || ' ' || name as resource,
       case
@@ -29,8 +29,8 @@ query "opensearch_domain_enforce_https" {
         else 'alarm'
       end status,
       name || case
-        when (arguments -> 'domain_endpoint_options' ->> 'enforce_https')::boolean then ' https enforced'
-        else ' https not enforced'
+        when (arguments -> 'domain_endpoint_options' ->> 'enforce_https')::boolean then ' enforce HTTPS'
+        else ' does not enforce HTTPS'
       end || '.' reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}

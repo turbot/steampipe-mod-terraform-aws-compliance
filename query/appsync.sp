@@ -16,7 +16,7 @@ query "appsync_graphql_api_field_level_logs_enabled" {
       terraform_resource
     where
       type = 'aws_appsync_graphql_api';
-  EOQ 
+  EOQ
 }
 
 query "appsync_graphql_api_cloudwatch_logs_enabled" {
@@ -37,7 +37,7 @@ query "appsync_graphql_api_cloudwatch_logs_enabled" {
       terraform_resource
     where
       type = 'aws_appsync_graphql_api';
-  EOQ 
+  EOQ
 }
 
 query "appsync_api_cache_encryption_at_rest_enabled" {
@@ -58,10 +58,10 @@ query "appsync_api_cache_encryption_at_rest_enabled" {
       terraform_resource
     where
       type = 'aws_appsync_api_cache';
-  EOQ 
+  EOQ
 }
 
-query "appsync_api_cache_encryption_at_transit_enabled" {
+query "appsync_api_cache_encryption_in_transit_enabled" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,
@@ -70,8 +70,8 @@ query "appsync_api_cache_encryption_at_transit_enabled" {
         else 'alarm'
       end status,
       name || case
-        when (arguments ->> 'transit_encryption_enabled')::boolean then ' encryption at transit enabled'
-        else ' encryption at transit disabled'
+        when (arguments ->> 'transit_encryption_enabled')::boolean then ' encryption in transit enabled'
+        else ' encryption in transit disabled'
       end || '.' reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -79,5 +79,5 @@ query "appsync_api_cache_encryption_at_transit_enabled" {
       terraform_resource
     where
       type = 'aws_appsync_api_cache';
-  EOQ 
+  EOQ
 }

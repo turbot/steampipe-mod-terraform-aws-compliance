@@ -18,7 +18,7 @@ benchmark "eventbridge" {
 }
 
 control "eventbridge_scheduler_schedule_encrypted_with_kms_cmk" {
-  title       = "EventBridge Scheduler Schedule encrypted with KMS CMK"
+  title       = "EventBridge Scheduler Schedule should be encrypted with KMS CMK"
   description = "This control checks whether EventBridge Scheduler Schedule is encrypted with KMS CMK."
   query       = query.eventbridge_scheduler_schedule_encrypted_with_kms_cmk
 

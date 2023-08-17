@@ -12,7 +12,6 @@ benchmark "es" {
     control.es_domain_audit_logging_enabled,
     control.es_domain_data_nodes_min_3,
     control.es_domain_dedicated_master_nodes_min_3,
-    control.es_domain_default_security_group_not_set,
     control.es_domain_encrypted_using_tls_1_2,
     control.es_domain_encrypted_with_kms_cmk,
     control.es_domain_encryption_at_rest_enabled,
@@ -20,7 +19,8 @@ benchmark "es" {
     control.es_domain_error_logging_enabled,
     control.es_domain_in_vpc,
     control.es_domain_logs_to_cloudwatch,
-    control.es_domain_node_to_node_encryption_enabled
+    control.es_domain_node_to_node_encryption_enabled,
+    control.es_domain_use_default_security_group
   ]
 
   tags = merge(local.es_compliance_common_tags, {
@@ -133,10 +133,10 @@ control "es_domain_node_to_node_encryption_enabled" {
   })
 }
 
-control "es_domain_default_security_group_not_set" {
+control "es_domain_use_default_security_group" {
   title       = "Elasticsearch domain should not use the default security group"
   description = "This control checks whether Elasticsearch domains are configured to use the default security group. This control fails if the Elasticsearch domain uses the default security group."
-  query       = query.es_domain_default_security_group_not_set
+  query       = query.es_domain_use_default_security_group
 
   tags = local.es_compliance_common_tags
 }

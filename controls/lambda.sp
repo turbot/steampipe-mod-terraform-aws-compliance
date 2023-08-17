@@ -83,7 +83,7 @@ control "lambda_function_xray_tracing_enabled" {
 
 control "lambda_function_url_auth_type_configured" {
   title       = "Lambda functions should not have URLs AuthType as 'None'"
-  description = "This control checks that lambda function should not have URL AuthType set to 'None'."
+  description = "This control checks whether lambda function have URL AuthType set to 'None'."
   query       = query.lambda_function_url_auth_type_configured
 
   tags = local.lambda_compliance_common_tags

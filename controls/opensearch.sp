@@ -11,7 +11,7 @@ benchmark "opensearch" {
   children = [
     control.opensearch_domain_encrpted_with_kms_cmk,
     control.opensearch_domain_enforce_https,
-    control.opensearch_domain_security_group_not_set
+    control.opensearch_domain_use_default_security_group
   ]
 
   tags = merge(local.opensearch_compliance_common_tags, {
@@ -19,10 +19,10 @@ benchmark "opensearch" {
   })
 }
 
-control "opensearch_domain_security_group_not_set" {
+control "opensearch_domain_use_default_security_group" {
   title       = "OpenSearch domain should not use the default security group"
   description = "This control checks whether OpenSearch domains are configured to use the default security group. This control fails if the OpenSearch domain uses the default security group."
-  query       = query.opensearch_domain_security_group_not_set
+  query       = query.opensearch_domain_use_default_security_group
 
   tags = local.opensearch_compliance_common_tags
 }

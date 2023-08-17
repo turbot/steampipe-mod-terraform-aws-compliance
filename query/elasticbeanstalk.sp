@@ -1,4 +1,4 @@
-query "elasticbeanstalk_use_managed_updates" {
+query "elasticbeanstalk_environment_use_managed_updates" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,
@@ -21,7 +21,7 @@ query "elasticbeanstalk_use_managed_updates" {
   EOQ
 }
 
-query "elasticbeanstalk_use_enhanced_health_checks" {
+query "elasticbeanstalk_environment_use_enhanced_health_checks" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,

@@ -21,7 +21,7 @@ benchmark "fsx" {
 }
 
 control "fsx_ontap_file_system_encrypted_with_kms_cmk" {
-  title       = "FSX ONTAP File System encrypted with KMS CMK"
+  title       = "FSX ONTAP File System should be encrypted with KMS CMK"
   description = "This control checks whether FSX ontap file system is encrypted with KMS CMK."
   query       = query.fsx_ontap_file_system_encrypted_with_kms_cmk
 
@@ -29,7 +29,7 @@ control "fsx_ontap_file_system_encrypted_with_kms_cmk" {
 }
 
 control "fsx_openzfs_file_system_encrypted_with_kms_cmk" {
-  title       = "FSX OpenZFS File System with encrypted KMS CMK"
+  title       = "FSX OpenZFS File System should be encrypted with KMS CMK"
   description = "This control checks whether FSX openzfs file system is encrypted with KMS CMK."
   query       = query.fsx_openzfs_file_system_encrypted_with_kms_cmk
 
@@ -37,7 +37,7 @@ control "fsx_openzfs_file_system_encrypted_with_kms_cmk" {
 }
 
 control "fsx_windows_file_system_encrypted_with_kms_cmk" {
-  title       = "FSX Windows File System encrypted with KMS CMK"
+  title       = "FSX Windows File System should be encrypted with KMS CMK"
   description = "This control checks whether FSX windows file system is encrypted with KMS CMK."
   query       = query.fsx_windows_file_system_encrypted_with_kms_cmk
 
@@ -45,7 +45,7 @@ control "fsx_windows_file_system_encrypted_with_kms_cmk" {
 }
 
 control "fsx_lustre_file_system_encrypted_with_kms_cmk" {
-  title       = "FSX Lustre File System encrypted with KMS CMK"
+  title       = "FSX Lustre File System should be encrypted with KMS CMK"
   description = "This control checks whether FSX lustre file system is encrypted with KMS CMK."
   query       = query.fsx_lustre_file_system_encrypted_with_kms_cmk
 

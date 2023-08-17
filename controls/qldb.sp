@@ -9,7 +9,8 @@ benchmark "qldb" {
   description = "This benchmark provides a set of controls that detect Terraform AWS QLDB resources deviating from security best practices."
 
   children = [
-    control.qldb_ledger_deletion_protection_enabled
+    control.qldb_ledger_deletion_protection_enabled,
+    control.qldb_ledger_permission_mode_set_to_standard
   ]
 
   tags = merge(local.qldb_compliance_common_tags, {

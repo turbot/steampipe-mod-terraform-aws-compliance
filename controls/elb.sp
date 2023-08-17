@@ -167,7 +167,7 @@ control "elb_lb_use_secure_protocol_listener" {
 
 control "elb_application_network_gateway_lb_cross_zone_load_balancing_enabled" {
   title       = "ELB application, network and gateway load balancer should have cross-zone load balancing enabled"
-  description = "Ensure that your application, network and gateway load balancer are configured with scross-zone load balancing."
+  description = "Ensure that your application, network and gateway load balancer are configured with cross-zone load balancing."
   query       = query.elb_application_network_gateway_lb_cross_zone_load_balancing_enabled
 
   tags = local.elb_compliance_common_tags

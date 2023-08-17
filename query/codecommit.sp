@@ -16,7 +16,7 @@ query "codecommit_approval_rule_template_number_of_approval_2" {
         when num_of_approval >= 2 then 'ok'
         else 'alarm'
       end as status,
-      r.name || ' number of approvals is not set to ' || num_of_approval || '.' as reason
+      r.name || ' number of approvals is set to ' || num_of_approval || '.' as reason
       ${local.common_dimensions_sql}
     from
       terraform_resource as r

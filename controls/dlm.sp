@@ -21,32 +21,32 @@ benchmark "dlm" {
 }
 
 control "dlm_lifecycle_policy_events_cross_region_encryption_enabled" {
-  title       = "DLM lifecycle policy events cross region encryption should be enabled"
-  description = "This control checks whether the DLM lifecycle policy events cross region encryption is enabled."
+  title       = "DLM lifecycle policy events cross-region encryption should be enabled"
+  description = "This control checks whether the DLM lifecycle policy events cross-region encryption is enabled."
   query       = query.dlm_lifecycle_policy_events_cross_region_encryption_enabled
 
   tags = local.dlm_compliance_common_tags
 }
 
 control "dlm_lifecycle_policy_events_cross_region_encrypted_with_kms_cmk" {
-  title       = "DLM lifecycle policy events cross encrypted with KMS CMK should be enabled"
-  description = "This control checks whether the DLM lifecycle policy events cross encrypted with KMS CMK."
+  title       = "DLM lifecycle policy events cross-region encryption with KMS CMK should be enabled"
+  description = "This control checks whether the DLM lifecycle policy events has cross-region encryption with KMS CMK enabled."
   query       = query.dlm_lifecycle_policy_events_cross_region_encrypted_with_kms_cmk
 
   tags = local.dlm_compliance_common_tags
 }
 
 control "dlm_schedule_cross_region_encryption_enabled" {
-  title       = "DLM schedule cross region encryption should be enabled"
-  description = "This control checks whether the DLM schedule cross region encryption is enabled."
+  title       = "DLM schedule cross-region encryption should be enabled"
+  description = "This control checks whether the DLM schedule cross-region encryption is enabled."
   query       = query.dlm_schedule_cross_region_encryption_enabled
 
   tags = local.dlm_compliance_common_tags
 }
 
 control "dlm_schedule_cross_region_encrypted_with_kms_cmk" {
-  title       = "DLM schedule cross encrypted with KMS CMK should be enabled"
-  description = "This control checks whether the DLM schedule cross encrypted with KMS CMK."
+  title       = "DLM schedule cross-region encryption with KMS CMK should be enabled"
+  description = "This control checks whether the DLM schedule cross has cross-region encryption with KMS CMK enabled."
   query       = query.dlm_schedule_cross_region_encrypted_with_kms_cmk
 
   tags = local.dlm_compliance_common_tags
