@@ -150,3 +150,65 @@ query "lambda_function_code_signing_configured" {
       type = 'aws_lambda_function';
   EOQ
 }
+
+query "lambda_function_variables_no_sensitive_data" {
+  sql = <<-EOQ
+    with function_vaiable_with_sensitive_data as (
+      select
+        distinct (type || ' ' || name ) as name
+      from
+        terraform_resource
+        join jsonb_each_text(arguments -> 'environment' -> 'variables') d on true
+      where
+        type = 'aws_lambda_function'
+        and (
+          d.key ilike any (array['%pass%', '%secret%', '%token%', '%key%'])
+          or d.key ~ '(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]'
+          or d.value ilike any (array['%pass%', '%secret%', '%token%', '%key%'])
+          or d.value ~ '(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]'
+      )
+    )
+    select
+      r.type || ' ' || r.name as resource,
+      case
+        when s.name is not null then 'alarm'
+        else 'ok'
+      end as status,
+      r.name || case
+        when s.name is not null then ' has potential sensitive data'
+        else ' has no sensitive data'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource as r
+      left join function_vaiable_with_sensitive_data as s on s.name = concat(r.type || ' ' || r.name)
+    where
+      r.type = 'aws_lambda_function';
+  EOQ
+}
+
+query "lambda_function_environment_encryption_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'environment') is not null and (arguments -> 'kms_key_arn') is not null then 'ok'
+        when (arguments -> 'environment') is not null and (arguments -> 'kms_key_arn') is null then 'alarm'
+        when (arguments -> 'environment') is null and (arguments -> 'kms_key_arn') is null then 'skip'
+        else 'alarm'
+      end as status,
+      name || case
+        when (arguments -> 'environment') is not null and (arguments -> 'kms_key_arn') is not null then ' environment encryption enabled'
+        when (arguments -> 'environment') is not null and (arguments -> 'kms_key_arn') is null then ' environment encryption disabled'
+        when (arguments -> 'environment') is null and (arguments -> 'kms_key_arn') is null then ' no environment exist'
+        else ' encryption is enabled even though no environment exists'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_lambda_function';
+  EOQ
+}
