@@ -301,3 +301,24 @@ query "elb_application_network_wateway_lb_cross_zone_load_balancing_enabled" {
       type in ('aws_alb', 'aws_lb');
   EOQ
 }
+
+query "elb_lb_target_group_use_health_check" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'protocol') like any (array ['HTTPS', 'HTTP']) and (arguments ->> 'health_check') is not null then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments ->> 'protocol') like any (array ['HTTPS', 'HTTP']) and (arguments ->> 'health_check') is not null then ' target group configured with health check'
+        else ' target group not configured with health check'
+        end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type in ('aws_lb_target_group', 'aws_alb_target_group');
+  EOQ
+}

@@ -21,6 +21,7 @@ benchmark "elb" {
     control.elb_classic_lb_use_desync_mitigation_mode,
     control.elb_classic_lb_use_ssl_certificate,
     control.elb_classic_lb_use_tls_https_listeners,
+    control.elb_lb_target_group_use_health_check,
     control.elb_lb_use_secure_protocol_listener
   ]
 
@@ -168,6 +169,14 @@ control "elb_application_network_wateway_lb_cross_zone_load_balancing_enabled" {
   title       = "ELB application, network and gateway load balancer should have cross-zone load balancing enabled"
   description = "Ensure that your application, network and gateway load balancer are configured with scross-zone load balancing."
   query       = query.elb_application_network_wateway_lb_cross_zone_load_balancing_enabled
+
+  tags = local.elb_compliance_common_tags
+}
+
+control "elb_lb_target_group_use_health_check" {
+  title       = "ELB HTTP HTTPS target group should be configured with Healthcheck"
+  description = "Ensure HTTP HTTPS target group is defined with Healthcheck."
+  query       = query.elb_lb_target_group_use_health_check
 
   tags = local.elb_compliance_common_tags
 }
