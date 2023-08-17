@@ -279,7 +279,7 @@ query "elb_lb_use_secure_protocol_listener" {
   EOQ
 }
 
-query "elb_application_network_wateway_lb_cross_zone_load_balancing_enabled" {
+query "elb_application_network_gateway_lb_cross_zone_load_balancing_enabled" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,
