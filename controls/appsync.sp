@@ -45,8 +45,8 @@ control "appsync_api_cache_encryption_at_rest_enabled" {
 }
 
 control "appsync_api_cache_encryption_in_transit_enabled" {
-  title       = "AppSync API cache encryption at transit should be enabled"
-  description = "This control checks whether encryption at transit is enabled for the AppSync API cache."
+  title       = "AppSync API cache encryption in transit should be enabled"
+  description = "This control checks whether encryption in transit is enabled for the AppSync API cache."
   query       = query.appsync_api_cache_encryption_in_transit_enabled
 
   tags = local.appsync_compliance_common_tags
