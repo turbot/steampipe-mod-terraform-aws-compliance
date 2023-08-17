@@ -1,12 +1,12 @@
 locals {
   mqbroker_compliance_common_tags = merge(local.terraform_aws_compliance_common_tags, {
-    service = "AWS/MQBroker"
+    service = "AWS/MSK"
   })
 }
 
 benchmark "mqbroker" {
-  title       = "MQBroker"
-  description = "This benchmark provides a set of controls that detect Terraform AWS MQBroker resources deviating from security best practices."
+  title       = "MSK"
+  description = "This benchmark provides a set of controls that detect Terraform AWS MSK resources deviating from security best practices."
 
   children = [
     control.mq_broker_audit_logging_enabled,

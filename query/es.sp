@@ -232,8 +232,8 @@ query "es_domain_enforce_https" {
         else 'alarm'
       end status,
       name || case
-        when (arguments -> 'domain_endpoint_options' ->> 'enforce_https')::boolean or (arguments -> 'domain_endpoint_options') is null  then ' enforce HTTPS'
-        else ' does not enforce HTTPS'
+        when (arguments -> 'domain_endpoint_options' ->> 'enforce_https')::boolean or (arguments -> 'domain_endpoint_options') is null  then ' enforces HTTPS'
+        else ' does not enforces HTTPS'
       end || '.' reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}

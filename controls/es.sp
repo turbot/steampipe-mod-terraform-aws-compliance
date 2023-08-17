@@ -142,8 +142,8 @@ control "es_domain_use_default_security_group" {
 }
 
 control "es_domain_enforce_https" {
-  title       = "Elasticsearch domain should enforce HTTPS"
-  description = "This control checks whether Elasticsearch domains are configured to enforce HTTPS. This control fails if the Elasticsearch domain does not enforce HTTPS."
+  title       = "Elasticsearch domain should enforces HTTPS"
+  description = "This control checks whether Elasticsearch domains are configured to enforces HTTPS. This control fails if the Elasticsearch domain does not enforces HTTPS."
   query       = query.es_domain_enforce_https
 
   tags = local.es_compliance_common_tags

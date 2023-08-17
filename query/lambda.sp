@@ -201,7 +201,7 @@ query "lambda_function_environment_encryption_enabled" {
       name || case
         when (arguments -> 'environment') is not null and (arguments -> 'kms_key_arn') is not null then ' environment encryption enabled'
         when (arguments -> 'environment') is not null and (arguments -> 'kms_key_arn') is null then ' environment encryption disabled'
-        when (arguments -> 'environment') is null and (arguments -> 'kms_key_arn') is null then ' no environment exist'
+        when (arguments -> 'environment') is null and (arguments -> 'kms_key_arn') is null then ' no environment exists'
         else ' encryption is enabled even though no environment exists'
       end || '.' as reason
       ${local.tag_dimensions_sql}

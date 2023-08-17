@@ -5,7 +5,7 @@ locals {
 }
 
 benchmark "msk" {
-  title       = "MQBroker"
+  title       = "MSK"
   description = "This benchmark provides a set of controls that detect Terraform AWS MSK resources deviating from security best practices."
 
   children = [

@@ -229,7 +229,7 @@ query "elb_classic_lb_use_desync_mitigation_mode" {
 }
 
 # Note: Even aws_alb is known as aws_lb, the functionality is identical.
-# We are still keeping the union queries, as users can still use aws_alb or aws_lb or user may have scripts using both the resourct types
+# We are still keeping the union queries, as users can still use aws_alb or aws_lb or user may have scripts using both the resource types
 query "elb_application_lb_drop_invalid_header_fields" {
   sql = <<-EOQ
     select

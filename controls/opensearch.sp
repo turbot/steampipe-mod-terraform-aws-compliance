@@ -28,8 +28,8 @@ control "opensearch_domain_use_default_security_group" {
 }
 
 control "opensearch_domain_enforce_https" {
-  title       = "OpenSearch domain should enforce HTTPS"
-  description = "This control checks whether OpenSearch domains are configured to enforce HTTPS. This control fails if the OpenSearch domain does not enforce HTTPS."
+  title       = "OpenSearch domain should enforces HTTPS"
+  description = "This control checks whether OpenSearch domains are configured to enforces HTTPS. This control fails if the OpenSearch domain does not enforces HTTPS."
   query       = query.opensearch_domain_enforce_https
 
   tags = local.es_compliance_common_tags

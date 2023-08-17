@@ -45,12 +45,10 @@ query "emr_cluster_security_configuration_encryption_in_transit_enabled" {
     select
       type || ' ' || name as resource,
       case
-        when ((arguments ->> 'configuration')::jsonb -> 'EncryptionConfiguration' ->> 'EnableInTransitEncryption') is null then 'skip'
         when ((arguments ->> 'configuration')::jsonb -> 'EncryptionConfiguration' ->> 'EnableInTransitEncryption')::bool then 'ok'
         else 'alarm'
       end as status,
       name || case
-        when ((arguments ->> 'configuration')::jsonb -> 'EncryptionConfiguration' ->> 'EnableInTransitEncryption') is null then ' encryption in transit is not set'
         when ((arguments ->> 'configuration')::jsonb -> 'EncryptionConfiguration' ->> 'EnableInTransitEncryption')::bool then ' encryption in transit enabled'
         else ' encryption in transit disabled'
       end || '.' as reason
