@@ -70,7 +70,7 @@ control "elb_application_lb_deletion_protection_enabled" {
 
 control "elb_application_lb_drop_http_headers" {
   title       = "ELB application load balancers should be drop HTTP headers"
-  description = "Ensure that your Elastic Load Balancers (ELB) are configured to drop http headers."
+  description = "Ensure that your Elastic Load Balancers are configured to drop HTTP headers."
   query       = query.elb_application_lb_drop_http_headers
 
   tags = merge(local.elb_compliance_common_tags, {
@@ -159,7 +159,7 @@ control "elb_application_lb_drop_invalid_header_fields" {
 
 control "elb_lb_use_secure_protocol_listener" {
   title       = "ELB load balancer listeners should use a secure protocol"
-  description = "Ensure that your load balancer listener are configured with secure protocol including redirections."
+  description = "Ensure that your load balancer listeners are configured with a secure protocol including redirections."
   query       = query.elb_lb_use_secure_protocol_listener
 
   tags = local.elb_compliance_common_tags
