@@ -1,14 +1,18 @@
-query "elb_all_lb_logging_enabled" {
+query "elb_application_classic_network_lb_logging_enabled" {
   sql = <<-EOQ
   (
     select
       type || ' ' || name as resource,
       case
+      --The Gateway Load Balancer does not generate access logs since it is a transparent layer 3 load balancer that does not terminate flows.
+      --Boolean to enable / disable access_logs. Defaults to false, even when bucket is specified.
+        when (arguments ->> 'load_balancer_type') = 'gateway' then 'skip'
         when (arguments -> 'access_logs') is null then 'alarm'
         when (arguments -> 'access_logs' -> 'enabled')::bool then 'ok'
         else 'alarm'
       end status,
       name || case
+        when (arguments ->> 'load_balancer_type') = 'gateway' then ' load balancer is of ' || (arguments ->> 'load_balancer_type') || ' type'
         when (arguments -> 'access_logs') is null then ' logging disabled'
         when (arguments -> 'access_logs' -> 'enabled')::bool then ' logging enabled'
         else ' logging disabled'

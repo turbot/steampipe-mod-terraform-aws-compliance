@@ -10,7 +10,7 @@ benchmark "elb" {
 
   children = [
     control.ec2_classic_lb_connection_draining_enabled,
-    control.elb_all_lb_logging_enabled,
+    control.elb_application_classic_network_lb_logging_enabled,
     control.elb_application_lb_deletion_protection_enabled,
     control.elb_application_lb_drop_http_headers,
     control.elb_application_lb_drop_invalid_header_fields,
@@ -38,10 +38,10 @@ control "ec2_classic_lb_connection_draining_enabled" {
   })
 }
 
-control "elb_all_lb_logging_enabled" {
+control "elb_application_classic_network_lb_logging_enabled" {
   title       = "ELB application and classic load balancer logging should be enabled"
   description = "Elastic Load Balancing activity is a central point of communication within an environment. Ensure that logging is enabled to track the activities of the load balancer."
-  query       = query.elb_all_lb_logging_enabled
+  query       = query.elb_application_classic_network_lb_logging_enabled
 
   tags = merge(local.elb_compliance_common_tags, {
     aws_foundational_security = "true"
