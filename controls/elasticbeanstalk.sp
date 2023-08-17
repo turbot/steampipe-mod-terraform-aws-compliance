@@ -20,7 +20,7 @@ benchmark "elasticbeanstalk" {
 
 control "elasticbeanstalk_use_managed_updates" {
   title       = "Elastic Beanstalk managed platform updates should be enabled"
-  description = "Ensure Elastic Beanstalk managed platform updates are enabled."
+  description = "This control checks whether Elastic Beanstalk environments have managed platform updates enabled."
   query       = query.elasticbeanstalk_use_managed_updates
 
   tags = local.elasticbeanstalk_compliance_common_tags
@@ -28,7 +28,7 @@ control "elasticbeanstalk_use_managed_updates" {
 
 control "elasticbeanstalk_use_enhanced_health_checks" {
   title       = "Elastic Beanstalk enhanced health reporting should be enabled"
-  description = "Ensure Elastic Beanstalk environments have enhanced health reporting enabled."
+  description = "This control checks whether Elastic Beanstalk environments have enhanced health reporting enabled."
   query       = query.elasticbeanstalk_use_enhanced_health_checks
 
   tags = local.elasticbeanstalk_compliance_common_tags
