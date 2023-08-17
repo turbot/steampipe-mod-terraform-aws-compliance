@@ -50,7 +50,7 @@ query "msk_cluster_encryption_in_transit_enabled" {
         else 'alarm'
       end as status,
       name || case
-        when (arguments -> 'encryption_info') is null then 'alarm' then ' not encrypted'
+        when (arguments -> 'encryption_info') is null then ' not encrypted'
         when ((arguments -> 'encryption_info' ->> 'client_broker') = 'TLS' and (arguments -> 'encryption_info' ->> 'in_cluster')::bool) then ' encryption in transit enabled'
         else ' encryption in transit disabled'
       end || '.' as reason
@@ -72,7 +72,7 @@ query "msk_cluster_encrypted_with_kms_cmk" {
         else 'ok'
       end as status,
       name || case
-        when (arguments -> 'encryption_at_rest_kms_key_arn') then ' not encrypted with KMS CMK'
+        when (arguments -> 'encryption_at_rest_kms_key_arn') is null then ' not encrypted with KMS CMK'
         else ' encrypted with KMS CMK'
       end || '.' as reason
       ${local.tag_dimensions_sql}
