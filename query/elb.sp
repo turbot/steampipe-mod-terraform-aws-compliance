@@ -252,7 +252,7 @@ query "elb_application_lb_drop_invalid_header_fields" {
     from
       terraform_resource
     where
-      type in ('aws_lb', 'aws_alb')
+      type in ('aws_lb', 'aws_alb');
   EOQ
 }
 
@@ -267,7 +267,7 @@ query "elb_lb_use_secure_protocol_listener" {
       end status,
       name || case
         when (arguments ->> 'protocol') like any (array ['HTTPS', 'TLS', 'TCP', 'UDP', 'TCP_UDP']) then ' listener configured with ' || (arguments ->> 'protocol') || ' secure protocol'
-        when (arguments -> 'default_action' ->> 'type') = 'redirect' and (arguments -> 'default_action' -> 'redirect' ->> 'protocol') = 'HTTPS' then ' listener configured with ' || (arguments -> 'default_action' ->> 'type') || ' and ' || (arguments -> 'default_action' -> 'redirect' ->> 'protocol') ||  ' secure protocol'
+        when (arguments -> 'default_action' ->> 'type') = 'redirect' and (arguments -> 'default_action' -> 'redirect' ->> 'protocol') = 'HTTPS' then ' listener configured with ' || (arguments -> 'default_action' ->> 'type') || ' and ' || (arguments -> 'default_action' -> 'redirect' ->> 'protocol') || ' secure protocol'
         else ' listener not configured with any secured protocol'
         end || '.' reason
       ${local.tag_dimensions_sql}
@@ -275,6 +275,29 @@ query "elb_lb_use_secure_protocol_listener" {
     from
       terraform_resource
     where
-      type in ('aws_lb_listener', 'aws_alb_listener')
+      type in ('aws_lb_listener', 'aws_alb_listener');
+  EOQ
+}
+
+query "elb_application_network_wateway_lb_cross_zone_load_balancing_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when ((arguments ->> 'load_balancer_type') = 'application' or (arguments ->> 'load_balancer_type') is null) and (arguments -> 'enable_cross_zone_load_balancing') is null then 'ok'
+        when (arguments ->> 'load_balancer_type') like any (array ['gateway', 'network']) and (arguments -> 'enable_cross_zone_load_balancing')::boolean then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments ->> 'load_balancer_type') = 'application' and (arguments -> 'enable_cross_zone_load_balancing') is null then ' cross-zone load balancing enabled default for ' || (arguments ->> 'load_balancer_type') || ' type'
+        when (arguments ->> 'load_balancer_type') like any (array ['gateway', 'network']) and (arguments -> 'enable_cross_zone_load_balancing')::boolean then ' cross-zone load balancing enabled for ' || (arguments ->> 'load_balancer_type') || ' type'
+        else ' cross-zone load balancing disabled'
+        end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type in ('aws_alb', 'aws_lb');
   EOQ
 }

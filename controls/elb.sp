@@ -16,6 +16,7 @@ benchmark "elb" {
     control.elb_application_lb_drop_invalid_header_fields,
     control.elb_application_lb_waf_enabled,
     control.elb_application_network_gateway_lb_use_desync_mitigation_mode,
+    control.elb_application_network_wateway_lb_cross_zone_load_balancing_enabled,
     control.elb_classic_lb_cross_zone_load_balancing_enabled,
     control.elb_classic_lb_use_desync_mitigation_mode,
     control.elb_classic_lb_use_ssl_certificate,
@@ -159,6 +160,14 @@ control "elb_lb_use_secure_protocol_listener" {
   title       = "ELB load balancer listeners should use a secure protocol"
   description = "Ensure that your load balancer listener are configured with secure protocol including redirections."
   query       = query.elb_lb_use_secure_protocol_listener
+
+  tags = local.elb_compliance_common_tags
+}
+
+control "elb_application_network_wateway_lb_cross_zone_load_balancing_enabled" {
+  title       = "ELB application, network and gateway load balancer should have cross-zone load balancing enabled"
+  description = "Ensure that your application, network and gateway load balancer are configured with scross-zone load balancing."
+  query       = query.elb_application_network_wateway_lb_cross_zone_load_balancing_enabled
 
   tags = local.elb_compliance_common_tags
 }
