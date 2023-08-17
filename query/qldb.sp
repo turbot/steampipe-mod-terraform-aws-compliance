@@ -3,13 +3,11 @@ query "qldb_ledger_deletion_protection_enabled" {
     select
       type || ' ' || name as resource,
       case
-        when (arguments ->> 'deletion_protection') is null then 'skip'
-        when (arguments ->> 'deletion_protection')::bool then 'ok'
+        when (arguments ->> 'deletion_protection') is null or (arguments ->> 'deletion_protection')::bool then 'ok'
         else 'alarm'
       end as status,
       name || case
-        when (arguments ->> 'deletion_protection') is null then ' deletion protection not set'
-        when (arguments ->> 'deletion_protection')::bool then ' deletion protection enabled'
+        when (arguments ->> 'deletion_protection') is null or (arguments ->> 'deletion_protection')::bool then ' deletion protection enabled'
         else ' deletion protection disabled'
       end || '.' as reason
       ${local.tag_dimensions_sql}
