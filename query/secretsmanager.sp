@@ -55,7 +55,7 @@ query "secretsmanager_secret_encrypted_with_kms_cmk" {
         when coalesce(trim((arguments ->> 'kms_key_id')), '') = '' or
           (arguments ->> 'kms_key_id') = 'aws/secretsmanager'
         then ' is encrypted at rest default KMS key'
-        else ' is encrypted at rest using customer-managed CMK'
+        else ' is encrypted at rest using KMS CMK'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}

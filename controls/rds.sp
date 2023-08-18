@@ -304,16 +304,16 @@ control "rds_db_cluster_instance_performance_insights_enabled" {
 }
 
 control "rds_db_cluster_instance_performance_insights_encrypted_with_kms_cmk" {
-  title       = "RDS DB cluster instances should have performance insights encrypted with a KMS CMK"
-  description = "This control checks whether Relational Database cluster instances have performance insights encrypted with a KMS CMK."
+  title       = "RDS DB cluster instances should have performance insights encrypted with KMS CMK"
+  description = "This control checks whether Relational Database cluster instances have performance insights encrypted with KMS CMK."
   query       = query.rds_db_cluster_instance_performance_insights_encrypted_with_kms_cmk
 
   tags = local.rds_compliance_common_tags
 }
 
 control "rds_db_instance_performance_insights_encrypted_with_kms_cmk" {
-  title       = "RDS DB instances should have performance insights encrypted with a KMS CMK"
-  description = "This control checks whether Relational Database instances have performance insights encrypted with a KMS CMK."
+  title       = "RDS DB instances should have performance insights encrypted with KMS CMK"
+  description = "This control checks whether Relational Database instances have performance insights encrypted with KMS CMK."
   query       = query.rds_db_instance_performance_insights_encrypted_with_kms_cmk
 
   tags = local.rds_compliance_common_tags
@@ -328,8 +328,8 @@ control "rds_db_instance_performance_insights_enabled" {
 }
 
 control "rds_cluster_activity_stream_encrypted_with_kms_cmk" {
-  title       = "RDS DB cluster activity stream should be encrypted with a KMS CMK"
-  description = "This control checks whether Relational Database Service cluster activity stream is encrypted with a KMS CMK."
+  title       = "RDS DB cluster activity stream should be encrypted with KMS CMK"
+  description = "This control checks whether Relational Database Service cluster activity stream is encrypted with KMS CMK."
   query       = query.rds_cluster_activity_stream_encrypted_with_kms_cmk
 
   tags = local.rds_compliance_common_tags
@@ -344,16 +344,16 @@ control "rds_db_instance_uses_recent_ca_certificate" {
 }
 
 control "memorydb_snapshot_encrypted_with_kms_cmk" {
-  title       = "MemoryDB snapshots should be encrypted with a KMS CMK"
-  description = "This control checks whether MemoryDB snapshots are encrypted with a KMS CMK."
+  title       = "MemoryDB snapshots should be encrypted with KMS CMK"
+  description = "This control checks whether MemoryDB snapshots are encrypted with KMS CMK."
   query       = query.memorydb_snapshot_encrypted_with_kms_cmk
 
   tags = local.rds_compliance_common_tags
 }
 
 control "memorydb_cluster_encrypted_with_kms_cmk" {
-  title       = "MemoryDB clusters should be encrypted with a KMS CMK"
-  description = "This control checks whether MemoryDB clusters are encrypted with a KMS CMK."
+  title       = "MemoryDB clusters should be encrypted with KMS CMK"
+  description = "This control checks whether MemoryDB clusters are encrypted with KMS CMK."
   query       = query.memorydb_cluster_encrypted_with_kms_cmk
 
   tags = local.rds_compliance_common_tags
@@ -384,8 +384,8 @@ control "rds_db_snapshot_not_publicly_accesible" {
 }
 
 control "rds_db_snapshot_copy_encrypted_with_kms_cmk" {
-  title       = "RDS DB snapshots should be encrypted with a KMS CMK"
-  description = "This control checks whether Relational Database Service snapshots are encrypted with a KMS CMK."
+  title       = "RDS DB snapshots should be encrypted with KMS CMK"
+  description = "This control checks whether Relational Database Service snapshots are encrypted with KMS CMK."
   query       = query.rds_db_snapshot_copy_encrypted_with_kms_cmk
 
   tags = local.rds_compliance_common_tags

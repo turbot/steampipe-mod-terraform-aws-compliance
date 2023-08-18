@@ -32,7 +32,7 @@ control "docdb_cluster_audit_logs_enabled" {
 
 control "docdb_cluster_encrypted_with_kms" {
   title       = "DocDB cluster should be encrypted using KMS"
-  description = "Ensure DocDB clusters being created are set to be encrypted at rest using customer-managed CMK."
+  description = "Ensure DocDB clusters being created are set to be encrypted at rest using KMS CMK."
   query       = query.docdb_cluster_encrypted_with_kms
 
   tags = local.docdb_compliance_common_tags

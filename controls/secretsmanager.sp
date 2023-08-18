@@ -43,7 +43,7 @@ control "secretsmanager_secret_automatic_rotation_lambda_enabled" {
 
 control "secretsmanager_secret_encrypted_with_kms_cmk" {
   title       = "Secrets Manager secrets should be encrypted with KMS CMK"
-  description = "Ensure Secrets Manager secrets are encrypted at rest with customer-managed CMK."
+  description = "Ensure Secrets Manager secrets are encrypted at rest with KMS CMK."
   query       = query.secretsmanager_secret_encrypted_with_kms_cmk
 
   tags = local.secretsmanager_compliance_common_tags
