@@ -9,6 +9,7 @@ benchmark "ec2" {
   description = "This benchmark provides a set of controls that detect Terraform AWS EC2 resources deviating from security best practices."
 
   children = [
+    control.ec2_ami_launch_permission_restricted,
     control.ec2_ami_copy_encrypted_with_kms_cmk,
     control.ec2_ami_copy_encryption_enabled,
     control.ec2_ami_encryption_enabled,
@@ -212,6 +213,14 @@ control "ec2_ami_encryption_enabled" {
   title       = "EC2 AMI should be encrypted"
   description = "This control checks whether EC2 AMI has encryption enabled."
   query       = query.ec2_ami_encryption_enabled
+
+  tags = local.ec2_compliance_common_tags
+}
+
+control "ec2_ami_launch_permission_restricted" {
+  title       = "EC2 AMI launch permission should be restricted"
+  description = "This control checks whether EC2 AMI launch permission is restrictive in nature."
+  query       = query.ec2_ami_launch_permission_restricted
 
   tags = local.ec2_compliance_common_tags
 }
