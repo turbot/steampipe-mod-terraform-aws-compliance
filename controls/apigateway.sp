@@ -10,6 +10,7 @@ benchmark "apigateway" {
 
   children = [
     control.apigateway_deployment_create_before_destroy_enabled,
+    control.apigateway_domain_name_use_latest_tls,
     control.apigateway_method_restricts_open_access,
     control.apigateway_method_settings_cache_enabled,
     control.apigateway_method_settings_cache_encryption_enabled,
@@ -125,8 +126,16 @@ control "apigatewayv2_route_set_authorization_type" {
 
 control "apigateway_method_restricts_open_access" {
   title       = "API Gateway Method should have restrictive access"
-  description = "This control checks whether the API Gateway Method is not open to broad unrestricted access.."
+  description = "This control checks whether the API Gateway Method is not open to broad unrestricted access."
   query       = query.apigateway_method_restricts_open_access
+
+  tags = local.apigateway_compliance_common_tags
+}
+
+control "apigateway_domain_name_use_latest_tls" {
+  title       = "API Gateway Domain should have latest TLS security policy configured"
+  description = "This control checks whether the API Gateway Domain is configured with latest Transport Layer Security (TLS) version."
+  query       = query.apigateway_domain_name_use_latest_tls
 
   tags = local.apigateway_compliance_common_tags
 }
