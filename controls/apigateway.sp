@@ -124,8 +124,8 @@ control "apigatewayv2_route_set_authorization_type" {
 }
 
 control "apigateway_method_restricts_open_access" {
-  title       = "API Gateway method should have restrictive access"
-  description = "This control checks whether the API Gateway method is not open to broad unrestricted access.."
+  title       = "API Gateway Method should have restrictive access"
+  description = "This control checks whether the API Gateway Method is not open to broad unrestricted access.."
   query       = query.apigateway_method_restricts_open_access
 
   tags = local.apigateway_compliance_common_tags
