@@ -38,7 +38,7 @@ control "dms_replication_instance_not_publicly_accessible" {
 
 control "dms_replication_instance_encrypted_with_kms_cmk" {
   title       = "DMS replication instances should be encrypted with KMS CMK"
-  description = "This control checks whether DMS replication instances are encrypted with customer-managed key."
+  description = "This control checks whether DMS replication instances are encrypted with KMS CMK."
   query       = query.dms_replication_instance_encrypted_with_kms_cmk
 
   tags = local.dms_compliance_common_tags
@@ -54,7 +54,7 @@ control "dms_replication_instance_automatic_minor_version_upgrade_enabled" {
 
 control "dms_s3_endpoint_encrypted_with_kms_cmk" {
   title       = "DMS S3 endpoints should be encrypted with KMS CMK"
-  description = "This control checks whether DMS S3 endpoints are encrypted with customer-managed key."
+  description = "This control checks whether DMS S3 endpoints are encrypted with KMS CMK."
   query       = query.dms_s3_endpoint_encrypted_with_kms_cmk
 
   tags = local.dms_compliance_common_tags

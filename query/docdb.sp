@@ -36,8 +36,8 @@ query "docdb_cluster_encrypted_with_kms" {
         when
           (arguments ->> 'storage_encrypted')::boolean
           and coalesce(trim(arguments ->> 'kms_key_id'), '') <> ''
-        then ' encrypted at rest using customer-managed CMK'
-        else ' not encrypted at rest using customer-managed CMK'
+        then ' encrypted at rest using KMS CMK'
+        else ' not encrypted at rest using KMS CMK'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}

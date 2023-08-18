@@ -54,7 +54,7 @@ control "codebuild_project_source_repo_oauth_configured" {
 
 control "codebuild_project_encryption_at_rest_enabled" {
   title       = "CodeBuild project encryption at rest should be enabled"
-  description = "Ensure CodeBuild projects are set to be encrypted at rest with customer-managed CMK to protect sensitive data."
+  description = "Ensure CodeBuild projects are set to be encrypted at rest with KMS CMK to protect sensitive data."
   query       = query.codebuild_project_encryption_at_rest_enabled
 
   tags = local.codebuild_compliance_common_tags

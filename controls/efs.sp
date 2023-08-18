@@ -68,8 +68,8 @@ control "efs_access_point_has_root_directory" {
 }
 
 control "efs_file_system_encrypted_with_kms_cmk" {
-  title       = "EFS file system should be encrypted with a KMS CMK"
-  description = "This control checks whether the Elastic File System file system is encrypted with a KMS CMK."
+  title       = "EFS file system should be encrypted with KMS CMK"
+  description = "This control checks whether the Elastic File System file system is encrypted with KMS CMK."
   query       = query.efs_file_system_encrypted_with_kms_cmk
 
   tags = local.efs_compliance_common_tags
