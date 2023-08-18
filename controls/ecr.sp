@@ -37,7 +37,7 @@ control "ecr_repository_use_image_scanning" {
 
 control "ecr_repository_encrypted_with_kms" {
   title       = "ECR repository should be encrypted with KMS"
-  description = "Ensure ECR repositories being created are set to be encrypted at rest using customer-managed CMK."
+  description = "Ensure ECR repositories being created are set to be encrypted at rest using KMS CMK."
   query       = query.ecr_repository_encrypted_with_kms
 
   tags = local.ecr_compliance_common_tags

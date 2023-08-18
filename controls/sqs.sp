@@ -5,7 +5,7 @@ locals {
 }
 
 benchmark "sqs" {
-  title       = "SQS"
+  title       = "Simple Queue Service"
   description = "This benchmark provides a set of controls that detect Terraform AWS SQS resources deviating from security best practices."
 
   children = [

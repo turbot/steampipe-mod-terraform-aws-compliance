@@ -45,8 +45,8 @@ control "msk_cluster_encryption_in_transit_enabled" {
 }
 
 control "msk_cluster_encrypted_with_kms_cmk" {
-  title       = "MSK Cluster Nodes should have be encrypted with a customer-managed key"
-  description = "This control checks whether the MSK Cluster is encrypted with a customer-managed key."
+  title       = "MSK Cluster Nodes should have be encrypted with a KMS CMK"
+  description = "This control checks whether the MSK Cluster is encrypted with a KMS CMK."
   query       = query.msk_cluster_encrypted_with_kms_cmk
 
   tags = local.msk_compliance_common_tags
