@@ -10,6 +10,7 @@ benchmark "apigateway" {
 
   children = [
     control.apigateway_deployment_create_before_destroy_enabled,
+    control.apigateway_method_restricts_open_access,
     control.apigateway_method_settings_cache_enabled,
     control.apigateway_method_settings_cache_encryption_enabled,
     control.apigateway_method_settings_data_trace_enabled,
@@ -118,6 +119,14 @@ control "apigatewayv2_route_set_authorization_type" {
   title       = "API Gateway V2 Route should have authorization type set"
   description = "This control checks whether API Gateway V2 Route has authorization type set. It is recommended to set authorization type for all routes in API Gateway V2."
   query       = query.apigatewayv2_route_set_authorization_type
+
+  tags = local.apigateway_compliance_common_tags
+}
+
+control "apigateway_method_restricts_open_access" {
+  title       = "API Gateway method should have restrictive access"
+  description = "This control checks whether the API Gateway method is not open to broad unrestricted access.."
+  query       = query.apigateway_method_restricts_open_access
 
   tags = local.apigateway_compliance_common_tags
 }

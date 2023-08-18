@@ -273,6 +273,29 @@ query "apigatewayv2_route_set_authorization_type" {
     from
       terraform_resource
     where
-      type = 'aws_apigatewayv2_route';   
-  EOQ    
+      type = 'aws_apigatewayv2_route';
+  EOQ
+}
+
+query "apigateway_method_restricts_open_access" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'http_method') != 'OPTIONS' and (arguments ->> 'authorization') = 'NONE' and (arguments ->> 'api_key_required') is null then 'alarm'
+        when (arguments ->> 'http_method') != 'OPTIONS' and (arguments ->> 'authorization') = 'NONE' and (arguments ->> 'api_key_required') = 'false' then 'alarm'
+        else 'ok'
+      end status,
+      name || case
+        when (arguments ->> 'http_method') != 'OPTIONS' and (arguments ->> 'authorization') = 'NONE' and (arguments ->> 'api_key_required') is null then ' API Gateway method is not restricted'
+        when (arguments ->> 'http_method') != 'OPTIONS' and (arguments ->> 'authorization') = 'NONE' and (arguments ->> 'api_key_required') = 'false' then ' API Gateway method is not restricted'
+        else ' API Gateway method is restrictive with http_method as ' || (arguments ->> 'http_method') || ', authorization as ' || (arguments ->> 'authorization') || ' and api_key_required as ' || (arguments ->> 'api_key_required')
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_api_gateway_method';
+  EOQ
 }
