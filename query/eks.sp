@@ -73,9 +73,9 @@ query "eks_cluster_run_on_supported_kubernetes_version" {
         else 'alarm'
       end status,
       name || case
-        when (arguments ->> 'version') is null then ' kubernetes version not set'
-        when (arguments ->> 'version') like any (array ['1.22', '1.23', '1.24', '1.25', '1.26']) then ' run on supported kubernetes version'
-        else ' do not run on supported kubernetes version'
+        when (arguments ->> 'version') is null then ' Kubernetes version not set'
+        when (arguments ->> 'version') like any (array ['1.22', '1.23', '1.24', '1.25', '1.26']) then ' run on supported Kubernetes version'
+        else ' do not run on supported Kubernetes version'
       end || '.' reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
