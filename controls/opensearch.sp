@@ -37,7 +37,7 @@ control "opensearch_domain_enforce_https" {
 
 control "opensearch_domain_encrpted_with_kms_cmk" {
   title       = "OpenSearch domain should be encrypted with KMS CMK"
-  description = "This control checks whether OpenSearch domains are configured to use a KMS CMK for encryption at rest. This control fails if the OpenSearch domain does not use a KMS CMK for encryption at rest."
+  description = "This control checks whether OpenSearch domains are configured to use KMS CMK for encryption at rest. This control fails if the OpenSearch domain does not use KMS CMK for encryption at rest."
   query       = query.opensearch_domain_encrpted_with_kms_cmk
 
   tags = local.es_compliance_common_tags

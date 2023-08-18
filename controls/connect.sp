@@ -6,11 +6,11 @@ locals {
 
 benchmark "eventbridge" {
   title       = "Connect"
-  description = "This benchmark provides a set of controls that detect Terraform AWS Connect Instance resources deviating from security best practices."
+  description = "This benchmark provides a set of controls that detect Terraform AWS Connect resources deviating from security best practices."
 
   children = [
-    control.connectinstance_kinesis_video_stream_storage_config_encrypted_with_kms_cmk,
-    control.connectinstance_s3_storage_config_encrypted_with_kms_cmk
+    control.connect_instance_kinesis_video_stream_storage_config_encrypted_with_kms_cmk,
+    control.connect_instance_s3_storage_config_encrypted_with_kms_cmk
   ]
 
   tags = merge(local.connect_compliance_common_tags, {
@@ -18,18 +18,18 @@ benchmark "eventbridge" {
   })
 }
 
-control "connectinstance_kinesis_video_stream_storage_config_encrypted_with_kms_cmk" {
+control "connect_instance_kinesis_video_stream_storage_config_encrypted_with_kms_cmk" {
   title       = "Connect instance kinesis video stream storage config is encrypted with KMS CMK"
   description = "This control checks whether Connect instance Kinesis video stream storage config is encrypted with KMS CMK."
-  query       = query.connectinstance_kinesis_video_stream_storage_config_encrypted_with_kms_cmk
+  query       = query.connect_instance_kinesis_video_stream_storage_config_encrypted_with_kms_cmk
 
   tags = local.connect_compliance_common_tags
 }
 
-control "connectinstance_s3_storage_config_encrypted_with_kms_cmk" {
+control "connect_instance_s3_storage_config_encrypted_with_kms_cmk" {
   title       = "Connect instance S3 storage config is encrypted with KMS CMK"
   description = "This control checks whether Connect instance S3 storage config is encrypted with KMS CMK."
-  query       = query.connectinstance_s3_storage_config_encrypted_with_kms_cmk
+  query       = query.connect_instance_s3_storage_config_encrypted_with_kms_cmk
 
   tags = local.connect_compliance_common_tags
 }

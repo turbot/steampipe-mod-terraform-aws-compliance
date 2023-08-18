@@ -155,7 +155,7 @@ control "vpc_endpoint_service_acceptance_enabled" {
 
 control "vpc_network_firewall_encrypted_with_kms_cmk" {
   title       = "VPC network firewall should be encrypted with KMS CMK"
-  description = "This control checks whether the Network Firewall is encrypted with a KMS CMK."
+  description = "This control checks whether the Network Firewall is encrypted with KMS CMK."
   query       = query.vpc_network_firewall_encrypted_with_kms_cmk
 
   tags = local.vpc_compliance_common_tags
@@ -163,15 +163,15 @@ control "vpc_network_firewall_encrypted_with_kms_cmk" {
 
 control "vpc_network_firewall_rule_group_encrypted_with_kms_cmk" {
   title       = "VPC network firewall rule group should be encrypted with KMS CMK"
-  description = "This control checks whether the Network Firewall Rule Group is encrypted with a KMS CMK."
+  description = "This control checks whether the Network Firewall Rule Group is encrypted with KMS CMK."
   query       = query.vpc_network_firewall_rule_group_encrypted_with_kms_cmk
 
   tags = local.vpc_compliance_common_tags
 }
 
 control "vpc_network_firewall_policy_encrypted_with_kms_cmk" {
-  title       = "VPC network firewall policy should define a encryption configuration that uses a KMS CMK"
-  description = "This control checks whether the Network Firewall Policy is encrypted with a KMS CMK."
+  title       = "VPC network firewall policy should define a encryption configuration that uses KMS CMK"
+  description = "This control checks whether the Network Firewall Policy is encrypted with KMS CMK."
   query       = query.vpc_network_firewall_policy_encrypted_with_kms_cmk
 
   tags = local.vpc_compliance_common_tags

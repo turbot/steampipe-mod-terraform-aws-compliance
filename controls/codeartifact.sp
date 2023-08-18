@@ -6,7 +6,7 @@ locals {
 
 benchmark "codeartifact" {
   title       = "CodeArtifact"
-  description = "This benchmark provides a set of controls that detect Terraform AWS CodeArtifactDomain resources deviating from security best practices."
+  description = "This benchmark provides a set of controls that detect Terraform AWS CodeArtifact resources deviating from security best practices."
 
   children = [
     control.codeartifact_domain_encrypted_with_kms_cmk

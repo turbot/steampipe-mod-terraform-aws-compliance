@@ -1,4 +1,4 @@
-query "connectinstance_kinesis_video_stream_storage_config_encrypted_with_kms_cmk" {
+query "connect_instance_kinesis_video_stream_storage_config_encrypted_with_kms_cmk" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,
@@ -19,7 +19,7 @@ query "connectinstance_kinesis_video_stream_storage_config_encrypted_with_kms_cm
   EOQ
 }
 
-query "connectinstance_s3_storage_config_encrypted_with_kms_cmk" {
+query "connect_instance_s3_storage_config_encrypted_with_kms_cmk" {
   sql = <<-EOQ
     select
       type || ' ' || name as resource,

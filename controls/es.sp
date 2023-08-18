@@ -151,7 +151,7 @@ control "es_domain_enforce_https" {
 
 control "es_domain_encrypted_with_kms_cmk" {
   title       = "ElasticSearch domain should be encrypted with KMS CMK"
-  description = "This control checks whether ElasticSearch domains are configured to use a KMS CMK for encryption at rest. This control fails if the ElasticSearch domain does not use a KMS CMK for encryption at rest."
+  description = "This control checks whether ElasticSearch domains are configured to use KMS CMK for encryption at rest. This control fails if the ElasticSearch domain does not use KMS CMK for encryption at rest."
   query       = query.es_domain_encrypted_with_kms_cmk
 
   tags = local.es_compliance_common_tags

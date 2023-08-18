@@ -40,7 +40,7 @@ control "neptune_cluster_encryption_at_rest_enabled" {
 
 control "neptune_cluster_encrypted_with_kms_cmk" {
   title       = "Neptune cluster should be encrypted with KMS CMK"
-  description = "This control checks whether Neptune clusters are encrypted with a KMS CMK."
+  description = "This control checks whether Neptune clusters are encrypted with KMS CMK."
   query       = query.neptune_cluster_encrypted_with_kms_cmk
 
   tags = local.neptune_compliance_common_tags
@@ -64,7 +64,7 @@ control "neptune_snapshot_storage_encryption_enabled" {
 
 control "neptune_snapshot_encrypted_with_kms_cmk" {
   title       = "Neptune snapshot should be encrypted with KMS CMK"
-  description = "This control checks whether Neptune snapshots are encrypted with a KMS CMK."
+  description = "This control checks whether Neptune snapshots are encrypted with KMS CMK."
   query       = query.neptune_snapshot_encrypted_with_kms_cmk
 
   tags = local.neptune_compliance_common_tags
