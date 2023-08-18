@@ -28,7 +28,7 @@ query "dlm_lifecycle_policy_events_cross_region_encrypted_with_kms_cmk" {
         else 'alarm'
       end status,
       name || case
-        when (arguments -> 'policy_details' -> 'action' -> 'cross_region_copy' -> 'encryption_configuration' ->> 'encrypted')::boolean and (arguments -> 'policy_details' -> 'action' -> 'cross_region_copy' -> 'encryption_configuration' ->> 'cmk_arn') is not null then ' events cross-regionencrypted with kms cmk'
+        when (arguments -> 'policy_details' -> 'action' -> 'cross_region_copy' -> 'encryption_configuration' ->> 'encrypted')::boolean and (arguments -> 'policy_details' -> 'action' -> 'cross_region_copy' -> 'encryption_configuration' ->> 'cmk_arn') is not null then ' events cross-region encrypted with KMS CMK'
         else ' events cross-region not encrypted with KMS CMK'
       end || '.' reason
       ${local.tag_dimensions_sql}
@@ -74,7 +74,7 @@ query "dlm_schedule_cross_region_encrypted_with_kms_cmk" {
       end status,
       name || case
         when (arguments -> 'policy_details' -> 'schedule' -> 'cross_region_copy_rule') is null then ' schedule cross-region not configured'
-        when (arguments -> 'policy_details' -> 'schedule' -> 'cross_region_copy_rule' ->> 'encrypted')::boolean and (arguments -> 'policy_details' -> 'schedule' -> 'cross_region_copy_rule' ->> 'cmk_arn') is not null then ' schedule cross-regionencrypted with kms cmk'
+        when (arguments -> 'policy_details' -> 'schedule' -> 'cross_region_copy_rule' ->> 'encrypted')::boolean and (arguments -> 'policy_details' -> 'schedule' -> 'cross_region_copy_rule' ->> 'cmk_arn') is not null then ' schedule cross-region encrypted with KMS CMK'
         else ' schedule cross-region not encrypted with KMS CMK'
       end || '.' reason
       ${local.tag_dimensions_sql}
