@@ -4,7 +4,7 @@ locals {
   })
 }
 
-benchmark "eventbridge" {
+benchmark "connect" {
   title       = "Connect"
   description = "This benchmark provides a set of controls that detect Terraform AWS Connect resources deviating from security best practices."
 

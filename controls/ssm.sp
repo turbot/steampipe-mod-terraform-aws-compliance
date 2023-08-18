@@ -5,7 +5,7 @@ locals {
 }
 
 benchmark "ssm" {
-  title       = "Systems Manager"
+  title       = "SSM"
   description = "This benchmark provides a set of controls that detect Terraform AWS SSM resources deviating from security best practices."
 
   children = [

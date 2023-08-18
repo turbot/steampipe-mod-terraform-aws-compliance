@@ -5,7 +5,7 @@ locals {
 }
 
 benchmark "sns" {
-  title       = "Simple Notification Service"
+  title       = "SNS"
   description = "This benchmark provides a set of controls that detect Terraform AWS SNS resources deviating from security best practices."
 
   children = [
