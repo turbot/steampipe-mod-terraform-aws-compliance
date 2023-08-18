@@ -1,3 +1,48 @@
+## v0.16 [2023-08-18]
+
+_What's new?_
+
+- Added 64 new controls across the benchmarks for the following services: ([#72](https://github.com/turbot/steampipe-mod-terraform-aws-compliance/pull/72))
+  - `ACM`
+  - `APIGateway`
+  - `AppFlow`
+  - `AppSync`
+  - `Athena`
+  - `AutoScaling`
+  - `Backup`
+  - `CloudFormation`
+  - `CloudSearch`
+  - `CloudTrail`
+  - `CodeArtifact`
+  - `CodeCommit`
+  - `CodePipeline`
+  - `Comprehend`
+  - `Connect`
+  - `DAX`
+  - `DLM`
+  - `DMS`
+  - `EBS`
+  - `ECS`
+  - `EFS`
+  - `EKS`
+  - `ELB`
+  - `EMR`
+  - `ElastiCache`
+  - `ElasticBeanstalk`
+  - `Elasticsearch`
+  - `EventBridge`
+  - `FSx`
+  - `Glue`
+  - `Kendra`
+  - `Keyspaces`
+  - `Lambda`
+  - `MQ`
+  - `MSK`
+  - `MWAA`
+  - `OpenSearch`
+  - `QLDB`
+  - `RDS`
+
 ## v0.15 [2023-08-11]
 
 _Bug fixes_
