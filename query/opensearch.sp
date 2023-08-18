@@ -30,7 +30,7 @@ query "opensearch_domain_enforce_https" {
       end status,
       name || case
         when (arguments -> 'domain_endpoint_options' ->> 'enforce_https')::boolean then ' enforces HTTPS'
-        else ' does not enforces HTTPS'
+        else ' does not enforce HTTPS'
       end || '.' reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
