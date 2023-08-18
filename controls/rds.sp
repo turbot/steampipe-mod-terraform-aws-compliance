@@ -404,7 +404,9 @@ control "rds_db_cluster_encryption_enabled" {
   description = "This control checks whether Relational Database Service clusters have encryption at rest enabled."
   query       = query.rds_db_cluster_encryption_enabled
 
-  tags = local.rds_compliance_common_tags
+  tags = merge(local.rds_compliance_common_tags, {
+    aws_foundational_security = "true"
+  })
 }
 
 control "rds_mysql_db_cluster_audit_logging_enabled" {
