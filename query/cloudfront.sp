@@ -180,3 +180,31 @@ query "cloudfront_protocol_version_is_low" {
       type = 'aws_cloudfront_distribution';
   EOQ
 }
+
+query "cloudfront_response_header_use_strict_transport_policy_setting" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'security_headers_config' -> 'strict_transport_security' ->> 'access_control_max_age_sec')::integer = 31536000
+        and (arguments -> 'security_headers_config' -> 'strict_transport_security' ->> 'include_subdomains')::boolean
+        and (arguments -> 'security_headers_config' -> 'strict_transport_security' ->> 'preload')::boolean
+        and (arguments -> 'security_headers_config' -> 'strict_transport_security' ->> 'override')::boolean
+        then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments -> 'security_headers_config' -> 'strict_transport_security' ->> 'access_control_max_age_sec')::integer = 31536000
+        and (arguments -> 'security_headers_config' -> 'strict_transport_security' ->> 'include_subdomains')::boolean
+        and (arguments -> 'security_headers_config' -> 'strict_transport_security' ->> 'preload')::boolean
+        and (arguments -> 'security_headers_config' -> 'strict_transport_security' ->> 'override')::boolean then ' CloudFront response header policy enforces Strict Transport Security settings'
+        else ' CloudFront response header policy not enforcing Strict Transport Security settings'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_cloudfront_response_headers_policy';
+  EOQ
+}
