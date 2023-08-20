@@ -312,8 +312,8 @@ query "apigateway_domain_name_use_latest_tls" {
         when (arguments ->> 'security_policy') is null or (arguments ->> 'security_policy') = 'TLS_1_2' then ' API Gateway Domain uses latest TLS security policy'
         else ' API Gateway Domain not using latest TLS security policy'
       end || '.' reason
-      -- ${local.tag_dimensions_sql}
-      -- ${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       terraform_resource
     where
