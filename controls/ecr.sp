@@ -10,6 +10,7 @@ benchmark "ecr" {
 
   children = [
     control.ecr_repository_encrypted_with_kms,
+    control.ecr_repository_policy_prohibit_public_access,
     control.ecr_repository_tags_immutable,
     control.ecr_repository_use_image_scanning
   ]
