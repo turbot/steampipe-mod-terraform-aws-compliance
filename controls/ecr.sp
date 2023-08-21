@@ -42,3 +42,11 @@ control "ecr_repository_encrypted_with_kms" {
 
   tags = local.ecr_compliance_common_tags
 }
+
+control "ecr_repository_policy_prohibit_public_access" {
+  title       = "ECR repository policy should prohibit public access"
+  description = "Ensure ECR repository associated policy is prohibited to public access."
+  query       = query.ecr_repository_policy_prohibit_public_access
+
+  tags = local.ecr_compliance_common_tags
+}
