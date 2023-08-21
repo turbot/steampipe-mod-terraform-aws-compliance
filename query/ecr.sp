@@ -66,3 +66,43 @@ query "ecr_repository_use_image_scanning" {
       type = 'aws_ecr_repository';
   EOQ
 }
+
+query "ecr_repository_policy_restrict_public_access" {
+  sql = <<-EOQ
+    with ecr_public_policies as (
+      select
+        distinct (type || ' ' || name ) as name
+      from
+        terraform_resource ,
+        jsonb_array_elements(
+          case when ((arguments ->> 'policy') = '')
+            then null
+            else ((arguments ->> 'policy')::jsonb -> 'Statement') end
+      ) as s
+      where
+        type = 'aws_ecr_repository_policy'
+        and (
+          (s ->> 'Principal' = '*')
+          and ((s ->> 'Condition') is null)
+        )
+      )
+      select
+        type || ' ' || b.name as resource,
+        case
+          when (arguments ->> 'policy') = ''  then 'ok'
+          when d.name is null then 'ok'
+          else 'alarm'
+        end status,
+        case
+          when (arguments ->> 'policy') = '' then ' no policy defined'
+          when d.name is null then ' not public'
+          else ' public'
+        end || '.' reason
+        ${local.common_dimensions_sql}
+      from
+        terraform_resource as b
+        left join ecr_public_policies as d on d.name = concat(b.type || ' ' || b.name)
+      where
+        type = 'aws_ecr_repository_policy'
+  EOQ
+}
