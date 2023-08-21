@@ -208,3 +208,24 @@ query "cloudfront_response_header_use_strict_transport_policy_setting" {
       type = 'aws_cloudfront_response_headers_policy';
   EOQ
 }
+
+query "cloudfront_distribution_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'enabled')::boolean then 'ok'
+        else 'info'
+      end status,
+      name || case
+        when(arguments ->> 'enabled')::boolean then ' cloudfront distribution enabled'
+        else ' cloudfront distribution disabled'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_cloudfront_distribution';
+  EOQ
+}
