@@ -18,7 +18,7 @@ benchmark "datasync" {
 }
 
 control "datasync_location_object_storage_expose_secret" {
-  title       = "DataSync Object Storage Location should restrict secret key exposer"
+  title       = "DataSync object storage location configuration should restrict secret key exposer"
   description = "This control checks whether DataSync object storage location configuration exposes to any access key secrets."
   query       = query.datasync_location_object_storage_expose_secret
 
