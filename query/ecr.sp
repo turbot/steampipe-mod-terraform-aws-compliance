@@ -91,7 +91,7 @@ query "ecr_repository_policy_prohibit_public_access" {
     select
       type || ' ' || b.name as resource,
       case
-        when (arguments ->> 'policy') = ''  then 'ok'
+        when (arguments ->> 'policy') = '' then 'ok'
         when d.name is not null then 'ok'
         else 'alarm'
       end status,

@@ -3,11 +3,18 @@ query "eks_cluster_endpoint_restrict_public_access" {
     select
       type || ' ' || name as resource,
       case
-        when (arguments -> 'endpoint_public_access')::boolean then 'alarm'
+        -- In case both endpoint_public_access & public_access_cidrs are not configured in vpc_config then default setting is true and public_access_cidrs accessible to internet
+        when (arguments -> 'vpc_config' ->> 'endpoint_public_access') is null and (arguments -> 'vpc_config' -> 'public_access_cidrs') is null then 'alarm'
+        when (arguments -> 'vpc_config' ->> 'endpoint_public_access')::boolean and (arguments -> 'vpc_config' -> 'public_access_cidrs') is null then 'alarm'
+        when (arguments -> 'vpc_config' ->> 'endpoint_public_access')::boolean and (arguments -> 'vpc_config' -> 'public_access_cidrs') @> '["0.0.0.0/0"]' then 'alarm'
+        when (arguments -> 'vpc_config' ->> 'endpoint_public_access') is null and (arguments -> 'vpc_config' -> 'public_access_cidrs') @> '["0.0.0.0/0"]' then 'alarm'
         else 'ok'
       end status,
       name || case
-        when (arguments -> 'endpoint_public_access')::boolean then ' endpoint publicly accessible'
+        when (arguments -> 'vpc_config' ->> 'endpoint_public_access') is null and (arguments -> 'vpc_config' -> 'public_access_cidrs') is null then ' endpoint publicly accessible'
+        when (arguments -> 'vpc_config' ->> 'endpoint_public_access')::boolean and (arguments -> 'vpc_config' -> 'public_access_cidrs') is null then ' endpoint publicly accessible'
+        when (arguments -> 'vpc_config' ->> 'endpoint_public_access')::boolean and (arguments -> 'vpc_config' -> 'public_access_cidrs') @> '["0.0.0.0/0"]' then ' endpoint publicly accessible'
+        when (arguments -> 'vpc_config' ->> 'endpoint_public_access') is null and (arguments -> 'vpc_config' -> 'public_access_cidrs') @> '["0.0.0.0/0"]' then ' endpoint publicly accessible'
         else ' endpoint not publicly accessible'
       end || '.' reason
       ${local.tag_dimensions_sql}
