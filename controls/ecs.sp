@@ -14,6 +14,7 @@ benchmark "ecs" {
     control.ecs_cluster_logging_encrypted_with_kms_cmk,
     control.ecs_service_fargate_uses_latest_version,
     control.ecs_task_definition_encryption_in_transit_enabled,
+    control.ecs_task_definition_no_host_pid_mode,
     control.ecs_task_definition_role_check
   ]
 
@@ -66,6 +67,14 @@ control "ecs_service_fargate_uses_latest_version" {
   title       = "ECS Fargate services should run on the latest Fargate platform version"
   description = "This control checks whether ECS Fargate services run on the latest Fargate platform version."
   query       = query.ecs_service_fargate_uses_latest_version
+
+  tags = local.ecs_compliance_common_tags
+}
+
+control "ecs_task_definition_no_host_pid_mode" {
+  title       = "ECS task definitions should not share the host's process namespace"
+  description = "This control checks if Amazon ECS task definitions are configured to share a host's process namespace with its containers. The control fails if the task definition shares the host's process namespace with the containers running on it."
+  query       = query.ecs_task_definition_no_host_pid_mode
 
   tags = local.ecs_compliance_common_tags
 }

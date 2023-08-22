@@ -104,6 +104,6 @@ query "ecr_repository_policy_prohibit_public_access" {
       terraform_resource as r
       left join policy_statement as s on s.name = concat(r.type || ' ' || r.name)
     where
-      type = 'aws_ecr_repository_policy'
+      type = 'aws_ecr_repository_policy';
   EOQ
 }
