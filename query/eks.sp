@@ -108,3 +108,28 @@ query "eks_cluster_control_plane_logging_enabled" {
       type = 'aws_eks_cluster';
   EOQ
 }
+
+query "eks_cluster_node_group_ssh_access_from_internet" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'remote_access') is null then 'ok'
+        when (arguments -> 'remote_access' ->> 'ec2_ssh_key') is not null and (arguments -> 'remote_access' ->> 'source_security_group_ids') is not null then 'ok'
+        when (arguments -> 'remote_access' ->> 'ec2_ssh_key') is not null and (arguments -> 'remote_access' ->> 'source_security_group_ids') is null then 'alarm'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments -> 'remote_access') is null then ' node group does not have implicit SSH access from 0.0.0.0/0'
+        when (arguments -> 'remote_access' ->> 'ec2_ssh_key') is not null and (arguments -> 'remote_access' ->> 'source_security_group_ids') is not null then ' node group SSH access restricted to security group (s)'
+        when (arguments -> 'remote_access' ->> 'ec2_ssh_key') is not null and (arguments -> 'remote_access' ->> 'source_security_group_ids') is null then ' node group has implicit SSH access from 0.0.0.0/0'
+        else ' node group has implicit SSH access from 0.0.0.0/0'
+        end || '.' reason
+        ${local.tag_dimensions_sql}
+        ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_eks_node_group';
+  EOQ
+}
