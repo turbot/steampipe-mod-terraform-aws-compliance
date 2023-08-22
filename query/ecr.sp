@@ -69,40 +69,41 @@ query "ecr_repository_use_image_scanning" {
 
 query "ecr_repository_policy_prohibit_public_access" {
   sql = <<-EOQ
-    with policy_statement as (
-    select
-      distinct (type || ' ' || name ) as name
-    from
-      terraform_resource ,
-      jsonb_array_elements(
-        case when ((arguments ->> 'policy') = '')
-          then null
-          else ((arguments ->> 'policy')::jsonb -> 'Statement') end
-    ) as s
-    where
-      type = 'aws_ecr_repository_policy'
-      and (
-        (s ->> 'Principal' = '*')
-        and ((s ->> 'Condition') is null)
-      )
+    with ecr_non_public_policies as (
+      select
+        distinct (type || ' ' || name ) as name
+      from
+        terraform_resource ,
+        jsonb_array_elements(
+          case when ((arguments ->> 'policy') = '')
+            then null
+            else ((arguments ->> 'policy')::jsonb -> 'Statement') end
+        ) as s
+      where
+        type = 'aws_ecr_repository_policy'
+        and (
+          ((s ->> 'Principal') != '*')
+          or ((s -> 'Condition' -> 'StringEquals' ->> 'aws:PrincipalOrgID') is not null)
+          or ((s -> 'Condition' -> 'ForAllValues:StringEquals' ->> 'aws:PrincipalOrgID') is not null)
+          or ((s -> 'Condition' -> 'ForAnyValue:StringEquals' ->> 'aws:PrincipalOrgID') is not null)
+        )
     )
     select
-      type || ' ' || r.name as resource,
+      type || ' ' || b.name as resource,
       case
-        when (arguments ->> 'policy') = '' then 'ok'
-        when s.name is null then 'ok'
+        when (arguments ->> 'policy') = ''  then 'ok'
+        when d.name is not null then 'ok'
         else 'alarm'
       end status,
-      case
+       b.name || case
         when (arguments ->> 'policy') = '' then ' no policy defined'
-        when s.name is null then ' not public'
+        when d.name is not null then ' not public'
         else ' public'
       end || '.' reason
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
     from
-      terraform_resource as r
-      left join policy_statement as s on s.name = concat(r.type || ' ' || r.name)
+      terraform_resource as b
+      left join ecr_non_public_policies as d on d.name = concat(b.type || ' ' || b.name)
     where
       type = 'aws_ecr_repository_policy';
   EOQ
