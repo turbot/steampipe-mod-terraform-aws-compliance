@@ -199,3 +199,36 @@ query "ecs_task_definition_container_non_privileged" {
         type = 'aws_ecs_task_definition';
   EOQ
 }
+
+query "ecs_task_definition_container_readonly_root_filesystem" {
+  sql = <<-EOQ
+    with task_with_readonly_root_filesystem as (
+      select
+        distinct (type || ' ' || name ) as name
+      from
+        terraform_resource,
+        jsonb_array_elements(
+          case when ((arguments ->> 'container_definitions') = '')
+            then null
+            else (arguments ->> 'container_definitions')::jsonb end
+        ) as s where (s ->> 'ReadonlyRootFilesystem')::boolean and type = 'aws_ecs_task_definition'
+      )
+      select
+        type || ' ' || r.name as resource,
+        case
+          when p.name is not null then 'ok'
+          else 'alarm'
+        end status,
+        case
+          when p.name is not null then ' containers limited to read-only access to root filesystems'
+          else ' containers not limited to read-only access to root filesystems'
+        end || '.' reason
+        ${local.tag_dimensions_sql}
+        ${local.common_dimensions_sql}
+      from
+        terraform_resource as r
+        left join task_with_readonly_root_filesystem as p on p.name = concat(r.type || ' ' || r.name)
+      where
+        type = 'aws_ecs_task_definition';
+  EOQ
+}

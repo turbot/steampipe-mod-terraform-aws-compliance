@@ -87,3 +87,11 @@ control "ecs_task_definition_container_non_privileged" {
 
   tags = local.ecs_compliance_common_tags
 }
+
+control "ecs_task_definition_container_readonly_root_filesystem" {
+  title       = "ECS containers should be limited to read-only access to root filesystems"
+  description = "This control checks if ECS containers are limited to read-only access to mounted root filesystems. This control fails if the ReadonlyRootFilesystem parameter in the container definition of ECS task definitions is set to false."
+  query       = query.ecs_task_definition_container_readonly_root_filesystem
+
+  tags = local.ecs_compliance_common_tags
+}
