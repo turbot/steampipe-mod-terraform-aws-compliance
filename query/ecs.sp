@@ -137,32 +137,65 @@ query "ecs_service_fargate_uses_latest_version" {
 query "ecs_task_definition_no_host_pid_mode" {
   sql = <<-EOQ
     with task_with_host as (
-    select
-      distinct (type || ' ' || name ) as name
-    from
-      terraform_resource ,
-      jsonb_array_elements(
-        case when ((arguments ->> 'container_definitions') = '')
-          then null
-          else (arguments ->> 'container_definitions')::jsonb end
-    ) as s where s ->> 'pidMode' = 'host' and type = 'aws_ecs_task_definition'
-    )
-    select
-      type || ' ' || r.name as resource,
-      case
-        when h.name is null then 'ok'
-        else 'alarm'
-      end status,
-      case
-        when h.name is null then ' shares the host process namespace.'
-        else ' does not share the host process namespace.'
-      end || '.' reason
-      ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
-    from
-      terraform_resource as r
-      left join task_with_host as h on h.name = concat(r.type || ' ' || r.name)
-    where
-      type = 'aws_ecs_task_definition';
+      select
+        distinct (type || ' ' || name ) as name
+      from
+        terraform_resource,
+        jsonb_array_elements(
+          case when ((arguments ->> 'container_definitions') = '')
+            then null
+            else (arguments ->> 'container_definitions')::jsonb end
+        ) as s where s ->> 'pidMode' = 'host' and type = 'aws_ecs_task_definition'
+      )
+      select
+        type || ' ' || r.name as resource,
+        case
+          when h.name is null then 'ok'
+          else 'alarm'
+        end status,
+        case
+          when h.name is null then ' shares the host process namespace.'
+          else ' does not share the host process namespace.'
+        end || '.' reason
+        ${local.tag_dimensions_sql}
+        ${local.common_dimensions_sql}
+      from
+        terraform_resource as r
+        left join task_with_host as h on h.name = concat(r.type || ' ' || r.name)
+      where
+        type = 'aws_ecs_task_definition';
+  EOQ
+}
+
+query "ecs_task_definition_container_non_privileged" {
+  sql = <<-EOQ
+    with task_with_root_privilege as (
+      select
+        distinct (type || ' ' || name ) as name
+      from
+        terraform_resource,
+        jsonb_array_elements(
+          case when ((arguments ->> 'container_definitions') = '')
+            then null
+            else (arguments ->> 'container_definitions')::jsonb end
+        ) as s where (s ->> 'privilege')::boolean and type = 'aws_ecs_task_definition'
+      )
+      select
+        type || ' ' || r.name as resource,
+        case
+          when p.name is null then 'ok'
+          else 'alarm'
+        end status,
+        case
+          when p.name is null then ' does not have elevated privileges'
+          else ' has elevated privileges'
+        end || '.' reason
+        ${local.tag_dimensions_sql}
+        ${local.common_dimensions_sql}
+      from
+        terraform_resource as r
+        left join task_with_root_privilege as p on p.name = concat(r.type || ' ' || r.name)
+      where
+        type = 'aws_ecs_task_definition';
   EOQ
 }

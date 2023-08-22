@@ -73,7 +73,7 @@ query "ecr_repository_policy_prohibit_public_access" {
       select
         distinct (type || ' ' || name ) as name
       from
-        terraform_resource ,
+        terraform_resource,
         jsonb_array_elements(
           case when ((arguments ->> 'policy') = '')
             then null
