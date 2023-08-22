@@ -101,6 +101,7 @@ query "ecr_repository_policy_prohibit_public_access" {
         else ' public'
       end || '.' reason
       ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       terraform_resource as b
       left join ecr_non_public_policies as d on d.name = concat(b.type || ' ' || b.name)
