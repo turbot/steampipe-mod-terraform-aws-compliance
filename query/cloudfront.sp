@@ -109,32 +109,61 @@ query "cloudfront_distribution_origin_access_identity_enabled" {
         terraform_resource
       where
         type = 'aws_cloudfront_distribution'
-    ), origins as (
+    ), origin_type as (
+        select
+          distinct name
+        from
+          cloudfront_distribution,
+          jsonb_array_elements(
+            case jsonb_typeof(arguments -> 'origin')
+            when 'array' then (arguments -> 'origin')
+            else null end
+            ) as o
+        where
+          (o ->> 'domain_name' ) like '%aws_s3_bucket%'
+        group by name
+    ),origins as (
         select
           count(*),
           name
         from
           cloudfront_distribution,
-          jsonb_array_elements(arguments -> 'origin') as o
+          jsonb_array_elements(
+            case jsonb_typeof(arguments -> 'origin')
+            when 'array' then (arguments -> 'origin')
+            else null end
+            ) as o
         where
-          (o ->> 'domain_name' ) like '%aws_s3_bucket%' and
+          (o ->> 'domain_name' ) like '%aws_s3_bucket%'
+          and(
           (o -> 's3_origin_config' ->> 'origin_access_identity') = ''
+          or (o -> 's3_origin_config' ) is null
+          )
         group by name
     )
     select
       type || ' ' || a.name as resource,
       case
+        when (arguments -> 'origin') is null then 'alarm'
+        when (arguments -> 'origin' ->> 'domain_name' ) like '%aws_s3_bucket%' and (( not((arguments -> 'origin' -> 's3_origin_config' ->> 'origin_access_identity') = '')) and (arguments -> 'origin' -> 's3_origin_config' -> 'origin_access_identity') is not null) then 'ok'
+        when (arguments -> 'origin' ->> 'domain_name' ) like '%aws_s3_bucket%' and (((arguments -> 'origin' -> 's3_origin_config' ->> 'origin_access_identity') = '') or ((arguments -> 'origin' -> 's3_origin_config') is null)) then 'alarm'
         when b.name is not null then 'alarm'
+        when (t.name is null ) and ((arguments -> 'origin' ->> 'domain_name') not like '%aws_s3_bucket%') then 'skip'
         else 'ok'
       end as status,
-      case
+      a.name || case
+        when (arguments -> 'origin') is null then ' origins not defined'
+        when (arguments -> 'origin' ->> 'domain_name' ) like '%aws_s3_bucket%' and (( not((arguments -> 'origin' -> 's3_origin_config' ->> 'origin_access_identity') = '')) and (arguments -> 'origin' -> 's3_origin_config' -> 'origin_access_identity') is not null) then ' origin access identity configured'
+        when (arguments -> 'origin' ->> 'domain_name' ) like '%aws_s3_bucket%' and (((arguments -> 'origin' -> 's3_origin_config' ->> 'origin_access_identity') = '') or ((arguments -> 'origin' -> 's3_origin_config') is null)) then ' origin access identity not configured'
         when b.name is not null then ' origin access identity not configured'
+        when (t.name is null ) and ((arguments -> 'origin' ->> 'domain_name') not like '%aws_s3_bucket%') then ' origin type is not s3'
         else ' origin access identity configured'
       end || '.' reason
       ${replace(local.tag_dimensions_qualifier_sql, "__QUALIFIER__", "a.")}
       ${local.common_dimensions_sql}
     from
       cloudfront_distribution as a
+      left join origin_type as t on a.name = t.name
       left join origins as b on a.name = b.name;
   EOQ
 }
