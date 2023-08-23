@@ -43,6 +43,7 @@ benchmark "rds" {
     control.rds_db_security_group_events_subscription,
     control.rds_db_snapshot_copy_encrypted_with_kms_cmk,
     control.rds_db_snapshot_not_publicly_accesible,
+    control.rds_global_cluster_encryption_enabled,
     control.rds_mysql_db_cluster_audit_logging_enabled
   ]
 
@@ -413,6 +414,14 @@ control "rds_mysql_db_cluster_audit_logging_enabled" {
   title       = "RDS MySQL DB clusters should have audit logging enabled"
   description = "This control checks whether Relational Database Service MySQL DB clusters have audit logging enabled."
   query       = query.rds_mysql_db_cluster_audit_logging_enabled
+
+  tags = local.rds_compliance_common_tags
+}
+
+control "rds_global_cluster_encryption_enabled" {
+  title       = "RDS DB global cluster (MySQl & PostgreSQL) should have encryption enabled"
+  description = "This control checks whether RDS DB cluster (MySQl & PostgreSQL) encryption is enabled."
+  query       = query.rds_global_cluster_encryption_enabled
 
   tags = local.rds_compliance_common_tags
 }

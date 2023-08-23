@@ -361,7 +361,7 @@ query "rds_db_cluster_encrypted_with_kms_cmk" {
       terraform_resource
     where
       type = 'aws_rds_cluster';
-  EOQ 
+  EOQ
 }
 
 query "rds_db_instance_automatic_minor_version_upgrade_enabled" {
@@ -881,5 +881,30 @@ query "rds_mysql_db_cluster_audit_logging_enabled" {
       terraform_resource
     where
       type = 'aws_rds_cluster';
+  EOQ
+}
+
+query "rds_global_cluster_encryption_enabled" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'storage_encrypted')::boolean then 'ok'
+        when (arguments ->> 'source_db_cluster_identifier') is null then 'info'
+        when (arguments ->> 'storage_encrypted')::boolean and (arguments ->> 'source_db_cluster_identifier') is not null then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments ->> 'storage_encrypted')::boolean then ' DB cluster enctyprion enabled'
+        when (arguments ->> 'source_db_cluster_identifier') is null then ' DB cluster identifier is not provided of the primary global cluster creation'
+        when (arguments ->> 'storage_encrypted')::boolean and (arguments ->> 'source_db_cluster_identifier') is not null then ' DB cluster enctyprion enabled'
+        else ' DB cluster enctyprion disabled'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_rds_global_cluster';
   EOQ
 }
