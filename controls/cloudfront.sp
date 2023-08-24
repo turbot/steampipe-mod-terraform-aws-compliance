@@ -11,6 +11,7 @@ benchmark "cloudfront" {
   children = [
     control.cloudfront_distribution_configured_with_origin_failover,
     control.cloudfront_distribution_default_root_object_configured,
+    control.cloudfront_distribution_enabled,
     control.cloudfront_distribution_encryption_in_transit_enabled,
     control.cloudfront_distribution_logging_enabled,
     control.cloudfront_distribution_origin_access_identity_enabled,

@@ -14,6 +14,7 @@ benchmark "ecs" {
     control.ecs_cluster_logging_encrypted_with_kms_cmk,
     control.ecs_service_fargate_uses_latest_version,
     control.ecs_task_definition_container_non_privileged,
+    control.ecs_task_definition_container_readonly_root_filesystem,
     control.ecs_task_definition_encryption_in_transit_enabled,
     control.ecs_task_definition_no_host_pid_mode,
     control.ecs_task_definition_role_check
