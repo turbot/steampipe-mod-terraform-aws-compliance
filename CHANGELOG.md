@@ -2,7 +2,7 @@
 
 _What's new?_
 
-- Added the following controls across the benchmarks. ([#76](https://github.com/turbot/steampipe-mod-terraform-aws-compliance/pull/76))
+- Added the following controls across the benchmarks: ([#76](https://github.com/turbot/steampipe-mod-terraform-aws-compliance/pull/76))
   - `apigateway_domain_name_use_latest_tls`
   - `apigateway_method_restricts_open_access`
   - `cloudfront_distribution_enabled`
