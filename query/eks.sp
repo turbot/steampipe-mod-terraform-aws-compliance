@@ -128,7 +128,7 @@ query "eks_cluster_node_group_ssh_access_from_internet" {
       end status,
       name || case
         when (arguments -> 'remote_access') is null then ' node group does not have implicit SSH access from 0.0.0.0/0'
-        when (arguments -> 'remote_access' ->> 'ec2_ssh_key') is not null and (arguments -> 'remote_access' ->> 'source_security_group_ids') is not null then ' SSH access restricted to security group (s)'
+        when (arguments -> 'remote_access' ->> 'ec2_ssh_key') is not null and (arguments -> 'remote_access' ->> 'source_security_group_ids') is not null then ' SSH access restricted to security group(s)'
         when (arguments -> 'remote_access' ->> 'ec2_ssh_key') is not null and (arguments -> 'remote_access' ->> 'source_security_group_ids') is null then ' has implicit SSH access from 0.0.0.0/0'
         else ' has implicit SSH access from 0.0.0.0/0'
         end || '.' reason

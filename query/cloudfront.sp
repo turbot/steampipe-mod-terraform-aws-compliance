@@ -156,7 +156,7 @@ query "cloudfront_distribution_origin_access_identity_enabled" {
         when (arguments -> 'origin' ->> 'domain_name' ) like '%aws_s3_bucket%' and (( not((arguments -> 'origin' -> 's3_origin_config' ->> 'origin_access_identity') = '')) and (arguments -> 'origin' -> 's3_origin_config' -> 'origin_access_identity') is not null) then ' origin access identity configured'
         when (arguments -> 'origin' ->> 'domain_name' ) like '%aws_s3_bucket%' and (((arguments -> 'origin' -> 's3_origin_config' ->> 'origin_access_identity') = '') or ((arguments -> 'origin' -> 's3_origin_config') is null)) then ' origin access identity not configured'
         when b.name is not null then ' origin access identity not configured'
-        when (t.name is null ) and ((arguments -> 'origin' ->> 'domain_name') not like '%aws_s3_bucket%') then ' origin type is not s3'
+        when (t.name is null ) and ((arguments -> 'origin' ->> 'domain_name') not like '%aws_s3_bucket%') then ' origin type is not S3'
         else ' origin access identity configured'
       end || '.' reason
       ${replace(local.tag_dimensions_qualifier_sql, "__QUALIFIER__", "a.")}
