@@ -7,8 +7,8 @@ query "datasync_location_object_storage_expose_secret" {
         else 'alarm'
       end status,
       name || case
-        when (arguments -> 'secret_key') is null then ' DataSync location object storage does not expose any secret key details'
-        else ' DataSync location object storage exposes secret key detail'
+        when (arguments -> 'secret_key') is null then ' does not expose any secret key details'
+        else ' exposes secret key detail'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}

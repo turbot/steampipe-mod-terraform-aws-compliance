@@ -9,13 +9,13 @@ benchmark "ec2" {
   description = "This benchmark provides a set of controls that detect Terraform AWS EC2 resources deviating from security best practices."
 
   children = [
-    control.ec2_ami_launch_permission_restricted,
     control.ec2_ami_copy_encrypted_with_kms_cmk,
     control.ec2_ami_copy_encryption_enabled,
     control.ec2_ami_encryption_enabled,
     control.ec2_ami_imagebuilder_component_encrypted_with_kms_cmk,
     control.ec2_ami_imagebuilder_distribution_configuration_encrypted_with_kms_cmk,
     control.ec2_ami_imagebuilder_image_recipe_encrypted_with_kms_cmk,
+    control.ec2_ami_launch_permission_restricted,
     control.ec2_ebs_default_encryption_enabled,
     control.ec2_instance_detailed_monitoring_enabled,
     control.ec2_instance_ebs_encryption_check,

@@ -226,8 +226,8 @@ query "cloudfront_response_header_use_strict_transport_policy_setting" {
         when (arguments -> 'security_headers_config' -> 'strict_transport_security' ->> 'access_control_max_age_sec')::integer = 31536000
         and (arguments -> 'security_headers_config' -> 'strict_transport_security' ->> 'include_subdomains')::boolean
         and (arguments -> 'security_headers_config' -> 'strict_transport_security' ->> 'preload')::boolean
-        and (arguments -> 'security_headers_config' -> 'strict_transport_security' ->> 'override')::boolean then ' CloudFront response header policy enforces Strict Transport Security settings'
-        else ' CloudFront response header policy not enforcing Strict Transport Security settings'
+        and (arguments -> 'security_headers_config' -> 'strict_transport_security' ->> 'override')::boolean then ' enforces Strict Transport Security settings'
+        else ' does not enforce Strict Transport Security settings'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -247,8 +247,8 @@ query "cloudfront_distribution_enabled" {
         else 'info'
       end status,
       name || case
-        when(arguments ->> 'enabled')::boolean then ' cloudfront distribution enabled'
-        else ' cloudfront distribution disabled'
+        when(arguments ->> 'enabled')::boolean then ' is enabled'
+        else ' is disabled'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}

@@ -287,9 +287,9 @@ query "apigateway_method_restricts_open_access" {
         else 'ok'
       end status,
       name || case
-        when (arguments ->> 'http_method') != 'OPTIONS' and (arguments ->> 'authorization') = 'NONE' and (arguments ->> 'api_key_required') is null then ' API Gateway method is not restricted'
-        when (arguments ->> 'http_method') != 'OPTIONS' and (arguments ->> 'authorization') = 'NONE' and (arguments ->> 'api_key_required') = 'false' then ' API Gateway method is not restricted'
-        else ' API Gateway method is restrictive with http_method as ' || (arguments ->> 'http_method') || ', authorization as ' || (arguments ->> 'authorization') || ' and api_key_required as ' || (arguments ->> 'api_key_required')
+        when (arguments ->> 'http_method') != 'OPTIONS' and (arguments ->> 'authorization') = 'NONE' and (arguments ->> 'api_key_required') is null then ' does not restrict open access'
+        when (arguments ->> 'http_method') != 'OPTIONS' and (arguments ->> 'authorization') = 'NONE' and (arguments ->> 'api_key_required') = 'false' then ' does not restrict open access'
+        else ' is restrictive with http_method as ' || (arguments ->> 'http_method') || ', authorization as ' || (arguments ->> 'authorization') || ' and api_key_required as ' || (arguments ->> 'api_key_required')
       end || '.' reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -309,8 +309,8 @@ query "apigateway_domain_name_use_latest_tls" {
         else 'alarm'
       end status,
       name || case
-        when (arguments ->> 'security_policy') is null or (arguments ->> 'security_policy') = 'TLS_1_2' then ' API Gateway Domain uses latest TLS security policy'
-        else ' API Gateway Domain not using latest TLS security policy'
+        when (arguments ->> 'security_policy') is null or (arguments ->> 'security_policy') = 'TLS_1_2' then ' uses latest TLS security policy'
+        else ' does not use latest TLS security policy'
       end || '.' reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}

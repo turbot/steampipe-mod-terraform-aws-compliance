@@ -82,7 +82,7 @@ control "ecs_task_definition_no_host_pid_mode" {
 }
 
 control "ecs_task_definition_container_non_privileged" {
-  title       = "ECS containers should run as non-privileged"
+  title       = "ECS containers should run in non-privileged mode"
   description = "This control checks if the privileged parameter in the container definition of Amazon ECS Task Definitions is set to true. The control fails if this parameter is equal to true."
   query       = query.ecs_task_definition_container_non_privileged
 
