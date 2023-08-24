@@ -15,6 +15,7 @@ benchmark "ec2" {
     control.ec2_ami_imagebuilder_component_encrypted_with_kms_cmk,
     control.ec2_ami_imagebuilder_distribution_configuration_encrypted_with_kms_cmk,
     control.ec2_ami_imagebuilder_image_recipe_encrypted_with_kms_cmk,
+    control.ec2_ami_launch_permission_restricted,
     control.ec2_ebs_default_encryption_enabled,
     control.ec2_instance_detailed_monitoring_enabled,
     control.ec2_instance_ebs_encryption_check,
@@ -212,6 +213,14 @@ control "ec2_ami_encryption_enabled" {
   title       = "EC2 AMI should be encrypted"
   description = "This control checks whether EC2 AMI has encryption enabled."
   query       = query.ec2_ami_encryption_enabled
+
+  tags = local.ec2_compliance_common_tags
+}
+
+control "ec2_ami_launch_permission_restricted" {
+  title       = "EC2 AMI launch permission should be restricted"
+  description = "This control checks whether EC2 AMI launch permission is restrictive in nature."
+  query       = query.ec2_ami_launch_permission_restricted
 
   tags = local.ec2_compliance_common_tags
 }

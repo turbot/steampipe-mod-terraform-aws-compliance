@@ -430,3 +430,30 @@ query "ec2_ami_encryption_enabled" {
       type = 'aws_ami';
   EOQ
 }
+
+query "ec2_ami_launch_permission_restricted" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'account_id') is not null then 'ok'
+        when (arguments -> 'group') is not null then 'info'
+        when (arguments -> 'organizational_arn') is not null then 'info'
+        when (arguments -> 'organizational_unit_arn') is not null then 'info'
+        else 'alarm'
+      end as status,
+      name || case
+        when (arguments -> 'account_id') is not null then ' is restrictive to account(s)'
+        when (arguments -> 'group') is not null then ' is open to IAM group'
+        when (arguments -> 'organizational_arn') is not null then ' is open to organization'
+        when (arguments -> 'organizational_unit_arn') is not null then ' is open to organization unit'
+        else ' is wide open'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_ami_launch_permission';
+  EOQ
+}

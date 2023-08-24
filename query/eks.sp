@@ -3,11 +3,18 @@ query "eks_cluster_endpoint_restrict_public_access" {
     select
       type || ' ' || name as resource,
       case
-        when (arguments -> 'endpoint_public_access')::boolean then 'alarm'
+        -- In case both endpoint_public_access & public_access_cidrs are not configured in vpc_config then default setting is true and public_access_cidrs accessible to internet
+        when (arguments -> 'vpc_config' ->> 'endpoint_public_access') is null and (arguments -> 'vpc_config' -> 'public_access_cidrs') is null then 'alarm'
+        when (arguments -> 'vpc_config' ->> 'endpoint_public_access')::boolean and (arguments -> 'vpc_config' -> 'public_access_cidrs') is null then 'alarm'
+        when (arguments -> 'vpc_config' ->> 'endpoint_public_access')::boolean and (arguments -> 'vpc_config' -> 'public_access_cidrs') @> '["0.0.0.0/0"]' then 'alarm'
+        when (arguments -> 'vpc_config' ->> 'endpoint_public_access') is null and (arguments -> 'vpc_config' -> 'public_access_cidrs') @> '["0.0.0.0/0"]' then 'alarm'
         else 'ok'
       end status,
       name || case
-        when (arguments -> 'endpoint_public_access')::boolean then ' endpoint publicly accessible'
+        when (arguments -> 'vpc_config' ->> 'endpoint_public_access') is null and (arguments -> 'vpc_config' -> 'public_access_cidrs') is null then ' endpoint publicly accessible'
+        when (arguments -> 'vpc_config' ->> 'endpoint_public_access')::boolean and (arguments -> 'vpc_config' -> 'public_access_cidrs') is null then ' endpoint publicly accessible'
+        when (arguments -> 'vpc_config' ->> 'endpoint_public_access')::boolean and (arguments -> 'vpc_config' -> 'public_access_cidrs') @> '["0.0.0.0/0"]' then ' endpoint publicly accessible'
+        when (arguments -> 'vpc_config' ->> 'endpoint_public_access') is null and (arguments -> 'vpc_config' -> 'public_access_cidrs') @> '["0.0.0.0/0"]' then ' endpoint publicly accessible'
         else ' endpoint not publicly accessible'
       end || '.' reason
       ${local.tag_dimensions_sql}
@@ -106,5 +113,30 @@ query "eks_cluster_control_plane_logging_enabled" {
       terraform_resource
     where
       type = 'aws_eks_cluster';
+  EOQ
+}
+
+query "eks_cluster_node_group_ssh_access_from_internet" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'remote_access') is null then 'ok'
+        when (arguments -> 'remote_access' ->> 'ec2_ssh_key') is not null and (arguments -> 'remote_access' ->> 'source_security_group_ids') is not null then 'ok'
+        when (arguments -> 'remote_access' ->> 'ec2_ssh_key') is not null and (arguments -> 'remote_access' ->> 'source_security_group_ids') is null then 'alarm'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments -> 'remote_access') is null then ' node group does not have implicit SSH access from 0.0.0.0/0'
+        when (arguments -> 'remote_access' ->> 'ec2_ssh_key') is not null and (arguments -> 'remote_access' ->> 'source_security_group_ids') is not null then ' SSH access restricted to security group(s)'
+        when (arguments -> 'remote_access' ->> 'ec2_ssh_key') is not null and (arguments -> 'remote_access' ->> 'source_security_group_ids') is null then ' has implicit SSH access from 0.0.0.0/0'
+        else ' has implicit SSH access from 0.0.0.0/0'
+        end || '.' reason
+        ${local.tag_dimensions_sql}
+        ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_eks_node_group';
   EOQ
 }

@@ -1,3 +1,21 @@
+## v0.17 [2023-08-24]
+
+_What's new?_
+
+- Added the following controls across the benchmarks: ([#76](https://github.com/turbot/steampipe-mod-terraform-aws-compliance/pull/76))
+  - `apigateway_domain_name_use_latest_tls`
+  - `apigateway_method_restricts_open_access`
+  - `cloudfront_distribution_enabled`
+  - `cloudfront_response_header_use_strict_transport_policy_setting`
+  - `datasync_location_object_storage_expose_secret`
+  - `ec2_ami_launch_permission_restricted`
+  - `ecr_repository_policy_prohibit_public_access`
+  - `ecs_task_definition_container_non_privileged`
+  - `ecs_task_definition_container_readonly_root_filesystem`
+  - `ecs_task_definition_no_host_pid_mode`
+  - `eks_cluster_node_group_ssh_access_from_internet`
+  - `rds_global_cluster_encryption_enabled`
+
 ## v0.16 [2023-08-18]
 
 _What's new?_

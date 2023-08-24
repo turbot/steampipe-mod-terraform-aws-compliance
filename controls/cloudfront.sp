@@ -11,11 +11,13 @@ benchmark "cloudfront" {
   children = [
     control.cloudfront_distribution_configured_with_origin_failover,
     control.cloudfront_distribution_default_root_object_configured,
+    control.cloudfront_distribution_enabled,
     control.cloudfront_distribution_encryption_in_transit_enabled,
     control.cloudfront_distribution_logging_enabled,
     control.cloudfront_distribution_origin_access_identity_enabled,
     control.cloudfront_distribution_waf_enabled,
-    control.cloudfront_protocol_version_is_low
+    control.cloudfront_protocol_version_is_low,
+    control.cloudfront_response_header_use_strict_transport_policy_setting
   ]
 
   tags = merge(local.cloudfront_compliance_common_tags, {
@@ -88,6 +90,22 @@ control "cloudfront_protocol_version_is_low" {
   title       = "CloudFront distributions minimum protocol version should be set"
   description = "CloudFront distributions minimum protocol version should be a good one. Minimum recommended version is TLSv1.2_2019."
   query       = query.cloudfront_protocol_version_is_low
+
+  tags = local.cloudfront_compliance_common_tags
+}
+
+control "cloudfront_response_header_use_strict_transport_policy_setting" {
+  title       = "CloudFront response header policy should be configured with Strict Transport Security"
+  description = "This control checks whether CloudFront response header policy enforces Strict Transport Security."
+  query       = query.cloudfront_response_header_use_strict_transport_policy_setting
+
+  tags = local.cloudfront_compliance_common_tags
+}
+
+control "cloudfront_distribution_enabled" {
+  title       = "CloudFront distribution should be in enabled state"
+  description = "This control checks whether CloudFront distribution is enabled."
+  query       = query.cloudfront_distribution_enabled
 
   tags = local.cloudfront_compliance_common_tags
 }

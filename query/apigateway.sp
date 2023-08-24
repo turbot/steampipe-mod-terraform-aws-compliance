@@ -273,6 +273,50 @@ query "apigatewayv2_route_set_authorization_type" {
     from
       terraform_resource
     where
-      type = 'aws_apigatewayv2_route';   
-  EOQ    
+      type = 'aws_apigatewayv2_route';
+  EOQ
+}
+
+query "apigateway_method_restricts_open_access" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'http_method') != 'OPTIONS' and (arguments ->> 'authorization') = 'NONE' and (arguments ->> 'api_key_required') is null then 'alarm'
+        when (arguments ->> 'http_method') != 'OPTIONS' and (arguments ->> 'authorization') = 'NONE' and (arguments ->> 'api_key_required') = 'false' then 'alarm'
+        else 'ok'
+      end status,
+      name || case
+        when (arguments ->> 'http_method') != 'OPTIONS' and (arguments ->> 'authorization') = 'NONE' and (arguments ->> 'api_key_required') is null then ' does not restrict open access'
+        when (arguments ->> 'http_method') != 'OPTIONS' and (arguments ->> 'authorization') = 'NONE' and (arguments ->> 'api_key_required') = 'false' then ' does not restrict open access'
+        else ' is restrictive with http_method as ' || (arguments ->> 'http_method') || ', authorization as ' || (arguments ->> 'authorization') || ' and api_key_required as ' || (arguments ->> 'api_key_required')
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_api_gateway_method';
+  EOQ
+}
+
+query "apigateway_domain_name_use_latest_tls" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'security_policy') is null or (arguments ->> 'security_policy') = 'TLS_1_2' then 'ok'
+        else 'alarm'
+      end status,
+      name || case
+        when (arguments ->> 'security_policy') is null or (arguments ->> 'security_policy') = 'TLS_1_2' then ' uses latest TLS security policy'
+        else ' does not use latest TLS security policy'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_api_gateway_domain_name';
+  EOQ
 }
