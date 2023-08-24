@@ -103,8 +103,8 @@ control "cloudfront_response_header_use_strict_transport_policy_setting" {
 }
 
 control "cloudfront_distribution_enabled" {
-  title       = "CloudFront distriibution should be in enabled state"
-  description = "This control checks whether CloudFront distriibution is enabled."
+  title       = "CloudFront distribution should be in enabled state"
+  description = "This control checks whether CloudFront distribution is enabled."
   query       = query.cloudfront_distribution_enabled
 
   tags = local.cloudfront_compliance_common_tags

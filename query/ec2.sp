@@ -443,11 +443,11 @@ query "ec2_ami_launch_permission_restricted" {
         else 'alarm'
       end as status,
       name || case
-        when (arguments -> 'account_id') is not null then ' AMI launch permission is restrictive to account(s)'
-        when (arguments -> 'group') is not null then ' AMI launch permission is open to IAM group'
-        when (arguments -> 'organizational_arn') is not null then ' AMI launch permission is open to organization'
-        when (arguments -> 'organizational_unit_arn') is not null then ' AMI launch permission is open to organization unit'
-        else ' AMI launch permission is wide open'
+        when (arguments -> 'account_id') is not null then ' is restrictive to account(s)'
+        when (arguments -> 'group') is not null then ' is open to IAM group'
+        when (arguments -> 'organizational_arn') is not null then ' is open to organization'
+        when (arguments -> 'organizational_unit_arn') is not null then ' is open to organization unit'
+        else ' is wide open'
       end || '.' as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}

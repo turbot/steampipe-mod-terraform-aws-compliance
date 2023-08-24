@@ -895,10 +895,10 @@ query "rds_global_cluster_encryption_enabled" {
         else 'alarm'
       end status,
       name || case
-        when (arguments ->> 'storage_encrypted')::boolean then ' DB cluster enctyprion enabled'
+        when (arguments ->> 'storage_encrypted')::boolean then ' enccryption enabled'
         when (arguments ->> 'source_db_cluster_identifier') is null then ' DB cluster identifier is not provided of the primary global cluster creation'
-        when (arguments ->> 'storage_encrypted')::boolean and (arguments ->> 'source_db_cluster_identifier') is not null then ' DB cluster enctyprion enabled'
-        else ' DB cluster enctyprion disabled'
+        when (arguments ->> 'storage_encrypted')::boolean and (arguments ->> 'source_db_cluster_identifier') is not null then ' enccryption enabled'
+        else ' enccryption disabled'
       end || '.' reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
