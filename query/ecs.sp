@@ -154,8 +154,8 @@ query "ecs_task_definition_no_host_pid_mode" {
           else 'alarm'
         end status,
         case
-          when h.name is null then ' shares the host process namespace.'
-          else ' does not share the host process namespace.'
+          when h.name is null then ' shares the host process namespace'
+          else ' does not share the host process namespace'
         end || '.' reason
         ${local.tag_dimensions_sql}
         ${local.common_dimensions_sql}
