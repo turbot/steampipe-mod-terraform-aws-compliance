@@ -419,8 +419,8 @@ control "rds_mysql_db_cluster_audit_logging_enabled" {
 }
 
 control "rds_global_cluster_encryption_enabled" {
-  title       = "RDS DB global cluster (MySQl & PostgreSQL) should have encryption enabled"
-  description = "This control checks whether RDS DB cluster (MySQl & PostgreSQL) encryption is enabled."
+  title       = "RDS Global Cluster (MySQl & PostgreSQL) should have encryption enabled"
+  description = "This control checks whether RDS Global Cluster (MySQl & PostgreSQL) encryption is enabled."
   query       = query.rds_global_cluster_encryption_enabled
 
   tags = local.rds_compliance_common_tags
