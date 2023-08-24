@@ -12,6 +12,7 @@ benchmark "eks" {
     control.eks_cluster_control_plane_logging_enabled,
     control.eks_cluster_endpoint_restrict_public_access,
     control.eks_cluster_log_types_enabled,
+    control.eks_cluster_node_group_ssh_access_from_internet,
     control.eks_cluster_run_on_supported_kubernetes_version,
     control.eks_cluster_secrets_encrypted
   ]
@@ -61,6 +62,14 @@ control "eks_cluster_control_plane_logging_enabled" {
   title       = "EKS cluster control plane logging should be enabled for all log types"
   description = "Ensure control plane logging is enabled for all log types in Amazon EKS cluster."
   query       = query.eks_cluster_control_plane_logging_enabled
+
+  tags = local.eks_compliance_common_tags
+}
+
+control "eks_cluster_node_group_ssh_access_from_internet" {
+  title       = "EKS cluster node group should be configured to restrict SSH access from 0.0.0.0/0"
+  description = "EKS cluster node group SSH access should be restricted from internet. If you specify ec2_ssh_key, but do not specify source_security_group_ids configuration when you create an EKS Node Group, port 22 on the worker nodes is opened to the Internet (0.0.0.0/0)."
+  query       = query.eks_cluster_node_group_ssh_access_from_internet
 
   tags = local.eks_compliance_common_tags
 }

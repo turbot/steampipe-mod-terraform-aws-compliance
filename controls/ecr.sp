@@ -10,6 +10,7 @@ benchmark "ecr" {
 
   children = [
     control.ecr_repository_encrypted_with_kms,
+    control.ecr_repository_policy_prohibit_public_access,
     control.ecr_repository_tags_immutable,
     control.ecr_repository_use_image_scanning
   ]
@@ -39,6 +40,14 @@ control "ecr_repository_encrypted_with_kms" {
   title       = "ECR repository should be encrypted with KMS"
   description = "Ensure ECR repositories being created are set to be encrypted at rest using KMS CMK."
   query       = query.ecr_repository_encrypted_with_kms
+
+  tags = local.ecr_compliance_common_tags
+}
+
+control "ecr_repository_policy_prohibit_public_access" {
+  title       = "ECR repository policy should prohibit public access"
+  description = "Ensure ECR repository associated policy prohibits public access."
+  query       = query.ecr_repository_policy_prohibit_public_access
 
   tags = local.ecr_compliance_common_tags
 }
