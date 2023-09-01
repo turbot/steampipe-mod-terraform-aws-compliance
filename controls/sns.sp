@@ -9,7 +9,8 @@ benchmark "sns" {
   description = "This benchmark provides a set of controls that detect Terraform AWS SNS resources deviating from security best practices."
 
   children = [
-    control.sns_topic_encrypted_at_rest
+    control.sns_topic_encrypted_at_rest,
+    control.sns_topic_policy_restrict_public_access
   ]
 
   tags = merge(local.sns_compliance_common_tags, {
@@ -30,4 +31,12 @@ control "sns_topic_encrypted_at_rest" {
     nist_csf                  = "true"
     rbi_cyber_security        = "true"
   })
+}
+
+control "sns_topic_policy_restrict_public_access" {
+  title       = "SNS topic policies should prohibit public access"
+  description = "Manage access to resources in the AWS Cloud by ensuring AWS SNS topics cannot be publicly accessed."
+  query       = query.sns_topic_policy_restrict_public_access
+
+  tags = local.sns_compliance_common_tags
 }
