@@ -10,8 +10,10 @@ benchmark "glue" {
 
   children = [
     control.glue_crawler_security_configuration_enabled,
+    control.glue_data_catalog_encryption_enabled,
     control.glue_dev_endpoint_security_configuration_enabled,
-    control.glue_job_security_configuration_enabled
+    control.glue_job_security_configuration_enabled,
+    control.glue_security_configuration_encryption_enabled
   ]
 
   tags = merge(local.glue_compliance_common_tags, {
@@ -42,3 +44,21 @@ control "glue_job_security_configuration_enabled" {
 
   tags = local.glue_compliance_common_tags
 }
+
+
+control "glue_data_catalog_encryption_enabled" {
+  title       = "Glue data catalog encryption should be enabled"
+  description = "This control checks whether data catalog encryption is enabled. This control is non-complaint if data catalog encryption is disabled."
+  query       = query.glue_data_catalog_encryption_enabled
+
+  tags = local.glue_compliance_common_tags
+}
+
+control "glue_security_configuration_encryption_enabled" {
+  title       = "Glue security configuration encryption should be enabled"
+  description = "This control checks whether Glue security configuration encryption is enabled. This control is non-complaint if Glue security configuration encryption is disabled."
+  query       = query.glue_security_configuration_encryption_enabled
+
+  tags = local.glue_compliance_common_tags
+}
+
