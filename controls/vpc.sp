@@ -15,6 +15,10 @@ benchmark "vpc" {
     control.vpc_endpoint_service_acceptance_enabled,
     control.vpc_flow_logs_enabled,
     control.vpc_igw_attached_to_authorized_vpc,
+    control.vpc_network_acl_allow_ftp_port_20_ingress,
+    control.vpc_network_acl_allow_ftp_port_21_ingress,
+    control.vpc_network_acl_allow_rdp_port_3389_ingress,
+    control.vpc_network_acl_allow_ssh_port_22_ingress,
     control.vpc_network_acl_unused,
     control.vpc_network_firewall_deletion_protection_enabled,
     control.vpc_network_firewall_encrypted_with_kms_cmk,
@@ -189,6 +193,38 @@ control "vpc_ec2_transit_gateway_auto_accept_attachment_requests_disabled" {
   title       = "VPC EC2 transit gateway should not automatically accept VPC attachment requests"
   description = "This control checks whether the EC2 Transit Gateway has auto accept attachment requests disabled."
   query       = query.vpc_ec2_transit_gateway_auto_accept_attachment_requests_disabled
+
+  tags = local.vpc_compliance_common_tags
+}
+
+control "vpc_network_acl_allow_ftp_port_20_ingress" {
+  title       = "Network ACL should not allow unrestricted FTP port 20 access"
+  description = "This control checks whether the Network ACL allows restricted FTP port 20 ingress."
+  query       = query.vpc_network_acl_allow_ftp_port_20_ingress
+
+  tags = local.vpc_compliance_common_tags
+}
+
+control "vpc_network_acl_allow_ftp_port_21_ingress" {
+  title       = "Network ACL should not allow unrestricted FTP port 21 access"
+  description = "This control checks whether the Network ACL allows restricted FTP port 21 ingress."
+  query       = query.vpc_network_acl_allow_ftp_port_21_ingress
+
+  tags = local.vpc_compliance_common_tags
+}
+
+control "vpc_network_acl_allow_ssh_port_22_ingress" {
+  title       = "Network ACL should not allow unrestricted SSH port 22 access"
+  description = "This control checks whether the Network ACL allows restricted SSH port 22 ingress."
+  query       = query.vpc_network_acl_allow_ssh_port_22_ingress
+
+  tags = local.vpc_compliance_common_tags
+}
+
+control "vpc_network_acl_allow_rdp_port_3389_ingress" {
+  title       = "Network ACL should not allow unrestricted RDP port 3389 access"
+  description = "This control checks whether the Network ACL allows restricted RDP port 3389 ingress."
+  query       = query.vpc_network_acl_allow_rdp_port_3389_ingress
 
   tags = local.vpc_compliance_common_tags
 }
