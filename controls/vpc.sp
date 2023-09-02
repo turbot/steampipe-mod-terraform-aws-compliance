@@ -19,6 +19,7 @@ benchmark "vpc" {
     control.vpc_network_acl_allow_ftp_port_21_ingress,
     control.vpc_network_acl_allow_rdp_port_3389_ingress,
     control.vpc_network_acl_allow_ssh_port_22_ingress,
+    control.vpc_network_acl_rule_restrict_ingress_ports_all,
     control.vpc_network_acl_unused,
     control.vpc_network_firewall_deletion_protection_enabled,
     control.vpc_network_firewall_encrypted_with_kms_cmk,
@@ -28,7 +29,7 @@ benchmark "vpc" {
     control.vpc_security_group_description_for_rules,
     control.vpc_security_group_rule_description_for_rules,
     control.vpc_subnet_auto_assign_public_ip_disabled,
-    control.vpc_transfer_server_not_publicly_accesible
+    control.vpc_transfer_server_not_publicly_accesible,
   ]
 
   tags = merge(local.vpc_compliance_common_tags, {
@@ -228,3 +229,12 @@ control "vpc_network_acl_allow_rdp_port_3389_ingress" {
 
   tags = local.vpc_compliance_common_tags
 }
+
+control "vpc_network_acl_rule_restrict_ingress_ports_all" {
+  title       = "Network ACL ingress rule should not allow access to all ports"
+  description = "This control checks whether the Network ACL ingress rule does not allow access to all ports."
+  query       = query.vpc_network_acl_rule_restrict_ingress_ports_all
+
+  tags = local.vpc_compliance_common_tags
+}
+

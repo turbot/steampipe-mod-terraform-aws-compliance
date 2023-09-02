@@ -534,3 +534,25 @@ query "vpc_network_acl_allow_rdp_port_3389_ingress" {
       type = 'aws_network_acl';
   EOQ
 }
+
+query "vpc_network_acl_rule_restrict_ingress_ports_all" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'egress') = 'true' then 'skip'
+        when (arguments ->> 'rule_action') = 'allow' and (arguments -> 'from_port') is null then 'alarm'
+        else 'ok'
+      end as status,
+      name || case
+        when (arguments ->> 'egress') = 'true' then ' is egress rule'
+        when (arguments ->> 'rule_action') = 'allow' and (arguments -> 'from_port') is null then ' allows access to all port'
+        else ' restricts access to all port'
+      end || '.' reason
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_network_acl_rule';
+  EOQ
+}

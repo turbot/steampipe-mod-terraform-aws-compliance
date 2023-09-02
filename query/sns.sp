@@ -24,7 +24,7 @@ query "sns_topic_policy_restrict_public_access" {
   sql = <<-EOQ
      with sns_topic_public_policies as (
       select
-        distinct (type || ' ' || name ) as name,
+        distinct (type || ' ' || name ) as name
       from
         terraform_resource,
         jsonb_array_elements(
@@ -57,7 +57,7 @@ query "sns_topic_policy_restrict_public_access" {
       ${local.common_dimensions_sql}
     from
       terraform_resource as r
-      left join glacier_vault_public_policies as p on p.name = concat(r.type || ' ' || r.name)
+      left join sns_topic_public_policies as p on p.name = concat(r.type || ' ' || r.name)
     where
       r.type = 'aws_sns_topic_policy';
   EOQ
