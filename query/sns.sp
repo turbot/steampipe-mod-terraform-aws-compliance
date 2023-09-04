@@ -51,7 +51,7 @@ query "sns_topic_policy_restrict_public_access" {
       end status,
       r.name || case
         when (arguments ->> 'policy') = '' then ' no policy defined'
-        when p.name is  null then ' not publicly accessible'
+        when p.name is null then ' not publicly accessible'
         else ' publicly accessible'
       end || '.' reason
       ${local.common_dimensions_sql}

@@ -19,10 +19,8 @@ benchmark "glacier" {
 
 control "glacier_vault_restrict_public_access" {
   title       = "Glacier vault should restrict public access"
-  description = "Manage access to resources in the AWS Cloud by ensuring AWS Glacier vault cannot be publicly accessed."
+  description = "Manage access to resources in the AWS Cloud by ensuring Glacier vault cannot be publicly accessed."
   query       = query.glacier_vault_restrict_public_access
 
   tags = local.glacier_compliance_common_tags
 }
-
-
