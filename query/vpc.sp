@@ -390,8 +390,8 @@ query "vpc_network_acl_allow_ftp_port_20_ingress" {
         else 'alarm'
       end as status,
       r.name || case
-        when g.name is null then ' restricts FTP access from internet through port 20'
-        else ' allows FTP access from internet through port 20'
+        when g.name is null then ' restricts FTP data port 20 access from internet'
+        else ' allows FTP data port 20 access from internet'
       end || '.' reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -434,8 +434,8 @@ query "vpc_network_acl_allow_ftp_port_21_ingress" {
         else 'alarm'
       end as status,
       r.name || case
-        when g.name is null then ' restricts FTP access from internet through port 21'
-        else ' allows FTP access from internet through port 21'
+        when g.name is null then ' restricts FTP port 21 access from internet'
+        else ' allows FTP port 21 access from internet'
       end || '.' reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
