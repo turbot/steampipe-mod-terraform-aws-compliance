@@ -48,7 +48,7 @@ control "glue_job_security_configuration_enabled" {
 
 control "glue_data_catalog_encryption_enabled" {
   title       = "Glue data catalog encryption should be enabled"
-  description = "This control checks whether data catalog encryption is enabled. This control is non-complaint if data catalog encryption is disabled."
+  description = "This control checks whether Glue data catalog encryption is enabled. This control is non-complaint if data catalog encryption is disabled."
   query       = query.glue_data_catalog_encryption_enabled
 
   tags = local.glue_compliance_common_tags

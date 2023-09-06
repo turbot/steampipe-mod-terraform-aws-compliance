@@ -390,8 +390,8 @@ query "vpc_network_acl_allow_ftp_port_20_ingress" {
         else 'alarm'
       end as status,
       r.name || case
-        when g.name is null then ' restricts FTP data port 20 access from internet'
-        else ' allows FTP data port 20 access from internet'
+        when g.name is null then ' restricts FTP data port 20 access from the internet'
+        else ' allows FTP data port 20 access from the internet'
       end || '.' reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -434,8 +434,8 @@ query "vpc_network_acl_allow_ftp_port_21_ingress" {
         else 'alarm'
       end as status,
       r.name || case
-        when g.name is null then ' restricts FTP port 21 access from internet'
-        else ' allows FTP port 21 access from internet'
+        when g.name is null then ' restricts FTP port 21 access from the internet'
+        else ' allows FTP port 21 access from the internet'
       end || '.' reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -478,8 +478,8 @@ query "vpc_network_acl_allow_ssh_port_22_ingress" {
         else 'alarm'
       end as status,
       r.name || case
-        when g.name is null then ' restricts SSH access from internet through port 22'
-        else ' allows SSH access from internet through port 22'
+        when g.name is null then ' restricts SSH access from the internet through port 22'
+        else ' allows SSH access from the internet through port 22'
       end || '.' reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -522,8 +522,8 @@ query "vpc_network_acl_allow_rdp_port_3389_ingress" {
         else 'alarm'
       end as status,
       r.name || case
-        when g.name is null then ' restricts RDP access from internet through port 3389'
-        else ' allows RDP access from internet through port 3389'
+        when g.name is null then ' restricts RDP access from the internet through port 3389'
+        else ' allows RDP access from the internet through port 3389'
       end || '.' reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
