@@ -1,3 +1,18 @@
+## v0.18 [2023-09-07]
+
+_What's new?_
+
+- Added the following controls across the benchmarks: ([#81](https://github.com/turbot/steampipe-mod-terraform-aws-compliance/pull/81))
+  - `glacier_vault_restrict_public_access`
+  - `glue_data_catalog_encryption_enabled`
+  - `glue_security_configuration_encryption_enabled`
+  - `sns_topic_policy_restrict_public_access`
+  - `vpc_network_acl_allow_ftp_port_20_ingress`
+  - `vpc_network_acl_allow_ftp_port_21_ingress`
+  - `vpc_network_acl_allow_rdp_port_3389_ingress`
+  - `vpc_network_acl_allow_ssh_port_22_ingress`
+  - `vpc_network_acl_rule_restrict_ingress_ports_all`
+
 ## v0.17 [2023-08-24]
 
 _What's new?_
