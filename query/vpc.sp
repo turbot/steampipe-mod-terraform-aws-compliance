@@ -546,8 +546,8 @@ query "vpc_network_acl_rule_restrict_ingress_ports_all" {
       end as status,
       name || case
         when (arguments ->> 'egress') = 'true' then ' is egress rule'
-        when (arguments ->> 'rule_action') = 'allow' and (arguments -> 'from_port') is null then ' allows access to all port'
-        else ' restricts access to all port'
+        when (arguments ->> 'rule_action') = 'allow' and (arguments -> 'from_port') is null then ' allows access to all ports'
+        else ' restricts access to all ports'
       end || '.' reason
       ${local.common_dimensions_sql}
     from
