@@ -109,7 +109,7 @@ query "glue_security_configuration_encryption_enabled" {
         and (arguments -> 'encryption_configuration' -> 's3_encryption' ->> 'kms_key_arn') is not null  then ' encryption enabled'
         else ' encryption disabled'
       end || '.' reason
-      --${local.common_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       terraform_resource
     where
