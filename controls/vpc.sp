@@ -15,6 +15,11 @@ benchmark "vpc" {
     control.vpc_endpoint_service_acceptance_enabled,
     control.vpc_flow_logs_enabled,
     control.vpc_igw_attached_to_authorized_vpc,
+    control.vpc_network_acl_allow_ftp_port_20_ingress,
+    control.vpc_network_acl_allow_ftp_port_21_ingress,
+    control.vpc_network_acl_allow_rdp_port_3389_ingress,
+    control.vpc_network_acl_allow_ssh_port_22_ingress,
+    control.vpc_network_acl_rule_restrict_ingress_ports_all,
     control.vpc_network_acl_unused,
     control.vpc_network_firewall_deletion_protection_enabled,
     control.vpc_network_firewall_encrypted_with_kms_cmk,
@@ -49,7 +54,7 @@ control "vpc_default_security_group_restricts_all_traffic" {
 
 control "vpc_eip_associated" {
   title       = "VPC EIPs should be associated with an EC2 instance or ENI"
-  description = "This rule ensures Elastic IPs allocated to a Amazon Virtual Private Cloud (Amazon VPC) are attached to Amazon Elastic Compute Cloud (Amazon EC2) instances or in-use Elastic Network Interfaces."
+  description = "This rule ensures Elastic IPs allocated to an Amazon Virtual Private Cloud (Amazon VPC) are attached to Amazon Elastic Compute Cloud (Amazon EC2) instances or in-use Elastic Network Interfaces."
   query       = query.vpc_eip_associated
 
   tags = merge(local.vpc_compliance_common_tags, {
@@ -77,7 +82,7 @@ control "vpc_flow_logs_enabled" {
 }
 
 control "vpc_igw_attached_to_authorized_vpc" {
-  title       = "VPC internet gateways should be attached to authorized vpc"
+  title       = "VPC internet gateways should be attached to authorized VPC"
   description = "Manage access to resources in the AWS Cloud by ensuring that internet gateways are only attached to authorized Amazon Virtual Private Cloud (Amazon VPC)."
   query       = query.vpc_igw_attached_to_authorized_vpc
 
@@ -101,7 +106,7 @@ control "vpc_network_acl_unused" {
 
 control "vpc_security_group_associated_to_eni" {
   title       = "VPC security groups should be associated with at least one ENI"
-  description = "This rule ensures the security groups are attached to an Amazon Elastic Compute Cloud (Amazon EC2) instance or to an ENI. This rule helps monitoring unused security groups in the inventory and the management of your environment."
+  description = "This rule ensures the security groups are attached to an Amazon Elastic Compute Cloud (Amazon EC2) instance or to an ENI. This rule helps monitor unused security groups in the inventory and the management of your environment."
   query       = query.vpc_security_group_associated_to_eni
 
   tags = merge(local.vpc_compliance_common_tags, {
@@ -119,15 +124,15 @@ control "vpc_security_group_description_for_rules" {
 
 control "vpc_security_group_rule_description_for_rules" {
   title       = "VPC security group rule should have description for rules"
-  description = "One of the best practices when creating security groups rule in AWS is to add a description to the group and each of its rules for better clarity."
+  description = "One of the best practices when creating security group rules in AWS is to add a description to the group and each of its rules for better clarity."
   query       = query.vpc_security_group_rule_description_for_rules
 
   tags = local.vpc_compliance_common_tags
 }
 
 control "vpc_subnet_auto_assign_public_ip_disabled" {
-  title       = "VPC subnet auto assign public IP should be disabled"
-  description = "Ensure if Amazon Virtual Private Cloud (Amazon VPC) subnets are assigned a public IP address. The control is complaint if Amazon VPC does not have subnets that are assigned a public IP address."
+  title       = "VPC subnet auto-assign public IP should be disabled"
+  description = "Ensure that Amazon Virtual Private Cloud (Amazon VPC) subnets are assigned a public IP address. The control is complaint if Amazon VPC does not have subnets that are assigned a public IP address."
   query       = query.vpc_subnet_auto_assign_public_ip_disabled
 
   tags = merge(local.vpc_compliance_common_tags, {
@@ -187,8 +192,49 @@ control "vpc_network_firewall_deletion_protection_enabled" {
 
 control "vpc_ec2_transit_gateway_auto_accept_attachment_requests_disabled" {
   title       = "VPC EC2 transit gateway should not automatically accept VPC attachment requests"
-  description = "This control checks whether the EC2 Transit Gateway has auto accept attachment requests disabled."
+  description = "This control checks whether the EC2 Transit Gateway has auto-accept attachment requests disabled."
   query       = query.vpc_ec2_transit_gateway_auto_accept_attachment_requests_disabled
 
   tags = local.vpc_compliance_common_tags
 }
+
+control "vpc_network_acl_allow_ftp_port_20_ingress" {
+  title       = "Network ACL should not allow unrestricted FTP port 20 access"
+  description = "This control checks whether the Network ACL allows unrestricted ingress on FTP port 20."
+  query       = query.vpc_network_acl_allow_ftp_port_20_ingress
+
+  tags = local.vpc_compliance_common_tags
+}
+
+control "vpc_network_acl_allow_ftp_port_21_ingress" {
+  title       = "Network ACL should not allow unrestricted FTP port 21 access"
+  description = "This control checks whether the Network ACL allows unrestricted ingress on FTP port 21."
+  query       = query.vpc_network_acl_allow_ftp_port_21_ingress
+
+  tags = local.vpc_compliance_common_tags
+}
+
+control "vpc_network_acl_allow_ssh_port_22_ingress" {
+  title       = "Network ACL should not allow unrestricted SSH port 22 access"
+  description = "This control checks whether the Network ACL allows unrestricted ingress on SSH port 22."
+  query       = query.vpc_network_acl_allow_ssh_port_22_ingress
+
+  tags = local.vpc_compliance_common_tags
+}
+
+control "vpc_network_acl_allow_rdp_port_3389_ingress" {
+  title       = "Network ACL should not allow unrestricted RDP port 3389 access"
+  description = "This control checks whether the Network ACL allows unrestricted ingress on RDP port 3389."
+  query       = query.vpc_network_acl_allow_rdp_port_3389_ingress
+
+  tags = local.vpc_compliance_common_tags
+}
+
+control "vpc_network_acl_rule_restrict_ingress_ports_all" {
+  title       = "Network ACL ingress rule should not allow access to all ports"
+  description = "This control checks whether the Network ACL ingress rule does not allow access to all ports."
+  query       = query.vpc_network_acl_rule_restrict_ingress_ports_all
+
+  tags = local.vpc_compliance_common_tags
+}
+

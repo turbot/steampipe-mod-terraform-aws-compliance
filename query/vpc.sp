@@ -358,3 +358,201 @@ query "vpc_ec2_transit_gateway_auto_accept_attachment_requests_disabled" {
       type = 'aws_ec2_transit_gateway';
   EOQ
 }
+
+query "vpc_network_acl_allow_ftp_port_20_ingress" {
+  sql = <<-EOQ
+    with rules as (
+      select distinct
+        name
+      from
+        terraform_resource,
+        jsonb_array_elements(
+          case jsonb_typeof(arguments -> 'ingress')
+            when 'array' then (arguments -> 'ingress')
+            else jsonb_build_array(arguments -> 'ingress')
+          end
+          ) ingress
+      where
+        type = 'aws_network_acl' and
+        ingress is not null and
+        (ingress ->> 'cidr_block' = '0.0.0.0/0' or ingress ->> 'ipv6_cidr_block' = '::/0')
+        and ingress ->> 'action' = 'allow'
+        and (
+          ingress ->> 'protocol' = '-1' or
+          (ingress ->> 'from_port') :: integer >= 20 or
+          (ingress ->> 'to_port') :: integer <= 20
+        )
+    )
+    select
+      type || ' ' || r.name as resource,
+      case
+        when g.name is null then 'ok'
+        else 'alarm'
+      end as status,
+      r.name || case
+        when g.name is null then ' restricts FTP data port 20 access from the internet'
+        else ' allows FTP data port 20 access from the internet'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource as r
+      left join rules as g on g.name = r.name
+    where
+      type = 'aws_network_acl';
+  EOQ
+}
+
+query "vpc_network_acl_allow_ftp_port_21_ingress" {
+  sql = <<-EOQ
+    with rules as (
+      select distinct
+        name
+      from
+        terraform_resource,
+        jsonb_array_elements(
+          case jsonb_typeof(arguments -> 'ingress')
+            when 'array' then (arguments -> 'ingress')
+            else jsonb_build_array(arguments -> 'ingress')
+          end
+          ) ingress
+      where
+        type = 'aws_network_acl' and
+        ingress is not null and
+        (ingress ->> 'cidr_block' = '0.0.0.0/0' or ingress ->> 'ipv6_cidr_block' = '::/0')
+        and ingress ->> 'action' = 'allow'
+        and (
+          ingress ->> 'protocol' = '-1' or
+          (ingress ->> 'from_port') :: integer >= 21 or
+          (ingress ->> 'to_port') :: integer <= 21
+        )
+    )
+    select
+      type || ' ' || r.name as resource,
+      case
+        when g.name is null then 'ok'
+        else 'alarm'
+      end as status,
+      r.name || case
+        when g.name is null then ' restricts FTP port 21 access from the internet'
+        else ' allows FTP port 21 access from the internet'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource as r
+      left join rules as g on g.name = r.name
+    where
+      type = 'aws_network_acl';
+  EOQ
+}
+
+query "vpc_network_acl_allow_ssh_port_22_ingress" {
+  sql = <<-EOQ
+    with rules as (
+      select distinct
+        name
+      from
+        terraform_resource,
+        jsonb_array_elements(
+          case jsonb_typeof(arguments -> 'ingress')
+            when 'array' then (arguments -> 'ingress')
+            else jsonb_build_array(arguments -> 'ingress')
+          end
+          ) ingress
+      where
+        type = 'aws_network_acl' and
+        ingress is not null and
+        (ingress ->> 'cidr_block' = '0.0.0.0/0' or ingress ->> 'ipv6_cidr_block' = '::/0')
+        and ingress ->> 'action' = 'allow'
+        and (
+          ingress ->> 'protocol' = '-1' or
+          (ingress ->> 'from_port') :: integer >= 22 or
+          (ingress ->> 'to_port') :: integer <= 22
+        )
+    )
+    select
+      type || ' ' || r.name as resource,
+      case
+        when g.name is null then 'ok'
+        else 'alarm'
+      end as status,
+      r.name || case
+        when g.name is null then ' restricts SSH access from the internet through port 22'
+        else ' allows SSH access from the internet through port 22'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource as r
+      left join rules as g on g.name = r.name
+    where
+      type = 'aws_network_acl';
+  EOQ
+}
+
+query "vpc_network_acl_allow_rdp_port_3389_ingress" {
+  sql = <<-EOQ
+    with rules as (
+      select distinct
+        name
+      from
+        terraform_resource,
+        jsonb_array_elements(
+          case jsonb_typeof(arguments -> 'ingress')
+            when 'array' then (arguments -> 'ingress')
+            else jsonb_build_array(arguments -> 'ingress')
+          end
+          ) ingress
+      where
+        type = 'aws_network_acl' and
+        ingress is not null and
+        (ingress ->> 'cidr_block' = '0.0.0.0/0' or ingress ->> 'ipv6_cidr_block' = '::/0')
+        and ingress ->> 'action' = 'allow'
+        and (
+          ingress ->> 'protocol' = '-1' or
+          (ingress ->> 'from_port') :: integer >= 3389 or
+          (ingress ->> 'to_port') :: integer <= 3389
+        )
+    )
+    select
+      type || ' ' || r.name as resource,
+      case
+        when g.name is null then 'ok'
+        else 'alarm'
+      end as status,
+      r.name || case
+        when g.name is null then ' restricts RDP access from the internet through port 3389'
+        else ' allows RDP access from the internet through port 3389'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource as r
+      left join rules as g on g.name = r.name
+    where
+      type = 'aws_network_acl';
+  EOQ
+}
+
+query "vpc_network_acl_rule_restrict_ingress_ports_all" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments ->> 'egress') = 'true' then 'skip'
+        when (arguments ->> 'rule_action') = 'allow' and (arguments -> 'from_port') is null then 'alarm'
+        else 'ok'
+      end as status,
+      name || case
+        when (arguments ->> 'egress') = 'true' then ' is egress rule'
+        when (arguments ->> 'rule_action') = 'allow' and (arguments -> 'from_port') is null then ' allows access to all ports'
+        else ' restricts access to all ports'
+      end || '.' reason
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_network_acl_rule';
+  EOQ
+}
