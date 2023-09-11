@@ -29,6 +29,7 @@ benchmark "vpc" {
     control.vpc_security_group_description_for_rules,
     control.vpc_security_group_rule_description_for_rules,
     control.vpc_subnet_auto_assign_public_ip_disabled,
+    control.vpc_transfer_server_allows_only_secure_protocols,
     control.vpc_transfer_server_not_publicly_accesible
   ]
 
@@ -238,3 +239,10 @@ control "vpc_network_acl_rule_restrict_ingress_ports_all" {
   tags = local.vpc_compliance_common_tags
 }
 
+control "vpc_transfer_server_allows_only_secure_protocols" {
+  title       = "VPC transfer server should allow only secure protocols"
+  description = "This control checks whether the VPC transfer server allows only secure protocols."
+  query       = query.vpc_transfer_server_allows_only_secure_protocols
+
+  tags = local.vpc_compliance_common_tags
+}

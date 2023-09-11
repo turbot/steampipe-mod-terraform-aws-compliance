@@ -556,3 +556,24 @@ query "vpc_network_acl_rule_restrict_ingress_ports_all" {
       type = 'aws_network_acl_rule';
   EOQ
 }
+
+query "vpc_transfer_server_allows_only_secure_protocols" {
+  sql = <<-EOQ
+    select
+      type || ' ' || name as resource,
+      case
+        when (arguments -> 'protocols') @> '["FTP"]' then 'alarm'
+        else 'ok'
+      end status,
+      name || case
+        when (arguments -> 'protocols') @> '["FTP"]' then ' allows unsecure protocols'
+        else ' allows only secure protocols'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_transfer_server';
+  EOQ
+}
