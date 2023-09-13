@@ -1,3 +1,13 @@
+## v0.19 [2023-09-13]
+
+_Breaking changes_
+
+- Removed the `dms_s3_endpoint_encryption_in_transit_enabled` control from the `DMS` benchmark. ([#84](https://github.com/turbot/steampipe-mod-terraform-aws-compliance/pull/84))
+
+_Enhancements_
+
+- Added the `vpc_transfer_server_allows_only_secure_protocols` control to the `VPC` benchmark. ([#84](https://github.com/turbot/steampipe-mod-terraform-aws-compliance/pull/84))
+
 ## v0.18 [2023-09-07]
 
 _What's new?_
