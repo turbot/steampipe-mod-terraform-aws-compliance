@@ -577,3 +577,108 @@ query "vpc_transfer_server_allows_only_secure_protocols" {
       type = 'aws_transfer_server';
   EOQ
 }
+
+query "vpc_security_group_restrict_ingress_ssh_all" {
+  sql = <<-EOQ
+    with rules as (
+      select distinct
+        name,
+        count(*) as num_ssh_rules
+      from
+        terraform_resource,
+        jsonb_array_elements(
+          case jsonb_typeof(arguments -> 'ingress')
+            when 'array' then (arguments -> 'ingress')
+            else jsonb_build_array(arguments -> 'ingress')
+          end
+          ) ingress
+      where
+        type = 'aws_security_group' and
+        ingress is not null
+        and (
+          (ingress -> 'cidr_blocks') @> '["0.0.0.0/0"]'
+          or (ingress -> 'ipv6_cidr_blocks') @> '["::/0"]'
+          or (ingress -> 'ipv6_cidr_blocks') @> '["0000:0000:0000:0000:0000:0000:0000:0000/0"]'
+         )
+        and (
+          ingress ->> 'protocol' = '-1'
+          or (
+            (ingress ->> 'from_port') :: integer >= 22 and
+            (ingress ->> 'to_port') :: integer <= 22
+          )
+        )
+      group by
+        name
+    )
+    select
+      type || ' ' || r.name as resource,
+      case
+        when g.name is null then 'ok'
+        else 'alarm'
+      end as status,
+      r.name || case
+        when g.name is null then ' ingress restricted for SSH from 0.0.0.0/0'
+        else ' contains ' || g.num_ssh_rules || ' ingress rule(s) allowing SSH from 0.0.0.0/0'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource as r
+      left join rules as g on g.name = r.name
+    where
+      type = 'aws_security_group';
+  EOQ
+}
+
+query "vpc_security_group_restrict_ingress_rdp_all" {
+  sql = <<-EOQ
+    with rules as (
+      select distinct
+        name,
+        count(*) as num_rdp_rules
+      from
+        terraform_resource,
+        jsonb_array_elements(
+          case jsonb_typeof(arguments -> 'ingress')
+            when 'array' then (arguments -> 'ingress')
+            else jsonb_build_array(arguments -> 'ingress')
+          end
+          ) ingress
+      where
+        type = 'aws_security_group' and
+        ingress is not null
+        and (
+          (ingress -> 'cidr_blocks') @> '["0.0.0.0/0"]'
+          or (ingress -> 'ipv6_cidr_blocks') @> '["::/0"]'
+          or (ingress -> 'ipv6_cidr_blocks') @> '["0000:0000:0000:0000:0000:0000:0000:0000/0"]'
+        )
+        and (
+          ingress ->> 'protocol' = '-1'
+          or (
+            (ingress ->> 'from_port') :: integer >= 3389 and
+            (ingress ->> 'to_port') :: integer <= 3389
+          )
+        )
+      group by
+        name
+    )
+    select
+      type || ' ' || r.name as resource,
+      case
+        when g.name is null then 'ok'
+        else 'alarm'
+      end as status,
+      r.name || case
+        when g.name is null then ' ingress restricted for RDP from 0.0.0.0/0'
+        else ' contains ' || g.num_rdp_rules || ' ingress rule(s) allowing RDP from 0.0.0.0/0'
+      end || '.' reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource as r
+      left join rules as g on g.name = r.name
+    where
+      type = 'aws_security_group';
+  EOQ
+}
+

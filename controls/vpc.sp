@@ -27,6 +27,8 @@ benchmark "vpc" {
     control.vpc_network_firewall_rule_group_encrypted_with_kms_cmk,
     control.vpc_security_group_associated_to_eni,
     control.vpc_security_group_description_for_rules,
+    control.vpc_security_group_restrict_ingress_rdp_all,
+    control.vpc_security_group_restrict_ingress_ssh_all,
     control.vpc_security_group_rule_description_for_rules,
     control.vpc_subnet_auto_assign_public_ip_disabled,
     control.vpc_transfer_server_allows_only_secure_protocols,
@@ -243,6 +245,23 @@ control "vpc_transfer_server_allows_only_secure_protocols" {
   title       = "VPC transfer server should allow only secure protocols"
   description = "This control checks whether the VPC transfer server allows only secure protocols."
   query       = query.vpc_transfer_server_allows_only_secure_protocols
+
+  tags = local.vpc_compliance_common_tags
+}
+
+control "vpc_security_group_restrict_ingress_rdp_all" {
+  title       = "Ensure no security groups allow ingress from 0.0.0.0/0 to port 3389"
+  description = "Security groups provide stateful filtering of ingress/egress network traffic to AWS resources. It is recommended that no security group allows unrestricted ingress access to port 3389."
+  query       = query.vpc_security_group_restrict_ingress_rdp_all
+
+  tags = local.vpc_compliance_common_tags
+}
+
+
+control "vpc_security_group_restrict_ingress_ssh_all" {
+  title       = "VPC security groups should restrict ingress SSH access from 0.0.0.0/0"
+  description = "AWS Elastic Compute Cloud (AWS EC2) Security Groups can help manage network access by providing stateful filtering of ingress and egress network traffic to AWS resources."
+  query       = query.vpc_security_group_restrict_ingress_ssh_all
 
   tags = local.vpc_compliance_common_tags
 }
