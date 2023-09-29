@@ -1,13 +1,13 @@
 query "cloudformation_stack_notifications_enabled" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments ->> 'notification_arns') is not null then 'ok'
+        when (attributes_std ->> 'notification_arns') is not null then 'ok'
         else 'alarm'
       end status,
-      name || case
-        when (arguments ->> 'notification_arns') is not null then ' notifications enabled'
+      address || case
+        when (attributes_std ->> 'notification_arns') is not null then ' notifications enabled'
         else ' notifications disabled'
       end || '.' reason
       ${local.tag_dimensions_sql}

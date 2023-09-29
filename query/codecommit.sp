@@ -2,11 +2,11 @@ query "codecommit_approval_rule_template_number_of_approval_2" {
   sql = <<-EOQ
     with number_of_approvals_needed as (
       select
-        type || ' ' || name as name,
+        address as name,
         (s -> 'NumberOfApprovalsNeeded')::int as num_of_approval
       from
         terraform_resource,
-        jsonb_array_elements((arguments ->> 'content')::jsonb -> 'Statements') as s
+        jsonb_array_elements((attributes_std ->> 'content')::jsonb -> 'Statements') as s
       where
         type = 'aws_codecommit_approval_rule_template'
     )

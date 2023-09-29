@@ -1,13 +1,13 @@
 query "wafv2_web_acl_rule_attached" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments -> 'rule') is not null then 'ok'
+        when (attributes_std -> 'rule') is not null then 'ok'
         else 'alarm'
       end as status,
-      name || case
-        when (arguments -> 'rule') is not null then ' has rule(s) attached'
+      address || case
+        when (attributes_std -> 'rule') is not null then ' has rule(s) attached'
         else ' has no attached rules'
       end || '.' reason
       ${local.tag_dimensions_sql}

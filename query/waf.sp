@@ -1,13 +1,13 @@
 query "waf_web_acl_rule_attached" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments -> 'rules') is not null then 'ok'
+        when (attributes_std -> 'rules') is not null then 'ok'
         else 'alarm'
       end as status,
-      name || case
-        when (arguments -> 'rules') is not null then ' has rule(s) attached'
+      address || case
+        when (attributes_std -> 'rules') is not null then ' has rule(s) attached'
         else ' has no attached rules'
       end || '.' reason
       ${local.tag_dimensions_sql}
@@ -22,13 +22,13 @@ query "waf_web_acl_rule_attached" {
 query "waf_regional_web_acl_rule_attached" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments -> 'rule') is not null then 'ok'
+        when (attributes_std -> 'rule') is not null then 'ok'
         else 'alarm'
       end as status,
-      name || case
-        when (arguments -> 'rule') is not null then ' has rule(s) attached'
+      address || case
+        when (attributes_std -> 'rule') is not null then ' has rule(s) attached'
         else ' has no attached rules'
       end || '.' reason
       ${local.tag_dimensions_sql}
@@ -43,13 +43,13 @@ query "waf_regional_web_acl_rule_attached" {
 query "waf_web_acl_logging_enabled" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments -> 'logging_configuration' ->> 'log_destination') is not null then 'ok'
+        when (attributes_std -> 'logging_configuration' ->> 'log_destination') is not null then 'ok'
         else 'alarm'
       end as status,
-      name || case
-        when (arguments -> 'logging_configuration' ->> 'log_destination') is not null then ' logging enabled'
+      address || case
+        when (attributes_std -> 'logging_configuration' ->> 'log_destination') is not null then ' logging enabled'
         else ' logging disabled'
       end || '.' reason
       ${local.tag_dimensions_sql}
@@ -64,13 +64,13 @@ query "waf_web_acl_logging_enabled" {
 query "waf_regional_web_acl_logging_enabled" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments -> 'logging_configuration' ->> 'log_destination') is not null then 'ok'
+        when (attributes_std -> 'logging_configuration' ->> 'log_destination') is not null then 'ok'
         else 'alarm'
       end as status,
-      name || case
-        when (arguments -> 'logging_configuration' ->> 'log_destination' ) is not null then ' logging enabled'
+      address || case
+        when (attributes_std -> 'logging_configuration' ->> 'log_destination' ) is not null then ' logging enabled'
         else ' logging disabled'
       end || '.' reason
       ${local.tag_dimensions_sql}
@@ -86,12 +86,12 @@ query "waf_web_acl_rule_with_action" {
   sql = <<-EOQ
     with rules_without_action as (
       select
-        type || ' ' || name as name
+        address as name
       from
         terraform_resource,
         jsonb_array_elements(
-        case jsonb_typeof(arguments -> 'rules')
-          when 'array' then (arguments -> 'rules')
+        case jsonb_typeof(attributes_std -> 'rules')
+          when 'array' then (attributes_std -> 'rules')
           else null end
         ) as r
       where
@@ -101,15 +101,15 @@ query "waf_web_acl_rule_with_action" {
     select
       r.type || ' ' || r.name as resource,
       case
-        when (jsonb_typeof(arguments -> 'rules') = 'array') and a.name is null then 'ok'
-        when (jsonb_typeof(arguments -> 'rules') = 'array') and a.name is not null then 'alarm'
-        when (arguments -> 'rules' ->> 'action') is not null then 'ok'
+        when (jsonb_typeof(attributes_std -> 'rules') = 'array') and a.name is null then 'ok'
+        when (jsonb_typeof(attributes_std -> 'rules') = 'array') and a.name is not null then 'alarm'
+        when (attributes_std -> 'rules' ->> 'action') is not null then 'ok'
         else 'alarm'
       end as status,
-      r.name || case
-        when (jsonb_typeof(arguments -> 'rules') = 'array') and a.name is null then ' has all rules with action attached'
-        when (jsonb_typeof(arguments -> 'rules') = 'array') and a.name is not null then ' has rules with no action attached'
-        when (arguments -> 'rules' ->> 'action') is not null then ' has rule with action attached'
+      r.address || case
+        when (jsonb_typeof(attributes_std -> 'rules') = 'array') and a.name is null then ' has all rules with action attached'
+        when (jsonb_typeof(attributes_std -> 'rules') = 'array') and a.name is not null then ' has rules with no action attached'
+        when (attributes_std -> 'rules' ->> 'action') is not null then ' has rule with action attached'
         else ' has rules with no action attached'
       end || '.' reason
       ${local.tag_dimensions_sql}
@@ -126,12 +126,12 @@ query "waf_regional_web_acl_rule_with_action" {
   sql = <<-EOQ
     with rules_without_action as (
       select
-        type || ' ' || name as name
+        address as name
       from
         terraform_resource,
         jsonb_array_elements(
-        case jsonb_typeof(arguments -> 'rule')
-          when 'array' then (arguments -> 'rule')
+        case jsonb_typeof(attributes_std -> 'rule')
+          when 'array' then (attributes_std -> 'rule')
           else null end
         ) as r
       where
@@ -141,15 +141,15 @@ query "waf_regional_web_acl_rule_with_action" {
     select
       r.type || ' ' || r.name as resource,
       case
-        when (jsonb_typeof(arguments -> 'rule') = 'array') and a.name is null then 'ok'
-        when (jsonb_typeof(arguments -> 'rule') = 'array') and a.name is not null then 'alarm'
-        when ((arguments -> 'rule' ->> 'action') is not null) then 'ok'
+        when (jsonb_typeof(attributes_std -> 'rule') = 'array') and a.name is null then 'ok'
+        when (jsonb_typeof(attributes_std -> 'rule') = 'array') and a.name is not null then 'alarm'
+        when ((attributes_std -> 'rule' ->> 'action') is not null) then 'ok'
         else 'alarm'
       end as status,
-      r.name || case
-        when (jsonb_typeof(arguments -> 'rule') = 'array') and a.name is null then ' has all rules with action attached'
-        when (jsonb_typeof(arguments -> 'rule') = 'array') and a.name is not null then ' has rules with no action attached'
-        when ((arguments -> 'rule' ->> 'action') is not null) then ' has rule with action attached'
+      r.address || case
+        when (jsonb_typeof(attributes_std -> 'rule') = 'array') and a.name is null then ' has all rules with action attached'
+        when (jsonb_typeof(attributes_std -> 'rule') = 'array') and a.name is not null then ' has rules with no action attached'
+        when ((attributes_std -> 'rule' ->> 'action') is not null) then ' has rule with action attached'
         else ' has rules with no action attached'
       end || '.' reason
       ${local.tag_dimensions_sql}

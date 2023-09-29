@@ -1,13 +1,13 @@
 query "codeartifact_domain_encrypted_with_kms_cmk" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments ->> 'encryption_key') is null then 'alarm'
+        when (attributes_std ->> 'encryption_key') is null then 'alarm'
         else 'ok'
       end as status,
-      name || case
-        when (arguments ->> 'encryption_key') is null then ' not encrypted with KMS CMK'
+      address || case
+        when (attributes_std ->> 'encryption_key') is null then ' not encrypted with KMS CMK'
         else ' encrypted with KMS CMK'
       end || '.' as reason
       ${local.tag_dimensions_sql}

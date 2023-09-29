@@ -1,13 +1,13 @@
 query "sfn_state_machine_xray_tracing_enabled" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments -> 'tracing_configuration' ->> 'enabled') = 'true' then 'ok'
+        when (attributes_std -> 'tracing_configuration' ->> 'enabled') = 'true' then 'ok'
         else 'alarm'
       end as status,
-      name || case
-        when (arguments -> 'tracing_configuration' ->> 'enabled') = 'true' then ' has tracing enabled'
+      address || case
+        when (attributes_std -> 'tracing_configuration' ->> 'enabled') = 'true' then ' has tracing enabled'
         else ' has tracing disabled'
       end || '.' reason
       ${local.tag_dimensions_sql}
@@ -22,13 +22,13 @@ query "sfn_state_machine_xray_tracing_enabled" {
 query "sfn_state_machine_execution_history_logging_enabled" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments -> 'logging_configuration' ->> 'include_execution_data') = 'true' then 'ok'
+        when (attributes_std -> 'logging_configuration' ->> 'include_execution_data') = 'true' then 'ok'
         else 'alarm'
       end as status,
-      name || case
-        when (arguments -> 'logging_configuration' ->> 'include_execution_data') = 'true' then ' execution history logging enabled'
+      address || case
+        when (attributes_std -> 'logging_configuration' ->> 'include_execution_data') = 'true' then ' execution history logging enabled'
         else ' execution history logging disabled'
       end || '.' reason
       ${local.tag_dimensions_sql}

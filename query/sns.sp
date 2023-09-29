@@ -1,14 +1,14 @@
 query "sns_topic_encrypted_at_rest" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when coalesce(trim(arguments ->> 'kms_master_key_id'), '') = '' then 'alarm'
+        when coalesce(trim(attributes_std ->> 'kms_master_key_id'), '') = '' then 'alarm'
         else 'ok'
       end as status,
-      name || case
-        when (arguments -> 'kms_master_key_id') is null then ' ''kms_master_key_id'' is not defined'
-        when coalesce(trim(arguments ->> 'kms_master_key_id'), '') <> '' then ' encryption at rest enabled'
+      address || case
+        when (attributes_std -> 'kms_master_key_id') is null then ' ''kms_master_key_id'' is not defined'
+        when coalesce(trim(attributes_std ->> 'kms_master_key_id'), '') <> '' then ' encryption at rest enabled'
         else ' encryption at rest disabled'
       end || '.' reason
       ${local.tag_dimensions_sql}
@@ -24,13 +24,13 @@ query "sns_topic_policy_restrict_public_access" {
   sql = <<-EOQ
      with sns_topic_public_policies as (
       select
-        distinct (type || ' ' || name ) as name
+        distinct (address ) as name
       from
         terraform_resource,
         jsonb_array_elements(
-          case when ((arguments ->> 'policy') = '')
+          case when ((attributes_std ->> 'policy') = '')
             then null
-            else ((arguments ->> 'policy')::jsonb -> 'Statement') end
+            else ((attributes_std ->> 'policy')::jsonb -> 'Statement') end
         ) as s
       where
         type = 'aws_sns_topic_policy'
@@ -45,12 +45,12 @@ query "sns_topic_policy_restrict_public_access" {
     select
       type || ' ' || r.name as resource,
       case
-        when (arguments ->> 'policy') = '' then 'ok'
+        when (attributes_std ->> 'policy') = '' then 'ok'
         when p.name is null then 'ok'
         else 'alarm'
       end status,
-      r.name || case
-        when (arguments ->> 'policy') = '' then ' no policy defined'
+      r.address || case
+        when (attributes_std ->> 'policy') = '' then ' no policy defined'
         when p.name is null then ' not publicly accessible'
         else ' publicly accessible'
       end || '.' reason
