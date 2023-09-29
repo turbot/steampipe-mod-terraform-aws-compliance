@@ -6,7 +6,7 @@ query "wafv2_web_acl_rule_attached" {
         when (attributes_std -> 'rule') is not null then 'ok'
         else 'alarm'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'rule') is not null then ' has rule(s) attached'
         else ' has no attached rules'
       end || '.' reason

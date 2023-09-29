@@ -7,7 +7,7 @@ query "guardduty_enabled" {
         when (attributes_std -> 'enable')::bool then 'ok'
         else 'alarm'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'enable') is null then ' guardduty enabled'
         when (attributes_std -> 'enable')::bool then ' guardduty enabled'
         else ' guardduty disabled'

@@ -6,7 +6,7 @@ query "fsx_ontap_file_system_encrypted_with_kms_cmk" {
         when (attributes_std -> 'kms_key_id') is null then 'alarm'
         else 'ok'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'kms_key_id') is null then ' is not encrypted with KMS CMK'
         else ' is encrypted with KMS CMK'
       end || '.' reason
@@ -27,7 +27,7 @@ query "fsx_openzfs_file_system_encrypted_with_kms_cmk" {
         when (attributes_std -> 'kms_key_id') is null then 'alarm'
         else 'ok'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'kms_key_id') is null then ' is not encrypted with KMS CMK'
         else ' is encrypted with KMS CMK'
       end || '.' reason
@@ -48,7 +48,7 @@ query "fsx_windows_file_system_encrypted_with_kms_cmk" {
         when (attributes_std -> 'kms_key_id') is null then 'alarm'
         else 'ok'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'kms_key_id') is null then ' is not encrypted with KMS CMK'
         else ' is encrypted with KMS CMK'
       end || '.' reason
@@ -69,7 +69,7 @@ query "fsx_lustre_file_system_encrypted_with_kms_cmk" {
         when (attributes_std -> 'kms_key_id') is null then 'alarm'
         else 'ok'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'kms_key_id') is null then ' is not encrypted with KMS CMK'
         else ' is encrypted with KMS CMK'
       end || '.' reason

@@ -6,7 +6,7 @@ query "glue_crawler_security_configuration_enabled" {
         when (attributes_std -> 'security_configuration') is null then 'alarm'
         else 'ok'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'security_configuration') is null then ' security configuration disabled'
         else ' security configuration enabled'
       end || '.' reason
@@ -27,7 +27,7 @@ query "glue_dev_endpoint_security_configuration_enabled" {
         when (attributes_std -> 'security_configuration') is null then 'alarm'
         else 'ok'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'security_configuration') is null then ' security configuration disabled'
         else ' security configuration enabled'
       end || '.' reason
@@ -48,7 +48,7 @@ query "glue_job_security_configuration_enabled" {
         when (attributes_std -> 'security_configuration') is null then 'alarm'
         else 'ok'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'security_configuration') is null then ' security configuration disabled'
         else ' security configuration enabled'
       end || '.' reason
@@ -72,7 +72,7 @@ query "glue_data_catalog_encryption_enabled" {
         and (attributes_std -> 'data_catalog_encryption_settings' -> 'encryption_at_rest' ->> 'catalog_encryption_mode') = 'SSE-KMS' then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'data_catalog_encryption_settings' -> 'connection_password_encryption' ->> 'return_connection_password_encrypted') = 'true'
         and (attributes_std -> 'data_catalog_encryption_settings' -> 'connection_password_encryption' ->> 'aws_kms_key_id') is not null
         and (attributes_std -> 'data_catalog_encryption_settings' -> 'encryption_at_rest' ->> 'sse_aws_kms_key_id') is not null
@@ -100,7 +100,7 @@ query "glue_security_configuration_encryption_enabled" {
         and (attributes_std -> 'encryption_configuration' -> 's3_encryption' ->> 'kms_key_arn') is not null  then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'encryption_configuration' -> 'cloudwatch_encryption' ->> 'cloudwatch_encryption_mode') = 'SSE-KMS'
         and (attributes_std -> 'encryption_configuration' -> 'cloudwatch_encryption' ->> 'kms_key_arn') is not null
         and (attributes_std -> 'encryption_configuration' -> 'job_bookmarks_encryption' ->> 'job_bookmarks_encryption_mode') = 'CSE-KMS'

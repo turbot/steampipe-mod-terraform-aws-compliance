@@ -6,7 +6,7 @@ query "s3_bucket_cross_region_replication_enabled" {
         when (attributes_std -> 'cors_rule')::jsonb ?& array['allowed_methods', 'allowed_origins'] then 'ok'
         else 'alarm'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'cors_rule') is null then ' ''cors_rule'' is not defined'
         when (attributes_std -> 'cors_rule')::jsonb ?& array['allowed_methods', 'allowed_origins'] then ' enabled with cross-region replication'
         else ' not enabled with cross-region replication'
@@ -29,7 +29,7 @@ query "s3_bucket_default_encryption_enabled_kms" {
         then 'alarm'
         else 'ok'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when coalesce(trim(attributes_std -> 'server_side_encryption_configuration' -> 'rule' -> 'apply_server_side_encryption_by_default' ->> 'sse_algorithm'), '') = '' then ' ''sse_algorithm'' is not defined'
         when trim(attributes_std -> 'server_side_encryption_configuration' -> 'rule' -> 'apply_server_side_encryption_by_default' ->> 'sse_algorithm') = 'aws:kms' then ' default encryption with KMS enabled'
         else ' default encryption with KMS disabled'
@@ -52,7 +52,7 @@ query "s3_bucket_default_encryption_enabled" {
         when coalesce(trim(attributes_std -> 'server_side_encryption_configuration' -> 'rule' -> 'apply_server_side_encryption_by_default' ->> 'sse_algorithm'), '') not in ('aws:kms', 'AES256') then 'alarm'
         else 'ok'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when coalesce(trim(attributes_std -> 'server_side_encryption_configuration' -> 'rule' -> 'apply_server_side_encryption_by_default' ->> 'sse_algorithm'), '') = '' then ' ''sse_algorithm'' is not defined'
         when trim(attributes_std -> 'server_side_encryption_configuration' -> 'rule' -> 'apply_server_side_encryption_by_default' ->> 'sse_algorithm') in ('aws:kms', 'AES256') then ' default encryption enabled'
         else ' default encryption disabled'
@@ -75,7 +75,7 @@ query "s3_bucket_logging_enabled" {
         when coalesce(trim(attributes_std -> 'logging' ->> 'target_bucket'), '') = '' then 'alarm'
         else 'ok'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'logging' -> 'target_bucket') is null then ' ''target_bucket'' is not defined'
         when coalesce(trim(attributes_std -> 'logging' ->> 'target_bucket'), '') = '' then ' logging disabled'
         else ' logging enabled'
@@ -97,7 +97,7 @@ query "s3_bucket_mfa_delete_enabled" {
         when coalesce(trim(lower(attributes_std -> 'versioning' ->> 'mfa_delete')), '') in ('true', 'false') and (attributes_std -> 'versioning' ->> 'mfa_delete')::bool then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'versioning' ->> 'mfa_delete')::bool then ' MFA delete enabled'
         else ' MFA delete disabled'
       end || '.' as reason
@@ -118,7 +118,7 @@ query "s3_bucket_object_lock_enabled" {
         when coalesce(trim(attributes_std -> 'object_lock_configuration' ->> 'object_lock_enabled'), '') = 'Enabled' then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'object_lock_configuration' -> 'object_lock_enabled') is null then ' ''object_lock_enabled'' is not defined'
         when (attributes_std -> 'object_lock_configuration' ->> 'object_lock_enabled') = 'Enabled' then ' object lock enabled'
         else ' object lock not enabled'
@@ -188,7 +188,7 @@ query "s3_bucket_versioning_enabled" {
         then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when coalesce(trim(lower(attributes_std -> 'versioning' ->> 'enabled')), '') not in ('true', 'false') then ' versioning disabled'
         when (attributes_std -> 'versioning' ->> 'enabled')::bool then ' versioning enabled'
         else ' versioning disabled'
@@ -257,7 +257,7 @@ query "s3_bucket_block_public_policy_enabled" {
         when (attributes_std ->> 'block_public_policy')::boolean then 'ok'
         else 'alarm'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'block_public_policy') is null then ' block_public_acls not defined'
         when (attributes_std ->> 'block_public_policy')::boolean then ' block_public_policy enabled'
         else ' block_public_policy disabled'
@@ -278,7 +278,7 @@ query "s3_bucket_object_encrypted_with_kms_cmk" {
         when attributes_std -> 'kms_key_id' is not null then 'ok'
         else 'alarm'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when attributes_std -> 'kms_key_id' is not null then ' encrypted with KMS'
         else ' not encrypted with KMS'
       end || '.' as reason
@@ -298,7 +298,7 @@ query "s3_bucket_ignore_public_acls_enabled" {
         when (attributes_std ->> 'ignore_public_acls')::boolean then 'ok'
         else 'alarm'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'ignore_public_acls') is null then ' ignore_public_acls not defined'
         when (attributes_std ->> 'ignore_public_acls')::boolean then ' ignore_public_acls enabled'
         else ' ignore_public_acls disabled'
@@ -319,7 +319,7 @@ query "s3_bucket_object_copy_encrypted_with_kms_cmk" {
         when attributes_std -> 'kms_key_id' is not null then 'ok'
         else 'alarm'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when attributes_std -> 'kms_key_id' is not null then ' encrypted with KMS'
         else ' not encrypted with KMS'
       end || '.' as reason
@@ -345,19 +345,19 @@ query "s3_bucket_abort_incomplete_multipart_upload_enabled" {
         and type = 'aws_s3_bucket_lifecycle_configuration'
     )
     select
-      r.type || ' ' || r.name as resource,
+      r.address as resource,
       case
         when u.name is not null then 'ok'
         else 'alarm'
       end as status,
-      r.address || case
+      split_part(r.address, '.', 2) || case
         when u.name is not null then ' has abort incomplete multipart upload enabled'
         else ' has abort incomplete multipart upload disabled'
       end || '.' as reason
       ${local.common_dimensions_sql}
     from
       terraform_resource as r
-      left join lifecycle_configuration_with_abort_incomplete_multipart_upload as u on u.name = concat(r.type || ' ' || r.name )
+      left join lifecycle_configuration_with_abort_incomplete_multipart_upload as u on u.name = r.address
     where
       r.type = 'aws_s3_bucket_lifecycle_configuration';
   EOQ

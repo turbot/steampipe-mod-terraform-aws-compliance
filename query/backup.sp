@@ -6,7 +6,7 @@ query "backup_vault_encryption_at_rest_enabled" {
         when (attributes_std -> 'kms_key_arn') is null then 'alarm'
         else 'ok'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'kms_key_arn') is null then ' encryption at rest disabled'
         else ' encryption at rest enabled'
       end || '.' reason
@@ -29,7 +29,7 @@ query "backup_plan_min_retention_35_days" {
         when (attributes_std -> 'rule' -> 'lifecycle' ->> 'delete_after')::int >=35 then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'rule') is null then ' retention period not set'
         when (attributes_std -> 'rule' -> 'lifecycle') is null then ' retention period set to never expire'
         else ' retention period set to ' || (attributes_std -> 'rule' -> 'lifecycle' ->> 'delete_after')::int

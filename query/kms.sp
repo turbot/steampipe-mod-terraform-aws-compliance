@@ -7,7 +7,7 @@ query "kms_cmk_rotation_enabled" {
         when (attributes_std -> 'enable_key_rotation')::boolean then 'ok'
         else 'alarm'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'enable_key_rotation') is null then ' key rotation disabled'
         when (attributes_std -> 'enable_key_rotation')::boolean then ' key rotation enabled'
         else ' key rotation disabled'

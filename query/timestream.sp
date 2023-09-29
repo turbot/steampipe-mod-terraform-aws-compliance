@@ -6,7 +6,7 @@ query "timestream_database_encrypted_with_kms_cmk" {
         when (attributes_std ->> 'kms_key_id') is not null then 'ok'
         else 'alarm'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std ->> 'kms_key_id') is not null then ' encrypted with KMS'
         else ' not encrypted with KMS'
       end || '.' reason

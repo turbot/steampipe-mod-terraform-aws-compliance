@@ -21,13 +21,13 @@ query "glacier_vault_restrict_public_access" {
         )
     )
     select
-      type || ' ' || r.name as resource,
+      r.address as resource,
       case
         when (attributes_std ->> 'access_policy') = '' then 'ok'
         when p.name is null then 'ok'
         else 'alarm'
       end status,
-      r.address || case
+      split_part(r.address, '.', 2) || case
         when (attributes_std ->> 'access_policy') = '' then ' no policy defined'
         when p.name is  null then ' not publicly accessible'
         else ' publicly accessible'
@@ -36,7 +36,7 @@ query "glacier_vault_restrict_public_access" {
       ${local.common_dimensions_sql}
     from
       terraform_resource as r
-      left join glacier_vault_public_policies as p on p.name = concat(r.type || ' ' || r.name)
+      left join glacier_vault_public_policies as p on p.name = r.address
     where
       r.type = 'aws_glacier_vault';
   EOQ

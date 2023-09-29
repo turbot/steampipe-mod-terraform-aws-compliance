@@ -6,7 +6,7 @@ query "sns_topic_encrypted_at_rest" {
         when coalesce(trim(attributes_std ->> 'kms_master_key_id'), '') = '' then 'alarm'
         else 'ok'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'kms_master_key_id') is null then ' ''kms_master_key_id'' is not defined'
         when coalesce(trim(attributes_std ->> 'kms_master_key_id'), '') <> '' then ' encryption at rest enabled'
         else ' encryption at rest disabled'
@@ -43,13 +43,13 @@ query "sns_topic_policy_restrict_public_access" {
         )
     )
     select
-      type || ' ' || r.name as resource,
+      r.address as resource,
       case
         when (attributes_std ->> 'policy') = '' then 'ok'
         when p.name is null then 'ok'
         else 'alarm'
       end status,
-      r.address || case
+      split_part(r.address, '.', 2) || case
         when (attributes_std ->> 'policy') = '' then ' no policy defined'
         when p.name is null then ' not publicly accessible'
         else ' publicly accessible'
@@ -57,7 +57,7 @@ query "sns_topic_policy_restrict_public_access" {
       ${local.common_dimensions_sql}
     from
       terraform_resource as r
-      left join sns_topic_public_policies as p on p.name = concat(r.type || ' ' || r.name)
+      left join sns_topic_public_policies as p on p.name = r.address
     where
       r.type = 'aws_sns_topic_policy';
   EOQ

@@ -7,7 +7,7 @@ query "docdb_cluster_audit_logs_enabled" {
         when '"audit"' in (select jsonb_array_elements(attributes_std -> 'enabled_cloudwatch_logs_exports') from terraform_resource where type = 'aws_docdb_cluster') then 'ok'
         else 'alarm'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'enabled_cloudwatch_logs_exports') is null then ' logging not enabled'
         when '"audit"' in (select jsonb_array_elements(attributes_std -> 'enabled_cloudwatch_logs_exports') from terraform_resource where type = 'aws_docdb_cluster') then ' audit logging enabled'
         else ' audit logging not enabled'
@@ -32,7 +32,7 @@ query "docdb_cluster_encrypted_with_kms" {
         then 'ok'
         else 'alarm'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when
           (attributes_std ->> 'storage_encrypted')::boolean
           and coalesce(trim(attributes_std ->> 'kms_key_id'), '') <> ''
@@ -59,7 +59,7 @@ query "docdb_cluster_paramater_group_logging_enabled" {
         then 'ok'
         else 'alarm'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when
           (attributes_std -> 'parameter'->> 'name') = 'audit_logs'
           and (attributes_std -> 'parameter'->> 'value') = 'enabled'
@@ -85,7 +85,7 @@ query "docdb_global_cluster_encrypted" {
         then 'ok'
         else 'alarm'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when
           (attributes_std ->> 'storage_encrypted')::boolean
         then ' Global Cluster is encrypted'
@@ -110,7 +110,7 @@ query "docdb_cluster_log_exports_enabled" {
         then 'ok'
         else 'alarm'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when
           (attributes_std -> 'enabled_cloudwatch_logs_exports') is not null
         then ' cloudwatch log exports enabled'
@@ -136,7 +136,7 @@ query "docdb_cluster_parameter_group_tls_enabled" {
         then 'ok'
         else 'alarm'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when
           (attributes_std -> 'parameter'->> 'name') = 'tls'
           and (attributes_std -> 'parameter'->> 'value') = 'enabled'

@@ -8,7 +8,7 @@ query "cloudwatch_alarm_action_enabled" {
         and (attributes_std -> 'ok_actions') is null then 'alarm'
         else 'ok'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'alarm_actions') is null
         and (attributes_std -> 'insufficient_data_actions') is null
         and (attributes_std -> 'ok_actions') is null then ' no action enabled'
@@ -56,7 +56,7 @@ query "cloudwatch_destination_policy_wildcards" {
         when e.name is null then 'ok'
         else 'alarm'
       end as status,
-      a.address || case
+      split_part(a.address, '.', 2) || case
         when e.name is null then ' policy is ok'
         else ' policy is not ok'
       end || '.' as reason
@@ -75,7 +75,7 @@ query "cloudwatch_log_group_retention_period_365" {
         when (attributes_std -> 'retention_in_days') is null or (attributes_std -> 'retention_in_days')::int < 365 then 'alarm'
         else 'ok'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'retention_in_days') is null then ' retention period not set'
         when (attributes_std -> 'retention_in_days')::int < 365 then ' retention period less than 365 days'
         else ' retention period 365 days or above'
@@ -97,7 +97,7 @@ query "log_group_encryption_at_rest_enabled" {
         when (attributes_std -> 'kms_key_id') is not null then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'kms_key_id') is not null then ' encrypted at rest'
         else ' not encrypted at rest'
       end || '.' reason
@@ -118,7 +118,7 @@ query "cloudwatch_log_group_retention" {
         when (attributes_std -> 'retention_in_days') is null then 'alarm'
         else 'ok'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'retention_in_days') is null then ' retention period not set'
         else ' retention period set'
       end || '.' reason

@@ -6,7 +6,7 @@ query "neptune_cluster_encryption_at_rest_enabled" {
         when (attributes_std ->> 'storage_encrypted')::boolean then 'ok'
         else 'alarm'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std ->> 'storage_encrypted')::boolean then ' encrypted at rest'
         else ' not encrypted at rest'
       end || '.' as reason
@@ -27,7 +27,7 @@ query "neptune_cluster_logging_enabled" {
         when (attributes_std -> 'enable_cloudwatch_logs_exports') is null then 'alarm'
         else 'ok'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'enable_cloudwatch_logs_exports') is null then ' logging not enabled'
         else ' logging enabled'
       end || '.' as reason
@@ -48,7 +48,7 @@ query "neptune_cluster_encrypted_with_kms_cmk" {
         when (attributes_std -> 'kms_key_arn') is null then 'alarm'
         else 'ok'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'kms_key_arn') is null then ' not encrypted with KMS CMK'
         else ' encrypted with KMS CMK'
       end || '.' as reason
@@ -69,7 +69,7 @@ query "neptune_cluster_instance_publicly_accessible" {
         when (attributes_std ->> 'publicly_accessible')::boolean then 'alarm'
         else 'ok'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std ->> 'publicly_accessible')::boolean then ' publicly accessible'
         else ' not publicly accessible'
       end || '.' as reason
@@ -90,7 +90,7 @@ query "neptune_snapshot_storage_encryption_enabled" {
         when (attributes_std ->> 'storage_encrypted')::boolean then 'ok'
         else 'alarm'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std ->> 'storage_encrypted')::boolean then ' encrypted at rest'
         else ' not encrypted at rest'
       end || '.' as reason
@@ -111,7 +111,7 @@ query "neptune_snapshot_encrypted_with_kms_cmk" {
         when (attributes_std -> 'kms_key_id') is null then 'alarm'
         else 'ok'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'kms_key_id') is null then ' not encrypted with KMS CMK'
         else ' encrypted with KMS CMK'
       end || '.' as reason

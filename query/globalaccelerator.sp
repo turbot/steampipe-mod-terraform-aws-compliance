@@ -8,7 +8,7 @@ query "globalaccelerator_flow_logs_enabled" {
         when (attributes_std -> 'attributes' -> 'flow_logs_enabled')::bool then 'ok'
         else 'alarm'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'attributes') is null then ' flow log disabled'
         when (attributes_std -> 'attributes' -> 'flow_logs_enabled') is null then ' flow log disabled'
         when (attributes_std -> 'attributes' -> 'flow_logs_enabled')::bool then ' flow log enabled'

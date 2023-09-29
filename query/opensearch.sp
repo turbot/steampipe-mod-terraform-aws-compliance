@@ -7,7 +7,7 @@ query "opensearch_domain_use_default_security_group" {
         when (attributes_std -> 'vpc_options' ->> 'security_group_ids') is not null then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'vpc_options' ->> 'security_group_ids') is not null then ' default security group not set'
         else ' default security group set'
       end || '.' reason
@@ -28,7 +28,7 @@ query "opensearch_domain_enforce_https" {
         when (attributes_std -> 'domain_endpoint_options' ->> 'enforce_https')::boolean is not null then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'domain_endpoint_options' ->> 'enforce_https')::boolean then ' enforces HTTPS'
         else ' does not enforce HTTPS'
       end || '.' reason
@@ -49,7 +49,7 @@ query "opensearch_domain_encrpted_with_kms_cmk" {
         when (attributes_std -> 'encrypt_at_rest' ->> 'kms_key_id') is not null then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'encrypt_at_rest' ->> 'kms_key_id') is not null then ' encrypted with KMS CMK'
         else ' not encrypted with KMS CMK'
       end || '.' reason

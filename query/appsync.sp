@@ -6,7 +6,7 @@ query "appsync_graphql_api_field_level_logs_enabled" {
         when (attributes_std -> 'log_config' ->> 'field_log_level') in ('ALL','ERROR') then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'log_config' ->> 'field_log_level') in ('ALL','ERROR') then ' field level logs enabled'
         else ' field level logs disabled'
       end || '.' reason
@@ -27,7 +27,7 @@ query "appsync_graphql_api_cloudwatch_logs_enabled" {
         when (attributes_std -> 'log_config' ->> 'cloudwatch_logs_role_arn') is not null then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'log_config' ->> 'cloudwatch_logs_role_arn') is not null then ' cloudwatch logs enabled'
         else ' cloudwatch logs disabled'
       end || '.' reason
@@ -48,7 +48,7 @@ query "appsync_api_cache_encryption_at_rest_enabled" {
         when (attributes_std ->> 'at_rest_encryption_enabled')::boolean then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std ->> 'at_rest_encryption_enabled')::boolean then ' encryption at rest enabled'
         else ' encryption at rest disabled'
       end || '.' reason
@@ -69,7 +69,7 @@ query "appsync_api_cache_encryption_in_transit_enabled" {
         when (attributes_std ->> 'transit_encryption_enabled')::boolean then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std ->> 'transit_encryption_enabled')::boolean then ' encryption in transit enabled'
         else ' encryption in transit disabled'
       end || '.' reason

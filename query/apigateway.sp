@@ -6,7 +6,7 @@ query "apigateway_rest_api_stage_use_ssl_certificate" {
         when (attributes_std -> 'client_certificate_id') is null then 'alarm'
         else 'ok'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'client_certificate_id') is null then ' does not use SSL certificate'
         else ' uses SSL certificate'
       end || '.' reason
@@ -27,7 +27,7 @@ query "apigateway_rest_api_stage_xray_tracing_enabled" {
         when (attributes_std ->> 'tracing_enabled')::boolean then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std ->> 'tracing_enabled')::boolean then ' X-Ray tracing enabled'
         else ' X-Ray tracing disabled'
       end || '.' reason
@@ -70,7 +70,7 @@ query "apigateway_stage_cache_encryption_at_rest_enabled" {
       when (caching_enabled)::boolean and (cache_data_encrypted)::boolean then 'ok'
       else 'alarm'
     end status,
-    address || case
+    split_part(address, '.', 2) || case
       when (caching_enabled)::boolean and (cache_data_encrypted)::boolean then ' API cache and encryption enabled'
       else ' API cache and encryption not enabled'
     end || '.' reason
@@ -145,7 +145,7 @@ query "apigateway_stage_logging_enabled" {
       when log_level is null or log_level = 'OFF' then 'alarm'
       else 'ok'
     end status,
-    address || case
+    split_part(address, '.', 2) || case
       when log_level is null or log_level = 'OFF' then ' logging disabled'
       else ' logging enabled'
     end || '.' reason
@@ -164,7 +164,7 @@ query "apigateway_rest_api_create_before_destroy_enabled" {
         when (lifecycle ->> 'create_before_destroy') = 'true' then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (lifecycle ->> 'create_before_destroy') = 'true' then ' create before destroy enabled'
         else ' create before destroy disabled'
       end || '.' reason
@@ -185,7 +185,7 @@ query "apigateway_deployment_create_before_destroy_enabled" {
         when (lifecycle ->> 'create_before_destroy') = 'true' then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (lifecycle ->> 'create_before_destroy') = 'true' then ' create before destroy enabled'
         else ' create before destroy disabled'
       end || '.' reason
@@ -204,7 +204,7 @@ query "apigateway_method_settings_cache_enabled" {
         when (attributes_std -> 'settings' ->> 'caching_enabled') = 'true' then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'settings' ->> 'caching_enabled') = 'true' then ' caching enabled'
         else ' caching disabled'
       end || '.' reason
@@ -225,7 +225,7 @@ query "apigateway_method_settings_cache_encryption_enabled" {
         when (attributes_std -> 'settings' ->> 'cache_data_encrypted') = 'true' then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'settings' ->> 'cache_data_encrypted') = 'true' then ' cache encryption enabled'
         else ' cache encryption disabled'
       end || '.' reason
@@ -246,7 +246,7 @@ query "apigateway_method_settings_data_trace_enabled" {
         when (attributes_std -> 'settings' ->> 'data_trace_enabled') = 'true' then 'alarm'
         else 'ok'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'settings' ->> 'data_trace_enabled') = 'true' then ' data trace enabled'
         else ' data trace disabled'
       end || '.' reason
@@ -267,7 +267,7 @@ query "apigatewayv2_route_set_authorization_type" {
         when (attributes_std ->> 'authorization_type') in ('AWS_IAM', 'CUSTOM', 'JWT') then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std ->> 'authorization_type') in ('AWS_IAM', 'CUSTOM', 'JWT') then ' defines an authorization type'
         else ' does not define an authorization type'
       end || '.' reason
@@ -289,7 +289,7 @@ query "apigateway_method_restricts_open_access" {
         when (attributes_std ->> 'http_method') != 'OPTIONS' and (attributes_std ->> 'authorization') = 'NONE' and (attributes_std ->> 'api_key_required') = 'false' then 'alarm'
         else 'ok'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std ->> 'http_method') != 'OPTIONS' and (attributes_std ->> 'authorization') = 'NONE' and (attributes_std ->> 'api_key_required') is null then ' does not restrict open access'
         when (attributes_std ->> 'http_method') != 'OPTIONS' and (attributes_std ->> 'authorization') = 'NONE' and (attributes_std ->> 'api_key_required') = 'false' then ' does not restrict open access'
         else ' is restrictive with http_method as ' || (attributes_std ->> 'http_method') || ', authorization as ' || (attributes_std ->> 'authorization') || ' and api_key_required as ' || (attributes_std ->> 'api_key_required')
@@ -311,7 +311,7 @@ query "apigateway_domain_name_use_latest_tls" {
         when (attributes_std ->> 'security_policy') is null or (attributes_std ->> 'security_policy') = 'TLS_1_2' then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std ->> 'security_policy') is null or (attributes_std ->> 'security_policy') = 'TLS_1_2' then ' uses latest TLS security policy'
         else ' does not use latest TLS security policy'
       end || '.' reason

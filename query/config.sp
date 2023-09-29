@@ -6,7 +6,7 @@ query "config_aggregator_enabled_all_regions" {
         when (attributes_std -> 'account_aggregation_source' ->> 'all_regions')::boolean then 'ok'
         else 'ok'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'account_aggregation_source' ->> 'all_regions')::boolean then ' enabled in all regions'
         else ' not enabled in all regions'
       end || '.' as reason

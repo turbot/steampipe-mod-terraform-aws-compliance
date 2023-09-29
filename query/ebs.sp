@@ -7,7 +7,7 @@ query "ebs_volume_encryption_at_rest_enabled" {
         when (attributes_std ->> 'encrypted')::bool then 'ok'
         else 'alarm'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'encrypted') is null then ' ''encrypted'' is not defined'
         when (attributes_std ->> 'encrypted')::bool then ' encrypted'
         else ' not encrypted'
@@ -30,7 +30,7 @@ query "ebs_snapshot_copy_encrypted_with_kms_cmk" {
         when (attributes_std ->> 'encrypted')::bool then 'ok'
         else 'alarm'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'encrypted') is null then ' ''encrypted'' is not defined'
         when (attributes_std ->> 'encrypted')::bool then ' encrypted'
         else ' not encrypted'

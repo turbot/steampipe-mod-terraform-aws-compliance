@@ -6,7 +6,7 @@ query "dlm_lifecycle_policy_events_cross_region_encryption_enabled" {
         when (attributes_std -> 'policy_details' -> 'action' -> 'cross_region_copy' -> 'encryption_configuration' ->> 'encrypted')::boolean  then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'policy_details' -> 'action' -> 'cross_region_copy' -> 'encryption_configuration' ->> 'encrypted')::boolean then ' events cross-region encryption enabled'
         else ' events cross-region encryption disabled'
       end || '.' reason
@@ -27,7 +27,7 @@ query "dlm_lifecycle_policy_events_cross_region_encrypted_with_kms_cmk" {
         when (attributes_std -> 'policy_details' -> 'action' -> 'cross_region_copy' -> 'encryption_configuration' ->> 'encrypted')::boolean and (attributes_std -> 'policy_details' -> 'action' -> 'cross_region_copy' -> 'encryption_configuration' ->> 'cmk_arn') is not null then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'policy_details' -> 'action' -> 'cross_region_copy' -> 'encryption_configuration' ->> 'encrypted')::boolean and (attributes_std -> 'policy_details' -> 'action' -> 'cross_region_copy' -> 'encryption_configuration' ->> 'cmk_arn') is not null then ' events cross-region encrypted with KMS CMK'
         else ' events cross-region not encrypted with KMS CMK'
       end || '.' reason
@@ -49,7 +49,7 @@ query "dlm_schedule_cross_region_encryption_enabled" {
         when (attributes_std -> 'policy_details' -> 'schedule' -> 'cross_region_copy_rule' ->> 'encrypted')::boolean  then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'policy_details' -> 'schedule' -> 'cross_region_copy_rule') is null then ' schedule cross-region not configured'
         when (attributes_std -> 'policy_details' -> 'schedule' -> 'cross_region_copy_rule' ->> 'encrypted')::boolean then ' schedule cross-region encryption enabled'
         else ' schedule cross-region encryption disabled'
@@ -72,7 +72,7 @@ query "dlm_schedule_cross_region_encrypted_with_kms_cmk" {
         when (attributes_std -> 'policy_details' -> 'schedule' -> 'cross_region_copy_rule' ->> 'encrypted')::boolean and (attributes_std -> 'policy_details' -> 'schedule' -> 'cross_region_copy_rule' ->> 'cmk_arn') is not null then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'policy_details' -> 'schedule' -> 'cross_region_copy_rule') is null then ' schedule cross-region not configured'
         when (attributes_std -> 'policy_details' -> 'schedule' -> 'cross_region_copy_rule' ->> 'encrypted')::boolean and (attributes_std -> 'policy_details' -> 'schedule' -> 'cross_region_copy_rule' ->> 'cmk_arn') is not null then ' schedule cross-region encrypted with KMS CMK'
         else ' schedule cross-region not encrypted with KMS CMK'

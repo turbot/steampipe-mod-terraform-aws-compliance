@@ -6,7 +6,7 @@ query "waf_web_acl_rule_attached" {
         when (attributes_std -> 'rules') is not null then 'ok'
         else 'alarm'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'rules') is not null then ' has rule(s) attached'
         else ' has no attached rules'
       end || '.' reason
@@ -27,7 +27,7 @@ query "waf_regional_web_acl_rule_attached" {
         when (attributes_std -> 'rule') is not null then 'ok'
         else 'alarm'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'rule') is not null then ' has rule(s) attached'
         else ' has no attached rules'
       end || '.' reason
@@ -48,7 +48,7 @@ query "waf_web_acl_logging_enabled" {
         when (attributes_std -> 'logging_configuration' ->> 'log_destination') is not null then 'ok'
         else 'alarm'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'logging_configuration' ->> 'log_destination') is not null then ' logging enabled'
         else ' logging disabled'
       end || '.' reason
@@ -69,7 +69,7 @@ query "waf_regional_web_acl_logging_enabled" {
         when (attributes_std -> 'logging_configuration' ->> 'log_destination') is not null then 'ok'
         else 'alarm'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'logging_configuration' ->> 'log_destination' ) is not null then ' logging enabled'
         else ' logging disabled'
       end || '.' reason
@@ -99,14 +99,14 @@ query "waf_web_acl_rule_with_action" {
         and type = 'aws_waf_web_acl'
     )
     select
-      r.type || ' ' || r.name as resource,
+      r.address as resource,
       case
         when (jsonb_typeof(attributes_std -> 'rules') = 'array') and a.name is null then 'ok'
         when (jsonb_typeof(attributes_std -> 'rules') = 'array') and a.name is not null then 'alarm'
         when (attributes_std -> 'rules' ->> 'action') is not null then 'ok'
         else 'alarm'
       end as status,
-      r.address || case
+      split_part(r.address, '.', 2) || case
         when (jsonb_typeof(attributes_std -> 'rules') = 'array') and a.name is null then ' has all rules with action attached'
         when (jsonb_typeof(attributes_std -> 'rules') = 'array') and a.name is not null then ' has rules with no action attached'
         when (attributes_std -> 'rules' ->> 'action') is not null then ' has rule with action attached'
@@ -116,7 +116,7 @@ query "waf_web_acl_rule_with_action" {
       ${local.common_dimensions_sql}
     from
       terraform_resource as r
-      left join rules_without_action as a on a.name = concat(r.type || ' ' || r.name)
+      left join rules_without_action as a on a.name = r.address
     where
       r.type = 'aws_waf_web_acl';
   EOQ
@@ -139,14 +139,14 @@ query "waf_regional_web_acl_rule_with_action" {
         and type = 'aws_wafregional_web_acl'
     )
     select
-      r.type || ' ' || r.name as resource,
+      r.address as resource,
       case
         when (jsonb_typeof(attributes_std -> 'rule') = 'array') and a.name is null then 'ok'
         when (jsonb_typeof(attributes_std -> 'rule') = 'array') and a.name is not null then 'alarm'
         when ((attributes_std -> 'rule' ->> 'action') is not null) then 'ok'
         else 'alarm'
       end as status,
-      r.address || case
+      split_part(r.address, '.', 2) || case
         when (jsonb_typeof(attributes_std -> 'rule') = 'array') and a.name is null then ' has all rules with action attached'
         when (jsonb_typeof(attributes_std -> 'rule') = 'array') and a.name is not null then ' has rules with no action attached'
         when ((attributes_std -> 'rule' ->> 'action') is not null) then ' has rule with action attached'
@@ -156,7 +156,7 @@ query "waf_regional_web_acl_rule_with_action" {
       ${local.common_dimensions_sql}
     from
       terraform_resource as r
-      left join rules_without_action as a on a.name = concat(r.type || ' ' || r.name)
+      left join rules_without_action as a on a.name = r.address
     where
       r.type = 'aws_wafregional_web_acl';
   EOQ

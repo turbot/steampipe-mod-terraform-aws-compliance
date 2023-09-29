@@ -6,7 +6,7 @@ query "comprehend_entity_recognizer_volume_encrypted_with_kms_cmk" {
         when (attributes_std ->> 'volume_kms_key_id') is not null then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std ->> 'volume_kms_key_id') is not null then ' uses KMS CMK'
         else ' does not use KMS CMK'
       end || '.' reason
@@ -27,7 +27,7 @@ query "comprehend_entity_recognizer_model_encrypted_with_kms_cmk" {
         when (attributes_std ->> 'model_kms_key_id') is not null then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std ->> 'model_kms_key_id') is not null then ' uses KMS CMK'
         else ' does not use KMS CMK'
       end || '.' reason

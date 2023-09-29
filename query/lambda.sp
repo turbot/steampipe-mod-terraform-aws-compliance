@@ -7,7 +7,7 @@ query "lambda_function_concurrent_execution_limit_configured" {
         when (attributes_std -> 'reserved_concurrent_executions')::integer = -1 then 'alarm'
         else 'ok'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'reserved_concurrent_executions') is null then ' function-level concurrent execution limit not configured'
         when (attributes_std -> 'reserved_concurrent_executions')::integer = -1 then ' function-level concurrent execution limit not configured'
         else ' function-level concurrent execution limit configured'
@@ -29,7 +29,7 @@ query "lambda_function_dead_letter_queue_configured" {
         when (attributes_std -> 'dead_letter_config') is null then 'alarm'
         else 'ok'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'dead_letter_config') is null then ' not configured with dead-letter queue'
         else ' configured with dead-letter queue'
       end || '.' as reason
@@ -50,7 +50,7 @@ query "lambda_function_in_vpc" {
         when (attributes_std -> 'vpc_config') is null then 'alarm'
         else 'ok'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'vpc_config') is null then ' is not in VPC'
         else ' is in VPC'
       end || '.' as reason
@@ -72,7 +72,7 @@ query "lambda_function_use_latest_runtime" {
         when (attributes_std ->> 'runtime') in ('nodejs14.x', 'nodejs12.x', 'nodejs10.x', 'python3.8', 'python3.7', 'python3.6', 'ruby2.5', 'ruby2.7', 'java11', 'java8', 'go1.x', 'dotnetcore2.1', 'dotnetcore3.1') then 'ok'
         else 'alarm'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std ->> 'runtime') is null then ' runtime not set'
         when (attributes_std ->> 'runtime') in ('nodejs14.x', 'nodejs12.x', 'nodejs10.x', 'python3.8', 'python3.7', 'python3.6', 'ruby2.5', 'ruby2.7', 'java11', 'java8', 'go1.x', 'dotnetcore2.1', 'dotnetcore3.1') then ' uses latest runtime - ' || (attributes_std ->> 'runtime') || '.'
         else ' uses ' || (attributes_std ->> 'runtime')|| ' which is not the latest version.'
@@ -95,7 +95,7 @@ query "lambda_function_xray_tracing_enabled" {
         when (attributes_std -> 'tracing_config' ->> 'mode') = 'Active' then 'ok'
         else 'alarm'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'tracing_config') is null then ' has X-Ray tracing disabled'
         when (attributes_std -> 'tracing_config' ->> 'mode') = 'Active' then ' has X-Ray tracing enabled'
         else ' has X-Ray tracing disabled'
@@ -117,7 +117,7 @@ query "lambda_function_url_auth_type_configured" {
         when (attributes_std ->> 'authorization_type') = 'NONE' then 'alarm'
         else 'ok'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std ->> 'authorization_type') = 'NONE' then ' URLs AuthType is not configured'
         else ' URLs AuthType is configured'
       end || '.' as reason
@@ -138,7 +138,7 @@ query "lambda_function_code_signing_configured" {
         when (attributes_std -> 'code_signing_config_arn') is null then 'alarm'
         else 'ok'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'code_signing_config_arn') is null then ' code signing not configured'
         else ' code signing is configured'
       end || '.' as reason
@@ -169,12 +169,12 @@ query "lambda_function_variables_no_sensitive_data" {
       )
     )
     select
-      r.type || ' ' || r.name as resource,
+      r.address as resource,
       case
         when s.name is not null then 'alarm'
         else 'ok'
       end as status,
-      r.address || case
+      split_part(r.address, '.', 2) || case
         when s.name is not null then ' has potential sensitive data'
         else ' has no sensitive data'
       end || '.' as reason
@@ -182,7 +182,7 @@ query "lambda_function_variables_no_sensitive_data" {
       ${local.common_dimensions_sql}
     from
       terraform_resource as r
-      left join function_vaiable_with_sensitive_data as s on s.name = concat(r.type || ' ' || r.name)
+      left join function_vaiable_with_sensitive_data as s on s.name = r.address
     where
       r.type = 'aws_lambda_function';
   EOQ
@@ -198,7 +198,7 @@ query "lambda_function_environment_encryption_enabled" {
         when (attributes_std -> 'environment') is null and (attributes_std -> 'kms_key_arn') is null then 'skip'
         else 'alarm'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'environment') is not null and (attributes_std -> 'kms_key_arn') is not null then ' environment encryption enabled'
         when (attributes_std -> 'environment') is not null and (attributes_std -> 'kms_key_arn') is null then ' environment encryption disabled'
         when (attributes_std -> 'environment') is null and (attributes_std -> 'kms_key_arn') is null then ' no environment exists'

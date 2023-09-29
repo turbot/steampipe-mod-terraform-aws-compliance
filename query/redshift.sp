@@ -7,7 +7,7 @@ query "redshift_cluster_automatic_snapshots_min_7_days" {
         when (attributes_std -> 'automated_snapshot_retention_period')::integer > 7 then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'automated_snapshot_retention_period') is null then ' ''automated_snapshot_retention_period'' set to 1 day by default'
         when (attributes_std -> 'automated_snapshot_retention_period')::integer > 7 then ' ''automated_snapshot_retention_period'' set to ' || (attributes_std ->> 'automated_snapshot_retention_period')::integer || ' day(s)'
         else ' ''automated_snapshot_retention_period'' set to 0 days'
@@ -30,7 +30,7 @@ query "redshift_cluster_automatic_upgrade_major_versions_enabled" {
         when (attributes_std -> 'allow_version_upgrade')::bool then 'ok'
         else 'ok'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'allow_version_upgrade') is null then ' ''allow_version_upgrade'' set to true by default'
         when (attributes_std -> 'allow_version_upgrade')::bool then ' ''allow_version_upgrade'' set to true'
         else ' ''allow_version_upgrade'' set to false'
@@ -52,7 +52,7 @@ query "redshift_cluster_deployed_in_ec2_classic_mode" {
         when (attributes_std -> 'cluster_subnet_group_name') is not null then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'cluster_subnet_group_name') is not null then ' deployed inside VPC'
         else ' not deployed inside VPC'
       end || '.' as reason
@@ -75,7 +75,7 @@ query "redshift_cluster_encryption_logging_enabled" {
         when (attributes_std -> 'logging' ->> 'enabled')::boolean then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'encrypted') is null then ' not encrypted'
         when (attributes_std -> 'logging') is null then ' audit logging disabled'
         when (attributes_std -> 'logging' ->> 'enabled')::boolean then ' audit logging enabled'
@@ -99,7 +99,7 @@ query "redshift_cluster_enhanced_vpc_routing_enabled" {
         when (attributes_std -> 'enhanced_vpc_routing')::bool then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'enhanced_vpc_routing') is null then ' ''enhanced_vpc_routing'' set to false by default'
         when (attributes_std -> 'enhanced_vpc_routing')::bool then ' ''enhanced_vpc_routing'' set to true'
         else ' ''allow_version_upgrade'' set to false'
@@ -121,7 +121,7 @@ query "redshift_cluster_kms_enabled" {
         when (attributes_std -> 'encrypted') is not null and (attributes_std -> 'kms_key_id') is not null then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'encrypted') is not null and (attributes_std -> 'kms_key_id') is not null then ' encrypted with KMS'
         else ' not encrypted with KMS'
       end || '.' as reason
@@ -143,7 +143,7 @@ query "redshift_cluster_logging_enabled" {
         when (attributes_std -> 'logging' ->> 'enabled')::boolean then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'logging') is null then ' audit logging disabled'
         when (attributes_std -> 'logging' ->> 'enabled')::boolean then ' audit logging enabled'
         else ' audit logging disabled'
@@ -167,7 +167,7 @@ query "redshift_cluster_maintenance_settings_check" {
         when (attributes_std -> 'allow_version_upgrade')::bool and (attributes_std -> 'automated_snapshot_retention_period')::integer >= 7 then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'allow_version_upgrade') is null and (attributes_std -> 'automated_snapshot_retention_period') is null then ' does not have the required maintenance settings'
         when (attributes_std -> 'allow_version_upgrade') is null and (attributes_std -> 'automated_snapshot_retention_period')::integer >= 7 then ' has the required maintenance settings'
         when (attributes_std -> 'allow_version_upgrade')::bool and (attributes_std -> 'automated_snapshot_retention_period')::integer >= 7 then ' has the required maintenance settings'
@@ -191,7 +191,7 @@ query "redshift_cluster_prohibit_public_access" {
         when (attributes_std -> 'publicly_accessible')::bool then 'alarm'
         else 'ok'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'publicly_accessible') is null then ' publicly accessible'
         when (attributes_std -> 'publicly_accessible')::bool then ' publicly accessible'
         else ' not publicly accessible'
@@ -213,7 +213,7 @@ query "redshift_cluster_no_default_database_name" {
         when (attributes_std ->> 'database_name') is not null then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std ->> 'database_name') is not null then ' database name defined'
         else ' no database name defined'
       end || '.' as reason
@@ -235,7 +235,7 @@ query "redshift_cluster_encryption_enabled" {
         when (attributes_std ->> 'encrypted')::bool then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std ->> 'encrypted') is null then ' encryption disabled'
         when (attributes_std ->> 'encrypted')::bool then ' encryption enabled'
         else ' encryption disabled'
@@ -257,7 +257,7 @@ query "redshift_serverless_namespace_encrypted_with_kms_cmk" {
         when (attributes_std ->> 'kms_key_id') is not null then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std ->> 'kms_key_id') is not null then ' encrypted with KMS CMK'
         else ' not encrypted with KMS CMK'
       end || '.' as reason
@@ -278,7 +278,7 @@ query "redshift_snapshot_copy_grant_encrypted_with_kms_cmk" {
         when (attributes_std ->> 'kms_key_id') is not null then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std ->> 'kms_key_id') is not null then ' encrypted with KMS CMK'
         else ' not encrypted with KMS CMK'
       end || '.' as reason

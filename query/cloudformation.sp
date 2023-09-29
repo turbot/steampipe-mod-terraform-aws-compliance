@@ -6,7 +6,7 @@ query "cloudformation_stack_notifications_enabled" {
         when (attributes_std ->> 'notification_arns') is not null then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std ->> 'notification_arns') is not null then ' notifications enabled'
         else ' notifications disabled'
       end || '.' reason

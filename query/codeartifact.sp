@@ -6,7 +6,7 @@ query "codeartifact_domain_encrypted_with_kms_cmk" {
         when (attributes_std ->> 'encryption_key') is null then 'alarm'
         else 'ok'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std ->> 'encryption_key') is null then ' not encrypted with KMS CMK'
         else ' encrypted with KMS CMK'
       end || '.' as reason

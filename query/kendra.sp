@@ -6,7 +6,7 @@ query "kendra_index_server_side_encryption_uses_kms_cmk" {
         when (attributes_std -> 'server_side_encryption_configuration' ->> 'kms_key_id') is not null then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'server_side_encryption_configuration' ->> 'kms_key_id') is not null then ' uses KMS CMK'
         else ' does not use KMS CMK'
       end || '.' reason

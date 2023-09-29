@@ -9,7 +9,7 @@ query "dynamodb_table_encrypted_with_kms_cmk" {
         when (attributes_std -> 'server_side_encryption'->> 'enabled')::bool is true and (attributes_std -> 'server_side_encryption' ->> 'kms_key_arn') is not null then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'server_side_encryption' ->> 'enabled')::bool is false then ' encrypted by DynamoDB managed and owned AWS KMS key'
         when (attributes_std -> 'server_side_encryption'->> 'enabled')::bool is true and (attributes_std -> 'server_side_encryption' ->> 'kms_key_arn') is not null then ' encrypted by AWS managed CMK'
         else ' not encrypted by AWS managed CMK'
@@ -31,7 +31,7 @@ query "dynamodb_table_encryption_enabled" {
         when (attributes_std -> 'server_side_encryption') is not null then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'server_side_encryption') is not null then ' server-side encryption not set to DynamoDB owned KMS key'
         else ' server-side encryption set to AWS owned CMK'
       end || '.' as reason
@@ -53,7 +53,7 @@ query "dynamodb_table_point_in_time_recovery_enabled" {
         when (attributes_std -> 'point_in_time_recovery' ->> 'enabled')::boolean then 'ok'
         else 'alarm'
       end status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std -> 'point_in_time_recovery') is null then ' ''point_in_time_recovery'' disabled'
         when (attributes_std -> 'point_in_time_recovery' ->> 'enabled')::boolean then ' ''point_in_time_recovery'' enabled'
         else ' ''point_in_time_recovery'' disabled'
@@ -76,7 +76,7 @@ query "dynamodb_vpc_endpoint_routetable_association" {
         when (attributes_std ->> 'service_name') like '%dynamodb%' and (attributes_std -> 'route_table_ids') is not null then 'ok'
         else 'alarm'
       end as status,
-      address || case
+      split_part(address, '.', 2) || case
         when (attributes_std ->> 'service_name') like '%dynamodb%' and (attributes_std -> 'route_table_ids') is null then ' VPC Endpoint for DynamoDB disabled'
         when (attributes_std ->> 'service_name') like '%dynamodb%' and (attributes_std -> 'route_table_ids') is not null then ' VPC Endpoint for DynamoDB enabled'
         else ' VPC Endpoint for DynamoDB disabled'
