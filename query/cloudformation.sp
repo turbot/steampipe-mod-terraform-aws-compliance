@@ -15,6 +15,6 @@ query "cloudformation_stack_notifications_enabled" {
     from
       terraform_resource
     where
-      type = 'aws_cloudformation_stack';    
+      type = 'aws_cloudformation_stack';
   EOQ
 }

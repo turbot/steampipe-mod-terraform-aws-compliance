@@ -50,11 +50,11 @@ query "sqs_queue_policy_no_action_star" {
     select
       address as resource,
       case
-        when ((attributes_std ->> 'policy')::jsonb ) -> 'Statement'  @> '[{"Action": "*"}]' then 'alarm'
+        when ((attributes_std ->> 'policy')::jsonb ) -> 'Statement' @> '[{"Action": "*"}]' then 'alarm'
         else 'ok'
       end as status,
       split_part(address, '.', 2) || case
-        when ((attributes_std ->> 'policy')::jsonb ) -> 'Statement'  @> '[{"Action": "*"}]'  then ' policy allow wildcard action'
+        when ((attributes_std ->> 'policy')::jsonb ) -> 'Statement' @> '[{"Action": "*"}]' then ' policy allow wildcard action'
         else ' policy is ok'
       end || '.' as reason
       ${local.tag_dimensions_sql}
@@ -71,11 +71,11 @@ query "sqs_queue_policy_no_principal_star" {
     select
       address as resource,
       case
-        when ((attributes_std ->> 'policy')::jsonb ) -> 'Statement'  @> '[{"Principal": "*"}]' then 'alarm'
+        when ((attributes_std ->> 'policy')::jsonb ) -> 'Statement' @> '[{"Principal": "*"}]' then 'alarm'
         else 'ok'
       end as status,
       split_part(address, '.', 2) || case
-        when ((attributes_std ->> 'policy')::jsonb ) -> 'Statement'  @> '[{"Principal": "*"}]'  then ' policy allow all principal'
+        when ((attributes_std ->> 'policy')::jsonb ) -> 'Statement' @> '[{"Principal": "*"}]' then ' policy allow all principal'
         else ' policy is ok'
       end || '.' as reason
       ${local.tag_dimensions_sql}

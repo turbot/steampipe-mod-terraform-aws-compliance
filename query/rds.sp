@@ -295,7 +295,7 @@ query "rds_db_instance_and_cluster_no_default_port" {
         case
           when (attributes_std -> 'engine') is null and (attributes_std -> 'port') is null then 'alarm'
           when (attributes_std ->> 'engine') similar to '%(aurora|mysql|mariadb)%' and ((attributes_std ->> 'port')::int = 3306 or (attributes_std -> 'port') is null) then 'alarm'
-          when (attributes_std ->> 'engine') like '%postgres%' and ((attributes_std ->> 'port')::int = 5432  or (attributes_std -> 'port') is null) then 'alarm'
+          when (attributes_std ->> 'engine') like '%postgres%' and ((attributes_std ->> 'port')::int = 5432 or (attributes_std -> 'port') is null) then 'alarm'
           when (attributes_std ->> 'engine') like 'oracle%' and ((attributes_std ->> 'port')::int = 1521 or (attributes_std -> 'port') is null) then 'alarm'
           when (attributes_std ->> 'engine') like 'sqlserver%' and ((attributes_std ->> 'port')::int = 1433 or (attributes_std -> 'port') is null) then 'alarm'
           else 'ok'
@@ -303,7 +303,7 @@ query "rds_db_instance_and_cluster_no_default_port" {
         split_part(address, '.', 2) || case
           when (attributes_std -> 'engine') is null and (attributes_std -> 'port') is null then ' uses a default port'
           when (attributes_std ->> 'engine') similar to '%(aurora|mysql|mariadb)%' and ((attributes_std ->> 'port')::int = 3306 or (attributes_std -> 'port') is null) then ' uses a default port'
-          when (attributes_std ->> 'engine') like '%postgres%' and ((attributes_std ->> 'port')::int = 5432  or (attributes_std -> 'port') is null) then ' uses a default port'
+          when (attributes_std ->> 'engine') like '%postgres%' and ((attributes_std ->> 'port')::int = 5432 or (attributes_std -> 'port') is null) then ' uses a default port'
           when (attributes_std ->> 'engine') like 'oracle%' and ((attributes_std ->> 'port')::int = 1521 or (attributes_std -> 'port') is null) then ' uses a default port'
           when (attributes_std ->> 'engine') like 'sqlserver%' and ((attributes_std ->> 'port')::int = 1433 or (attributes_std -> 'port') is null) then ' uses a default port'
           else ' does not use a default port'
@@ -321,14 +321,14 @@ query "rds_db_instance_and_cluster_no_default_port" {
         address as resource,
         case
           when (attributes_std ->> 'engine') similar to '%(aurora|mysql|mariadb)%' and ((attributes_std ->> 'port')::int = 3306 or (attributes_std -> 'port') is null) then 'alarm'
-          when (attributes_std ->> 'engine') like '%postgres%' and ((attributes_std ->> 'port')::int = 5432  or (attributes_std -> 'port') is null) then 'alarm'
+          when (attributes_std ->> 'engine') like '%postgres%' and ((attributes_std ->> 'port')::int = 5432 or (attributes_std -> 'port') is null) then 'alarm'
           when (attributes_std ->> 'engine') like 'oracle%' and ((attributes_std ->> 'port')::int = 1521 or (attributes_std -> 'port') is null) then 'alarm'
           when (attributes_std ->> 'engine') like 'sqlserver%' and ((attributes_std ->> 'port')::int = 1433 or (attributes_std -> 'port') is null) then 'alarm'
           else 'ok'
         end status,
         split_part(address, '.', 2) || case
           when (attributes_std ->> 'engine') similar to '%(aurora|mysql|mariadb)%' and ((attributes_std ->> 'port')::int = 3306 or (attributes_std -> 'port') is null) then ' uses a default port'
-          when (attributes_std ->> 'engine') like '%postgres%' and ((attributes_std ->> 'port')::int = 5432  or (attributes_std -> 'port') is null) then ' uses a default port'
+          when (attributes_std ->> 'engine') like '%postgres%' and ((attributes_std ->> 'port')::int = 5432 or (attributes_std -> 'port') is null) then ' uses a default port'
           when (attributes_std ->> 'engine') like 'oracle%' and ((attributes_std ->> 'port')::int = 1521 or (attributes_std -> 'port') is null) then ' uses a default port'
           when (attributes_std ->> 'engine') like 'sqlserver%' and ((attributes_std ->> 'port')::int = 1433 or (attributes_std -> 'port') is null) then ' uses a default port'
           else ' does not use a default port'

@@ -97,7 +97,7 @@ query "glue_security_configuration_encryption_enabled" {
         and (attributes_std -> 'encryption_configuration' -> 'job_bookmarks_encryption' ->> 'job_bookmarks_encryption_mode') = 'CSE-KMS'
         and (attributes_std -> 'encryption_configuration' -> 'job_bookmarks_encryption' ->> 'kms_key_arn') is not null
         and (attributes_std -> 'encryption_configuration' -> 's3_encryption' ->> 's3_encryption_mode') <> 'DISABLED'
-        and (attributes_std -> 'encryption_configuration' -> 's3_encryption' ->> 'kms_key_arn') is not null  then 'ok'
+        and (attributes_std -> 'encryption_configuration' -> 's3_encryption' ->> 'kms_key_arn') is not null then 'ok'
         else 'alarm'
       end status,
       split_part(address, '.', 2) || case
@@ -106,7 +106,7 @@ query "glue_security_configuration_encryption_enabled" {
         and (attributes_std -> 'encryption_configuration' -> 'job_bookmarks_encryption' ->> 'job_bookmarks_encryption_mode') = 'CSE-KMS'
         and (attributes_std -> 'encryption_configuration' -> 'job_bookmarks_encryption' ->> 'kms_key_arn') is not null
         and (attributes_std -> 'encryption_configuration' -> 's3_encryption' ->> 's3_encryption_mode') <> 'DISABLED'
-        and (attributes_std -> 'encryption_configuration' -> 's3_encryption' ->> 'kms_key_arn') is not null  then ' encryption enabled'
+        and (attributes_std -> 'encryption_configuration' -> 's3_encryption' ->> 'kms_key_arn') is not null then ' encryption enabled'
         else ' encryption disabled'
       end || '.' reason
       ${local.common_dimensions_sql}

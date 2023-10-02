@@ -29,7 +29,7 @@ query "glacier_vault_restrict_public_access" {
       end status,
       split_part(r.address, '.', 2) || case
         when (attributes_std ->> 'access_policy') = '' then ' no policy defined'
-        when p.name is  null then ' not publicly accessible'
+        when p.name is null then ' not publicly accessible'
         else ' publicly accessible'
       end || '.' reason
       ${local.tag_dimensions_sql}

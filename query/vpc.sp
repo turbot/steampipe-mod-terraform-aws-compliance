@@ -240,7 +240,7 @@ query "vpc_transfer_server_not_publicly_accesible" {
       end status,
       split_part(address, '.', 2) || case
         when (attributes_std -> 'endpoint_type') is null then ' publicly accessible'
-        when (attributes_std ->> 'endpoint_type') in ('VPC', 'VPC_ENDPOINT')  then ' not publicly accessible'
+        when (attributes_std ->> 'endpoint_type') in ('VPC', 'VPC_ENDPOINT') then ' not publicly accessible'
         else ' publicly accessible'
       end || '.' reason
       ${local.tag_dimensions_sql}

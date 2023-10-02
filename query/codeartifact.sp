@@ -15,6 +15,6 @@ query "codeartifact_domain_encrypted_with_kms_cmk" {
     from
       terraform_resource
     where
-      type = 'aws_codeartifact_domain';    
+      type = 'aws_codeartifact_domain';
   EOQ
 }

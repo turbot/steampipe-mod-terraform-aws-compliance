@@ -331,11 +331,11 @@ query "ec2_launch_configuration_ebs_encryption_check" {
     select
       address as resource,
       case
-        when (attributes_std -> 'root_block_device') is not null and ((attributes_std -> 'root_block_device' ->> 'encrypted') = 'true' or (attributes_std -> 'root_block_device' ->> 'snapshot_id') is not null) and (((attributes_std -> 'ebs_block_device') is not null and ((attributes_std -> 'ebs_block_device' ->> 'encrypted') = 'true' or (attributes_std -> 'ebs_block_device' ->> 'snapshot_id') is not null)) or ((attributes_std -> 'ebs_block_device') is null))  then 'ok'
+        when (attributes_std -> 'root_block_device') is not null and ((attributes_std -> 'root_block_device' ->> 'encrypted') = 'true' or (attributes_std -> 'root_block_device' ->> 'snapshot_id') is not null) and (((attributes_std -> 'ebs_block_device') is not null and ((attributes_std -> 'ebs_block_device' ->> 'encrypted') = 'true' or (attributes_std -> 'ebs_block_device' ->> 'snapshot_id') is not null)) or ((attributes_std -> 'ebs_block_device') is null)) then 'ok'
         else 'alarm'
       end as status,
       split_part(address, '.', 2) || case
-        when (attributes_std -> 'root_block_device') is not null and ((attributes_std -> 'root_block_device' ->> 'encrypted') = 'true' or (attributes_std -> 'root_block_device' ->> 'snapshot_id') is not null) and (((attributes_std -> 'ebs_block_device') is not null and ((attributes_std -> 'ebs_block_device' ->> 'encrypted') = 'true' or (attributes_std -> 'ebs_block_device' ->> 'snapshot_id') is not null)) or ((attributes_std -> 'ebs_block_device') is null))  then ' is securely encrypted'
+        when (attributes_std -> 'root_block_device') is not null and ((attributes_std -> 'root_block_device' ->> 'encrypted') = 'true' or (attributes_std -> 'root_block_device' ->> 'snapshot_id') is not null) and (((attributes_std -> 'ebs_block_device') is not null and ((attributes_std -> 'ebs_block_device' ->> 'encrypted') = 'true' or (attributes_std -> 'ebs_block_device' ->> 'snapshot_id') is not null)) or ((attributes_std -> 'ebs_block_device') is null)) then ' is securely encrypted'
         else ' is not securely encrypted'
       end || '.' as reason
       ${local.tag_dimensions_sql}
@@ -352,11 +352,11 @@ query "ec2_instance_ebs_encryption_check" {
     select
       address as resource,
       case
-        when (attributes_std -> 'root_block_device') is not null and ((attributes_std -> 'root_block_device' ->> 'encrypted') = 'true' or (attributes_std -> 'root_block_device' ->> 'snapshot_id') is not null) and (((attributes_std -> 'ebs_block_device') is not null and ((attributes_std -> 'ebs_block_device' ->> 'encrypted') = 'true' or (attributes_std -> 'ebs_block_device' ->> 'snapshot_id') is not null)) or ((attributes_std -> 'ebs_block_device') is null))  then 'ok'
+        when (attributes_std -> 'root_block_device') is not null and ((attributes_std -> 'root_block_device' ->> 'encrypted') = 'true' or (attributes_std -> 'root_block_device' ->> 'snapshot_id') is not null) and (((attributes_std -> 'ebs_block_device') is not null and ((attributes_std -> 'ebs_block_device' ->> 'encrypted') = 'true' or (attributes_std -> 'ebs_block_device' ->> 'snapshot_id') is not null)) or ((attributes_std -> 'ebs_block_device') is null)) then 'ok'
         else 'alarm'
       end as status,
       split_part(address, '.', 2) || case
-        when (attributes_std -> 'root_block_device') is not null and ((attributes_std -> 'root_block_device' ->> 'encrypted') = 'true' or (attributes_std -> 'root_block_device' ->> 'snapshot_id') is not null) and (((attributes_std -> 'ebs_block_device') is not null and ((attributes_std -> 'ebs_block_device' ->> 'encrypted') = 'true' or (attributes_std -> 'ebs_block_device' ->> 'snapshot_id') is not null)) or ((attributes_std -> 'ebs_block_device') is null))  then ' is securely encrypted'
+        when (attributes_std -> 'root_block_device') is not null and ((attributes_std -> 'root_block_device' ->> 'encrypted') = 'true' or (attributes_std -> 'root_block_device' ->> 'snapshot_id') is not null) and (((attributes_std -> 'ebs_block_device') is not null and ((attributes_std -> 'ebs_block_device' ->> 'encrypted') = 'true' or (attributes_std -> 'ebs_block_device' ->> 'snapshot_id') is not null)) or ((attributes_std -> 'ebs_block_device') is null)) then ' is securely encrypted'
         else ' is not securely encrypted'
       end || '.' as reason
       ${local.tag_dimensions_sql}

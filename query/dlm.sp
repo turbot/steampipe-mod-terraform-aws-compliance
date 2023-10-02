@@ -3,7 +3,7 @@ query "dlm_lifecycle_policy_events_cross_region_encryption_enabled" {
     select
       address as resource,
       case
-        when (attributes_std -> 'policy_details' -> 'action' -> 'cross_region_copy' -> 'encryption_configuration' ->> 'encrypted')::boolean  then 'ok'
+        when (attributes_std -> 'policy_details' -> 'action' -> 'cross_region_copy' -> 'encryption_configuration' ->> 'encrypted')::boolean then 'ok'
         else 'alarm'
       end status,
       split_part(address, '.', 2) || case
@@ -46,7 +46,7 @@ query "dlm_schedule_cross_region_encryption_enabled" {
       address as resource,
       case
         when (attributes_std -> 'policy_details' -> 'schedule' -> 'cross_region_copy_rule') is null then 'skip'
-        when (attributes_std -> 'policy_details' -> 'schedule' -> 'cross_region_copy_rule' ->> 'encrypted')::boolean  then 'ok'
+        when (attributes_std -> 'policy_details' -> 'schedule' -> 'cross_region_copy_rule' ->> 'encrypted')::boolean then 'ok'
         else 'alarm'
       end status,
       split_part(address, '.', 2) || case
