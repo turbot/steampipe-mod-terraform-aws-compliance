@@ -51,7 +51,7 @@ query "cloudwatch_destination_policy_wildcards" {
         type = 'aws_cloudwatch_log_destination_policy'
     )
     select
-      type || ' ' || a.name as resource,
+      a.address as resource,
       case
         when e.name is null then 'ok'
         else 'alarm'
