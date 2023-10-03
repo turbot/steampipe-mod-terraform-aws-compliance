@@ -18,7 +18,7 @@ benchmark "globalaccelerator" {
 }
 
 control "globalaccelerator_flow_logs_enabled" {
-  title       = "Global Accelerator  flow logs should be enabled"
+  title       = "Global Accelerator flow logs should be enabled"
   description = "Ensure Global Accelerator accelerator has flow logs enabled"
   query       = query.globalaccelerator_flow_logs_enabled
 

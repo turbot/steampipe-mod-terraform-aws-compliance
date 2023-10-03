@@ -2,19 +2,19 @@ query "elb_application_classic_network_lb_logging_enabled" {
   sql = <<-EOQ
   (
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
       --The Gateway Load Balancer does not generate access logs since it is a transparent layer 3 load balancer that does not terminate flows.
       --Boolean to enable / disable access_logs. Defaults to false, even when bucket is specified.
-        when (arguments ->> 'load_balancer_type') = 'gateway' then 'skip'
-        when (arguments -> 'access_logs') is null then 'alarm'
-        when (arguments -> 'access_logs' -> 'enabled')::bool then 'ok'
+        when (attributes_std ->> 'load_balancer_type') = 'gateway' then 'skip'
+        when (attributes_std -> 'access_logs') is null then 'alarm'
+        when (attributes_std -> 'access_logs' -> 'enabled')::bool then 'ok'
         else 'alarm'
       end status,
-      name || case
-        when (arguments ->> 'load_balancer_type') = 'gateway' then ' load balancer is of ' || (arguments ->> 'load_balancer_type') || ' type'
-        when (arguments -> 'access_logs') is null then ' logging disabled'
-        when (arguments -> 'access_logs' -> 'enabled')::bool then ' logging enabled'
+      split_part(address, '.', 2) || case
+        when (attributes_std ->> 'load_balancer_type') = 'gateway' then ' load balancer is of ' || (attributes_std ->> 'load_balancer_type') || ' type'
+        when (attributes_std -> 'access_logs') is null then ' logging disabled'
+        when (attributes_std -> 'access_logs' -> 'enabled')::bool then ' logging enabled'
         else ' logging disabled'
       end || '.' as reason
       ${local.tag_dimensions_sql}
@@ -27,15 +27,15 @@ query "elb_application_classic_network_lb_logging_enabled" {
   union
   (
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments -> 'access_logs') is null then 'alarm'
-        when (arguments -> 'access_logs' -> 'enabled')::bool then 'ok'
+        when (attributes_std -> 'access_logs') is null then 'alarm'
+        when (attributes_std -> 'access_logs' -> 'enabled')::bool then 'ok'
         else 'alarm'
       end status,
-      name || case
-        when (arguments -> 'access_logs') is null then ' logging disabled'
-        when (arguments -> 'access_logs' -> 'enabled')::bool then ' logging enabled'
+      split_part(address, '.', 2) || case
+        when (attributes_std -> 'access_logs') is null then ' logging disabled'
+        when (attributes_std -> 'access_logs' -> 'enabled')::bool then ' logging enabled'
         else ' logging disabled'
         end || '.' reason
         ${local.tag_dimensions_sql}
@@ -51,15 +51,15 @@ query "elb_application_classic_network_lb_logging_enabled" {
 query "elb_application_lb_deletion_protection_enabled" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments -> 'enable_deletion_protection') is null then 'alarm'
-        when (arguments -> 'enable_deletion_protection')::boolean then 'ok'
+        when (attributes_std -> 'enable_deletion_protection') is null then 'alarm'
+        when (attributes_std -> 'enable_deletion_protection')::boolean then 'ok'
         else 'alarm'
       end status,
-      name || case
-        when (arguments -> 'enable_deletion_protection') is null then ' ''enable_deletion_protection'' not defined'
-        when (arguments -> 'enable_deletion_protection')::boolean then ' deletion protection enabled'
+      split_part(address, '.', 2) || case
+        when (attributes_std -> 'enable_deletion_protection') is null then ' ''enable_deletion_protection'' not defined'
+        when (attributes_std -> 'enable_deletion_protection')::boolean then ' deletion protection enabled'
         else ' deletion protection disabled'
       end || '.' as reason
       ${local.tag_dimensions_sql}
@@ -74,15 +74,15 @@ query "elb_application_lb_deletion_protection_enabled" {
 query "elb_application_lb_drop_http_headers" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments -> 'drop_invalid_header_fields') is null then 'alarm'
-        when (arguments -> 'drop_invalid_header_fields')::boolean then 'ok'
+        when (attributes_std -> 'drop_invalid_header_fields') is null then 'alarm'
+        when (attributes_std -> 'drop_invalid_header_fields')::boolean then 'ok'
         else 'alarm'
       end status,
-      name || case
-        when (arguments -> 'drop_invalid_header_fields') is null then ' ''drop_invalid_header_fields'' disabled'
-        when (arguments -> 'drop_invalid_header_fields')::boolean then ' ''drop_invalid_header_fields'' enabled'
+      split_part(address, '.', 2) || case
+        when (attributes_std -> 'drop_invalid_header_fields') is null then ' ''drop_invalid_header_fields'' disabled'
+        when (attributes_std -> 'drop_invalid_header_fields')::boolean then ' ''drop_invalid_header_fields'' enabled'
         else ' ''drop_invalid_header_fields'' disabled'
       end || '.' reason
       ${local.tag_dimensions_sql}
@@ -97,15 +97,15 @@ query "elb_application_lb_drop_http_headers" {
 query "elb_application_lb_waf_enabled" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments -> 'enable_waf_fail_open') is null then 'alarm'
-        when (arguments -> 'enable_waf_fail_open')::boolean then 'ok'
+        when (attributes_std -> 'enable_waf_fail_open') is null then 'alarm'
+        when (attributes_std -> 'enable_waf_fail_open')::boolean then 'ok'
         else 'alarm'
       end status,
-      name || case
-        when (arguments -> 'enable_waf_fail_open') is null then ' WAF disabled'
-        when (arguments -> 'enable_waf_fail_open')::boolean then ' WAF enabled'
+      split_part(address, '.', 2) || case
+        when (attributes_std -> 'enable_waf_fail_open') is null then ' WAF disabled'
+        when (attributes_std -> 'enable_waf_fail_open')::boolean then ' WAF enabled'
         else ' WAF disabled'
       end || '.' reason
       ${local.tag_dimensions_sql}
@@ -120,15 +120,15 @@ query "elb_application_lb_waf_enabled" {
 query "elb_classic_lb_cross_zone_load_balancing_enabled" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments -> 'cross_zone_load_balancing') is null then 'ok'
-        when (arguments -> 'cross_zone_load_balancing')::boolean then 'ok'
+        when (attributes_std -> 'cross_zone_load_balancing') is null then 'ok'
+        when (attributes_std -> 'cross_zone_load_balancing')::boolean then 'ok'
         else 'alarm'
       end status,
-      name || case
-        when (arguments -> 'cross_zone_load_balancing') is null then ' cross-zone load balancing enabled'
-        when (arguments -> 'cross_zone_load_balancing')::boolean then ' cross-zone load balancing enabled'
+      split_part(address, '.', 2) || case
+        when (attributes_std -> 'cross_zone_load_balancing') is null then ' cross-zone load balancing enabled'
+        when (attributes_std -> 'cross_zone_load_balancing')::boolean then ' cross-zone load balancing enabled'
         else ' cross-zone load balancing disabled'
         end || '.' reason
       ${local.tag_dimensions_sql}
@@ -143,17 +143,17 @@ query "elb_classic_lb_cross_zone_load_balancing_enabled" {
 query "elb_classic_lb_use_ssl_certificate" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments -> 'listener') is null then 'skip'
-        when (arguments -> 'listener' ->> 'lb_protocol') ilike 'SSL' and (arguments -> 'listener' -> 'ssl_certificate_id') is null then 'alarm'
-        when (arguments -> 'listener' ->> 'lb_protocol') ilike 'SSL' and (arguments -> 'listener' ->> 'ssl_certificate_id') like 'arn:aws:acm%' then 'ok'
+        when (attributes_std -> 'listener') is null then 'skip'
+        when (attributes_std -> 'listener' ->> 'lb_protocol') ilike 'SSL' and (attributes_std -> 'listener' -> 'ssl_certificate_id') is null then 'alarm'
+        when (attributes_std -> 'listener' ->> 'lb_protocol') ilike 'SSL' and (attributes_std -> 'listener' ->> 'ssl_certificate_id') like 'arn:aws:acm%' then 'ok'
         else 'alarm'
       end status,
-      name || case
-        when (arguments -> 'listener') is null then ' has no listener'
-        when (arguments -> 'listener' ->> 'lb_protocol') ilike 'SSL' and (arguments -> 'listener' -> 'ssl_certificate_id') is null then ' does not use certificate provided by ACM'
-        when (arguments -> 'listener' ->> 'lb_protocol') ilike 'SSL' and (arguments -> 'listener' ->> 'ssl_certificate_id') like 'arn:aws:acm%' then ' uses certificates provided by ACM'
+      split_part(address, '.', 2) || case
+        when (attributes_std -> 'listener') is null then ' has no listener'
+        when (attributes_std -> 'listener' ->> 'lb_protocol') ilike 'SSL' and (attributes_std -> 'listener' -> 'ssl_certificate_id') is null then ' does not use certificate provided by ACM'
+        when (attributes_std -> 'listener' ->> 'lb_protocol') ilike 'SSL' and (attributes_std -> 'listener' ->> 'ssl_certificate_id') like 'arn:aws:acm%' then ' uses certificates provided by ACM'
         else ' does not use certificate provided by ACM'
       end || '.' reason
       ${local.tag_dimensions_sql}
@@ -168,13 +168,13 @@ query "elb_classic_lb_use_ssl_certificate" {
 query "elb_classic_lb_use_tls_https_listeners" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments -> 'listener' ->> 'lb_protocol') like any (array ['HTTPS', 'TLS']) then 'ok'
+        when (attributes_std -> 'listener' ->> 'lb_protocol') like any (array ['HTTPS', 'TLS']) then 'ok'
         else 'alarm'
       end status,
-      name || case
-        when (arguments -> 'listener' ->> 'lb_protocol') like any (array ['HTTPS', 'TLS']) then ' configured with ' || (arguments -> 'listener' ->> 'lb_protocol') || ' protocol'
+      split_part(address, '.', 2) || case
+        when (attributes_std -> 'listener' ->> 'lb_protocol') like any (array ['HTTPS', 'TLS']) then ' configured with ' || (attributes_std -> 'listener' ->> 'lb_protocol') || ' protocol'
         else ' not configured with HTTPS or TLS protocol'
         end || '.' reason
       ${local.tag_dimensions_sql}
@@ -189,13 +189,13 @@ query "elb_classic_lb_use_tls_https_listeners" {
 query "elb_application_network_gateway_lb_use_desync_mitigation_mode" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments ->> 'desync_mitigation_mode') like any (array ['defensive', 'strictest']) then 'ok'
+        when (attributes_std ->> 'desync_mitigation_mode') like any (array ['defensive', 'strictest']) then 'ok'
         else 'alarm'
       end status,
-      name || case
-        when (arguments ->> 'desync_mitigation_mode') like any (array ['defensive', 'strictest']) then ' configured with ' || (arguments ->> 'desync_mitigation_mode') || ' mitigation mode'
+      split_part(address, '.', 2) || case
+        when (attributes_std ->> 'desync_mitigation_mode') like any (array ['defensive', 'strictest']) then ' configured with ' || (attributes_std ->> 'desync_mitigation_mode') || ' mitigation mode'
         else ' not configured with defensive or strictest desync mitigation mode'
         end || '.' reason
       ${local.tag_dimensions_sql}
@@ -210,13 +210,13 @@ query "elb_application_network_gateway_lb_use_desync_mitigation_mode" {
 query "elb_classic_lb_use_desync_mitigation_mode" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments ->> 'desync_mitigation_mode') like any (array ['defensive', 'strictest']) then 'ok'
+        when (attributes_std ->> 'desync_mitigation_mode') like any (array ['defensive', 'strictest']) then 'ok'
         else 'alarm'
       end status,
-      name || case
-        when (arguments ->> 'desync_mitigation_mode') like any (array ['defensive', 'strictest']) then ' configured with ' || (arguments ->> 'desync_mitigation_mode') || ' mitigation mode'
+      split_part(address, '.', 2) || case
+        when (attributes_std ->> 'desync_mitigation_mode') like any (array ['defensive', 'strictest']) then ' configured with ' || (attributes_std ->> 'desync_mitigation_mode') || ' mitigation mode'
         else ' not configured with defensive or strictest desync mitigation mode'
         end || '.' reason
       ${local.tag_dimensions_sql}
@@ -233,17 +233,17 @@ query "elb_classic_lb_use_desync_mitigation_mode" {
 query "elb_application_lb_drop_invalid_header_fields" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments ->> 'load_balancer_type') like any (array ['gateway', 'network']) then 'skip'
-        when (arguments ->> 'drop_invalid_header_fields')::boolean and ((arguments ->> 'load_balancer_type') is null or (arguments ->> 'load_balancer_type') = 'application')
+        when (attributes_std ->> 'load_balancer_type') like any (array ['gateway', 'network']) then 'skip'
+        when (attributes_std ->> 'drop_invalid_header_fields')::boolean and ((attributes_std ->> 'load_balancer_type') is null or (attributes_std ->> 'load_balancer_type') = 'application')
         then 'ok'
         else 'alarm'
       end status,
-      name || case
-        when (arguments ->> 'load_balancer_type') like any (array ['gateway', 'network']) then ' load balancer is of ' || (arguments ->> 'load_balancer_type') || ' type'
-        when (arguments ->> 'drop_invalid_header_fields')::boolean
-        and ((arguments ->> 'load_balancer_type') is null or (arguments ->> 'load_balancer_type') = 'application')
+      split_part(address, '.', 2) || case
+        when (attributes_std ->> 'load_balancer_type') like any (array ['gateway', 'network']) then ' load balancer is of ' || (attributes_std ->> 'load_balancer_type') || ' type'
+        when (attributes_std ->> 'drop_invalid_header_fields')::boolean
+        and ((attributes_std ->> 'load_balancer_type') is null or (attributes_std ->> 'load_balancer_type') = 'application')
         then ' configured to drop invalid http header field(s)'
         else ' not configured to drop invalid http header field(s)'
         end || '.' reason
@@ -259,15 +259,15 @@ query "elb_application_lb_drop_invalid_header_fields" {
 query "elb_lb_use_secure_protocol_listener" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments ->> 'protocol') like any (array ['HTTPS', 'TLS', 'TCP', 'UDP', 'TCP_UDP']) then 'ok'
-        when (arguments -> 'default_action' ->> 'type') = 'redirect' and (arguments -> 'default_action' -> 'redirect' ->> 'protocol') = 'HTTPS' then 'ok'
+        when (attributes_std ->> 'protocol') like any (array ['HTTPS', 'TLS', 'TCP', 'UDP', 'TCP_UDP']) then 'ok'
+        when (attributes_std -> 'default_action' ->> 'type') = 'redirect' and (attributes_std -> 'default_action' -> 'redirect' ->> 'protocol') = 'HTTPS' then 'ok'
         else 'alarm'
       end status,
-      name || case
-        when (arguments ->> 'protocol') like any (array ['HTTPS', 'TLS', 'TCP', 'UDP', 'TCP_UDP']) then ' listener configured with ' || (arguments ->> 'protocol') || ' secure protocol'
-        when (arguments -> 'default_action' ->> 'type') = 'redirect' and (arguments -> 'default_action' -> 'redirect' ->> 'protocol') = 'HTTPS' then ' listener configured with ' || (arguments -> 'default_action' ->> 'type') || ' and ' || (arguments -> 'default_action' -> 'redirect' ->> 'protocol') || ' secure protocol'
+      split_part(address, '.', 2) || case
+        when (attributes_std ->> 'protocol') like any (array ['HTTPS', 'TLS', 'TCP', 'UDP', 'TCP_UDP']) then ' listener configured with ' || (attributes_std ->> 'protocol') || ' secure protocol'
+        when (attributes_std -> 'default_action' ->> 'type') = 'redirect' and (attributes_std -> 'default_action' -> 'redirect' ->> 'protocol') = 'HTTPS' then ' listener configured with ' || (attributes_std -> 'default_action' ->> 'type') || ' and ' || (attributes_std -> 'default_action' -> 'redirect' ->> 'protocol') || ' secure protocol'
         else ' listener not configured with any secured protocol'
         end || '.' reason
       ${local.tag_dimensions_sql}
@@ -282,15 +282,15 @@ query "elb_lb_use_secure_protocol_listener" {
 query "elb_application_network_gateway_lb_cross_zone_load_balancing_enabled" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when ((arguments ->> 'load_balancer_type') = 'application' or (arguments ->> 'load_balancer_type') is null) and (arguments -> 'enable_cross_zone_load_balancing') is null then 'ok'
-        when (arguments ->> 'load_balancer_type') like any (array ['gateway', 'network']) and (arguments -> 'enable_cross_zone_load_balancing')::boolean then 'ok'
+        when ((attributes_std ->> 'load_balancer_type') = 'application' or (attributes_std ->> 'load_balancer_type') is null) and (attributes_std -> 'enable_cross_zone_load_balancing') is null then 'ok'
+        when (attributes_std ->> 'load_balancer_type') like any (array ['gateway', 'network']) and (attributes_std -> 'enable_cross_zone_load_balancing')::boolean then 'ok'
         else 'alarm'
       end status,
-      name || case
-        when (arguments ->> 'load_balancer_type') = 'application' and (arguments -> 'enable_cross_zone_load_balancing') is null then ' cross-zone load balancing enabled default for ' || (arguments ->> 'load_balancer_type') || ' type'
-        when (arguments ->> 'load_balancer_type') like any (array ['gateway', 'network']) and (arguments -> 'enable_cross_zone_load_balancing')::boolean then ' cross-zone load balancing enabled for ' || (arguments ->> 'load_balancer_type') || ' type'
+      split_part(address, '.', 2) || case
+        when (attributes_std ->> 'load_balancer_type') = 'application' and (attributes_std -> 'enable_cross_zone_load_balancing') is null then ' cross-zone load balancing enabled default for ' || (attributes_std ->> 'load_balancer_type') || ' type'
+        when (attributes_std ->> 'load_balancer_type') like any (array ['gateway', 'network']) and (attributes_std -> 'enable_cross_zone_load_balancing')::boolean then ' cross-zone load balancing enabled for ' || (attributes_std ->> 'load_balancer_type') || ' type'
         else ' cross-zone load balancing disabled'
         end || '.' reason
       ${local.tag_dimensions_sql}
@@ -305,13 +305,13 @@ query "elb_application_network_gateway_lb_cross_zone_load_balancing_enabled" {
 query "elb_lb_target_group_use_health_check" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments ->> 'protocol') like any (array ['HTTPS', 'HTTP']) and (arguments ->> 'health_check') is not null then 'ok'
+        when (attributes_std ->> 'protocol') like any (array ['HTTPS', 'HTTP']) and (attributes_std ->> 'health_check') is not null then 'ok'
         else 'alarm'
       end status,
-      name || case
-        when (arguments ->> 'protocol') like any (array ['HTTPS', 'HTTP']) and (arguments ->> 'health_check') is not null then ' target group configured with health check'
+      split_part(address, '.', 2) || case
+        when (attributes_std ->> 'protocol') like any (array ['HTTPS', 'HTTP']) and (attributes_std ->> 'health_check') is not null then ' target group configured with health check'
         else ' target group not configured with health check'
         end || '.' reason
       ${local.tag_dimensions_sql}

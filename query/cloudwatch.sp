@@ -1,20 +1,20 @@
 query "cloudwatch_alarm_action_enabled" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments -> 'alarm_actions') is null
-        and (arguments -> 'insufficient_data_actions') is null
-        and (arguments -> 'ok_actions') is null then 'alarm'
+        when (attributes_std -> 'alarm_actions') is null
+        and (attributes_std -> 'insufficient_data_actions') is null
+        and (attributes_std -> 'ok_actions') is null then 'alarm'
         else 'ok'
       end status,
-      name || case
-        when (arguments -> 'alarm_actions') is null
-        and (arguments -> 'insufficient_data_actions') is null
-        and (arguments -> 'ok_actions') is null then ' no action enabled'
-        when (arguments -> 'alarm_actions') is not null then ' alarm action enabled'
-        when (arguments -> 'insufficient_data_actions') is not null then ' insufficient data action enabled.'
-        when (arguments -> 'ok_actions') is not null then ' ok action enabled.'
+      split_part(address, '.', 2) || case
+        when (attributes_std -> 'alarm_actions') is null
+        and (attributes_std -> 'insufficient_data_actions') is null
+        and (attributes_std -> 'ok_actions') is null then ' no action enabled'
+        when (attributes_std -> 'alarm_actions') is not null then ' alarm action enabled'
+        when (attributes_std -> 'insufficient_data_actions') is not null then ' insufficient data action enabled.'
+        when (attributes_std -> 'ok_actions') is not null then ' ok action enabled.'
         else ' action enabled'
       end || '.' reason
       ${local.tag_dimensions_sql}
@@ -40,22 +40,23 @@ query "cloudwatch_destination_policy_wildcards" {
       select
         name,
         type,
+        address,
         path,
         start_line,
         _ctx,
-        split_part((arguments ->> 'access_policy')::text, '.', 3) as ap
+        split_part((attributes_std ->> 'access_policy')::text, '.', 3) as ap
       from
         terraform_resource
       where
         type = 'aws_cloudwatch_log_destination_policy'
     )
     select
-      type || ' ' || a.name as resource,
+      a.address as resource,
       case
         when e.name is null then 'ok'
         else 'alarm'
       end as status,
-      a.name || case
+      split_part(a.address, '.', 2) || case
         when e.name is null then ' policy is ok'
         else ' policy is not ok'
       end || '.' as reason
@@ -69,14 +70,14 @@ query "cloudwatch_destination_policy_wildcards" {
 query "cloudwatch_log_group_retention_period_365" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments -> 'retention_in_days') is null or (arguments -> 'retention_in_days')::int < 365 then 'alarm'
+        when (attributes_std -> 'retention_in_days') is null or (attributes_std -> 'retention_in_days')::int < 365 then 'alarm'
         else 'ok'
       end status,
-      name || case
-        when (arguments -> 'retention_in_days') is null then ' retention period not set'
-        when (arguments -> 'retention_in_days')::int < 365 then ' retention period less than 365 days'
+      split_part(address, '.', 2) || case
+        when (attributes_std -> 'retention_in_days') is null then ' retention period not set'
+        when (attributes_std -> 'retention_in_days')::int < 365 then ' retention period less than 365 days'
         else ' retention period 365 days or above'
       end || '.' reason
       ${local.tag_dimensions_sql}
@@ -91,13 +92,13 @@ query "cloudwatch_log_group_retention_period_365" {
 query "log_group_encryption_at_rest_enabled" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments -> 'kms_key_id') is not null then 'ok'
+        when (attributes_std -> 'kms_key_id') is not null then 'ok'
         else 'alarm'
       end status,
-      name || case
-        when (arguments -> 'kms_key_id') is not null then ' encrypted at rest'
+      split_part(address, '.', 2) || case
+        when (attributes_std -> 'kms_key_id') is not null then ' encrypted at rest'
         else ' not encrypted at rest'
       end || '.' reason
       ${local.tag_dimensions_sql}
@@ -112,13 +113,13 @@ query "log_group_encryption_at_rest_enabled" {
 query "cloudwatch_log_group_retention" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments -> 'retention_in_days') is null then 'alarm'
+        when (attributes_std -> 'retention_in_days') is null then 'alarm'
         else 'ok'
       end status,
-      name || case
-        when (arguments -> 'retention_in_days') is null then ' retention period not set'
+      split_part(address, '.', 2) || case
+        when (attributes_std -> 'retention_in_days') is null then ' retention period not set'
         else ' retention period set'
       end || '.' reason
       ${local.tag_dimensions_sql}

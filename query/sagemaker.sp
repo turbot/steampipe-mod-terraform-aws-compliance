@@ -1,13 +1,13 @@
 query "sagemaker_endpoint_configuration_encryption_at_rest_enabled" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments -> 'kms_key_arn') is null then 'alarm'
+        when (attributes_std -> 'kms_key_arn') is null then 'alarm'
         else 'ok'
       end as status,
-      name || case
-        when (arguments -> 'kms_key_arn') is null then ' encryption at rest not enabled'
+      split_part(address, '.', 2) || case
+        when (attributes_std -> 'kms_key_arn') is null then ' encryption at rest not enabled'
         else ' encryption at rest enabled'
       end || '.' as reason
       ${local.tag_dimensions_sql}
@@ -22,14 +22,14 @@ query "sagemaker_endpoint_configuration_encryption_at_rest_enabled" {
 query "sagemaker_notebook_instance_direct_internet_access_disabled" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments -> 'direct_internet_access') is null or (arguments ->> 'direct_internet_access') = 'Disabled' then 'ok'
+        when (attributes_std -> 'direct_internet_access') is null or (attributes_std ->> 'direct_internet_access') = 'Disabled' then 'ok'
         else 'alarm'
       end as status,
-      name || case
-        when trim(arguments ->> 'direct_internet_access') = '' then ' ''direct_internet_access'' is not defined'
-        when (arguments -> 'direct_internet_access') is null or (arguments ->> 'direct_internet_access') = 'Disabled' then ' direct internet access disabled'
+      split_part(address, '.', 2) || case
+        when trim(attributes_std ->> 'direct_internet_access') = '' then ' ''direct_internet_access'' is not defined'
+        when (attributes_std -> 'direct_internet_access') is null or (attributes_std ->> 'direct_internet_access') = 'Disabled' then ' direct internet access disabled'
         else ' direct internet access enabled'
       end || '.' reason
       ${local.tag_dimensions_sql}
@@ -44,13 +44,13 @@ query "sagemaker_notebook_instance_direct_internet_access_disabled" {
 query "sagemaker_notebook_instance_encryption_at_rest_enabled" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments -> 'kms_key_id') is null then 'alarm'
+        when (attributes_std -> 'kms_key_id') is null then 'alarm'
         else 'ok'
       end status,
-      name || case
-        when (arguments -> 'kms_key_id') is null then ' encryption at rest disabled'
+      split_part(address, '.', 2) || case
+        when (attributes_std -> 'kms_key_id') is null then ' encryption at rest disabled'
         else ' encryption at rest enabled'
       end || '.' reason
       ${local.tag_dimensions_sql}
@@ -65,13 +65,13 @@ query "sagemaker_notebook_instance_encryption_at_rest_enabled" {
 query "sagemaker_notebook_instance_in_vpc" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments -> 'subnet_id') is not null then 'ok'
+        when (attributes_std -> 'subnet_id') is not null then 'ok'
         else 'alarm'
       end status,
-      name || case
-        when (arguments -> 'subnet_id') is not null then ' in VPC'
+      split_part(address, '.', 2) || case
+        when (attributes_std -> 'subnet_id') is not null then ' in VPC'
         else ' not in VPC'
       end || '.' reason
       ${local.tag_dimensions_sql}
@@ -86,13 +86,13 @@ query "sagemaker_notebook_instance_in_vpc" {
 query "sagemaker_notebook_instance_root_access_disabled" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments ->> 'root_access') = 'Disabled' then 'ok'
+        when (attributes_std ->> 'root_access') = 'Disabled' then 'ok'
         else 'alarm'
       end status,
-      name || case
-        when (arguments ->> 'root_access') = 'Disabled' then ' root access disabled'
+      split_part(address, '.', 2) || case
+        when (attributes_std ->> 'root_access') = 'Disabled' then ' root access disabled'
         else ' root access enabled'
       end || '.' reason
       ${local.tag_dimensions_sql}
@@ -107,13 +107,13 @@ query "sagemaker_notebook_instance_root_access_disabled" {
 query "sagemaker_domain_encrypted_with_kms_cmk" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when arguments -> 'kms_key_id' is not null then 'ok'
+        when attributes_std -> 'kms_key_id' is not null then 'ok'
         else 'alarm'
       end as status,
-      name || case
-        when arguments -> 'kms_key_id' is not null then ' encrypted with KMS'
+      split_part(address, '.', 2) || case
+        when attributes_std -> 'kms_key_id' is not null then ' encrypted with KMS'
         else ' not encrypted with KMS'
       end || '.' as reason
       ${local.tag_dimensions_sql}

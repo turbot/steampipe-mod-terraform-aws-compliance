@@ -1,13 +1,13 @@
 query "cloudformation_stack_notifications_enabled" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments ->> 'notification_arns') is not null then 'ok'
+        when (attributes_std ->> 'notification_arns') is not null then 'ok'
         else 'alarm'
       end status,
-      name || case
-        when (arguments ->> 'notification_arns') is not null then ' notifications enabled'
+      split_part(address, '.', 2) || case
+        when (attributes_std ->> 'notification_arns') is not null then ' notifications enabled'
         else ' notifications disabled'
       end || '.' reason
       ${local.tag_dimensions_sql}
@@ -15,6 +15,6 @@ query "cloudformation_stack_notifications_enabled" {
     from
       terraform_resource
     where
-      type = 'aws_cloudformation_stack';    
+      type = 'aws_cloudformation_stack';
   EOQ
 }

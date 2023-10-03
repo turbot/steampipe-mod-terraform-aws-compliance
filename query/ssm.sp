@@ -1,13 +1,13 @@
 query "ssm_document_prohibit_public_access" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments -> 'permissions' ->> 'account_ids') = 'All' then 'alarm'
+        when (attributes_std -> 'permissions' ->> 'account_ids') = 'All' then 'alarm'
         else 'ok'
       end as status,
-      name || case
-        when (arguments -> 'permissions' ->> 'account_ids') = 'All' then ' is publicly accessible'
+      split_part(address, '.', 2) || case
+        when (attributes_std -> 'permissions' ->> 'account_ids') = 'All' then ' is publicly accessible'
         else ' not publicly accessible'
       end || '.' reason
       ${local.tag_dimensions_sql}
@@ -22,13 +22,13 @@ query "ssm_document_prohibit_public_access" {
 query "ssm_parameter_encrypted_with_kms_cmk" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when arguments -> 'key_id' is not null then 'ok'
+        when attributes_std -> 'key_id' is not null then 'ok'
         else 'alarm'
       end as status,
-      name || case
-        when arguments -> 'key_id' is not null then ' encrypted with KMS'
+      split_part(address, '.', 2) || case
+        when attributes_std -> 'key_id' is not null then ' encrypted with KMS'
         else ' not encrypted with KMS'
       end || '.' as reason
       ${local.tag_dimensions_sql}
