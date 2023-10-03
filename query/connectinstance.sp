@@ -1,13 +1,13 @@
 query "connect_instance_kinesis_video_stream_storage_config_encrypted_with_kms_cmk" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments -> 'storage_config' -> 'kinesis_video_stream_config' -> 'encryption_config' ->> 'key_id') is null then 'alarm'
+        when (attributes_std -> 'storage_config' -> 'kinesis_video_stream_config' -> 'encryption_config' ->> 'key_id') is null then 'alarm'
         else 'ok'
       end status,
-      name || case
-        when (arguments -> 'storage_config' -> 'kinesis_video_stream_config' -> 'encryption_config' ->> 'key_id') is null then ' is not encrypted with KMS CMK'
+      split_part(address, '.', 2) || case
+        when (attributes_std -> 'storage_config' -> 'kinesis_video_stream_config' -> 'encryption_config' ->> 'key_id') is null then ' is not encrypted with KMS CMK'
         else ' is encrypted with KMS CMK'
       end || '.' reason
       ${local.tag_dimensions_sql}
@@ -22,13 +22,13 @@ query "connect_instance_kinesis_video_stream_storage_config_encrypted_with_kms_c
 query "connect_instance_s3_storage_config_encrypted_with_kms_cmk" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments -> 'storage_config' -> 's3_config' -> 'encryption_config' ->> 'key_id') is null then 'alarm'
+        when (attributes_std -> 'storage_config' -> 's3_config' -> 'encryption_config' ->> 'key_id') is null then 'alarm'
         else 'ok'
       end status,
-      name || case
-        when (arguments -> 'storage_config' -> 's3_config' -> 'encryption_config' ->> 'key_id') is null then ' is not encrypted with KMS CMK'
+      split_part(address, '.', 2) || case
+        when (attributes_std -> 'storage_config' -> 's3_config' -> 'encryption_config' ->> 'key_id') is null then ' is not encrypted with KMS CMK'
         else ' is encrypted with KMS CMK'
       end || '.' reason
       ${local.tag_dimensions_sql}

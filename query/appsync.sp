@@ -1,13 +1,13 @@
 query "appsync_graphql_api_field_level_logs_enabled" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments -> 'log_config' ->> 'field_log_level') in ('ALL','ERROR') then 'ok'
+        when (attributes_std -> 'log_config' ->> 'field_log_level') in ('ALL','ERROR') then 'ok'
         else 'alarm'
       end status,
-      name || case
-        when (arguments -> 'log_config' ->> 'field_log_level') in ('ALL','ERROR') then ' field level logs enabled'
+      split_part(address, '.', 2) || case
+        when (attributes_std -> 'log_config' ->> 'field_log_level') in ('ALL','ERROR') then ' field level logs enabled'
         else ' field level logs disabled'
       end || '.' reason
       ${local.tag_dimensions_sql}
@@ -22,13 +22,13 @@ query "appsync_graphql_api_field_level_logs_enabled" {
 query "appsync_graphql_api_cloudwatch_logs_enabled" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments -> 'log_config' ->> 'cloudwatch_logs_role_arn') is not null then 'ok'
+        when (attributes_std -> 'log_config' ->> 'cloudwatch_logs_role_arn') is not null then 'ok'
         else 'alarm'
       end status,
-      name || case
-        when (arguments -> 'log_config' ->> 'cloudwatch_logs_role_arn') is not null then ' cloudwatch logs enabled'
+      split_part(address, '.', 2) || case
+        when (attributes_std -> 'log_config' ->> 'cloudwatch_logs_role_arn') is not null then ' cloudwatch logs enabled'
         else ' cloudwatch logs disabled'
       end || '.' reason
       ${local.tag_dimensions_sql}
@@ -43,13 +43,13 @@ query "appsync_graphql_api_cloudwatch_logs_enabled" {
 query "appsync_api_cache_encryption_at_rest_enabled" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments ->> 'at_rest_encryption_enabled')::boolean then 'ok'
+        when (attributes_std ->> 'at_rest_encryption_enabled')::boolean then 'ok'
         else 'alarm'
       end status,
-      name || case
-        when (arguments ->> 'at_rest_encryption_enabled')::boolean then ' encryption at rest enabled'
+      split_part(address, '.', 2) || case
+        when (attributes_std ->> 'at_rest_encryption_enabled')::boolean then ' encryption at rest enabled'
         else ' encryption at rest disabled'
       end || '.' reason
       ${local.tag_dimensions_sql}
@@ -64,13 +64,13 @@ query "appsync_api_cache_encryption_at_rest_enabled" {
 query "appsync_api_cache_encryption_in_transit_enabled" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments ->> 'transit_encryption_enabled')::boolean then 'ok'
+        when (attributes_std ->> 'transit_encryption_enabled')::boolean then 'ok'
         else 'alarm'
       end status,
-      name || case
-        when (arguments ->> 'transit_encryption_enabled')::boolean then ' encryption in transit enabled'
+      split_part(address, '.', 2) || case
+        when (attributes_std ->> 'transit_encryption_enabled')::boolean then ' encryption in transit enabled'
         else ' encryption in transit disabled'
       end || '.' reason
       ${local.tag_dimensions_sql}

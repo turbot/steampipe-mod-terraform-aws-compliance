@@ -1,17 +1,17 @@
 query "globalaccelerator_flow_logs_enabled" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments -> 'attributes') is null then 'alarm'
-        when (arguments -> 'attributes' -> 'flow_logs_enabled') is null then 'alram'
-        when (arguments -> 'attributes' -> 'flow_logs_enabled')::bool then 'ok'
+        when (attributes_std -> 'attributes') is null then 'alarm'
+        when (attributes_std -> 'attributes' -> 'flow_logs_enabled') is null then 'alram'
+        when (attributes_std -> 'attributes' -> 'flow_logs_enabled')::bool then 'ok'
         else 'alarm'
       end as status,
-      name || case
-        when (arguments -> 'attributes') is null then ' flow log disabled'
-        when (arguments -> 'attributes' -> 'flow_logs_enabled') is null then ' flow log disabled'
-        when (arguments -> 'attributes' -> 'flow_logs_enabled')::bool then ' flow log enabled'
+      split_part(address, '.', 2) || case
+        when (attributes_std -> 'attributes') is null then ' flow log disabled'
+        when (attributes_std -> 'attributes' -> 'flow_logs_enabled') is null then ' flow log disabled'
+        when (attributes_std -> 'attributes' -> 'flow_logs_enabled')::bool then ' flow log enabled'
         else ' flow log disabled'
       end || '.' as reason
       ${local.tag_dimensions_sql}

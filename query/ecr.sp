@@ -1,18 +1,18 @@
 query "ecr_repository_encrypted_with_kms" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
         when
-          (arguments ->> 'encryption_configuration') is not null
-          and coalesce((arguments -> 'encryption_configuration' ->> 'encryption_type'), '') = 'KMS'
+          (attributes_std ->> 'encryption_configuration') is not null
+          and coalesce((attributes_std -> 'encryption_configuration' ->> 'encryption_type'), '') = 'KMS'
         then 'ok'
         else 'alarm'
       end as status,
-      name || case
+      split_part(address, '.', 2) || case
         when
-          (arguments ->> 'encryption_configuration') is not null
-          and coalesce((arguments -> 'encryption_configuration' ->> 'encryption_type'), '') = 'KMS'
+          (attributes_std ->> 'encryption_configuration') is not null
+          and coalesce((attributes_std -> 'encryption_configuration' ->> 'encryption_type'), '') = 'KMS'
         then ' encrypted using KMS'
         else ' not encrypted using KMS'
       end || '.' as reason
@@ -28,13 +28,13 @@ query "ecr_repository_encrypted_with_kms" {
 query "ecr_repository_tags_immutable" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments ->> 'image_tag_mutability')::text = 'IMMUTABLE' then 'ok'
+        when (attributes_std ->> 'image_tag_mutability')::text = 'IMMUTABLE' then 'ok'
         else 'alarm'
       end as status,
-      name || case
-        when (arguments ->> 'image_tag_mutability')::text = 'IMMUTABLE' then ' has immutable tags'
+      split_part(address, '.', 2) || case
+        when (attributes_std ->> 'image_tag_mutability')::text = 'IMMUTABLE' then ' has immutable tags'
         else ' does not have immutable tags'
       end || '.' as reason
       ${local.tag_dimensions_sql}
@@ -49,13 +49,13 @@ query "ecr_repository_tags_immutable" {
 query "ecr_repository_use_image_scanning" {
   sql = <<-EOQ
     select
-      type || ' ' || name as resource,
+      address as resource,
       case
-        when (arguments -> 'image_scanning_configuration' ->> 'scan_on_push')::boolean then 'ok'
+        when (attributes_std -> 'image_scanning_configuration' ->> 'scan_on_push')::boolean then 'ok'
         else 'alarm'
       end as status,
-      name || case
-        when (arguments -> 'image_scanning_configuration' ->> 'scan_on_push')::boolean then ' uses image scanning'
+      split_part(address, '.', 2) || case
+        when (attributes_std -> 'image_scanning_configuration' ->> 'scan_on_push')::boolean then ' uses image scanning'
         else ' does not use image scanning'
       end || '.' as reason
       ${local.tag_dimensions_sql}
@@ -71,13 +71,13 @@ query "ecr_repository_policy_prohibit_public_access" {
   sql = <<-EOQ
     with ecr_non_public_policies as (
       select
-        distinct (type || ' ' || name ) as name
+        distinct (address ) as name
       from
         terraform_resource,
         jsonb_array_elements(
-          case when ((arguments ->> 'policy') = '')
+          case when ((attributes_std ->> 'policy') = '')
             then null
-            else ((arguments ->> 'policy')::jsonb -> 'Statement') end
+            else ((attributes_std ->> 'policy')::jsonb -> 'Statement') end
         ) as s
       where
         type = 'aws_ecr_repository_policy'
@@ -89,14 +89,14 @@ query "ecr_repository_policy_prohibit_public_access" {
         )
     )
     select
-      type || ' ' || b.name as resource,
+      b.address as resource,
       case
-        when (arguments ->> 'policy') = '' then 'ok'
+        when (attributes_std ->> 'policy') = '' then 'ok'
         when d.name is not null then 'ok'
         else 'alarm'
       end status,
-       b.name || case
-        when (arguments ->> 'policy') = '' then ' no policy defined'
+       split_part(b.address, '.', 2) || case
+        when (attributes_std ->> 'policy') = '' then ' no policy defined'
         when d.name is not null then ' not public'
         else ' public'
       end || '.' reason
@@ -104,7 +104,7 @@ query "ecr_repository_policy_prohibit_public_access" {
       ${local.common_dimensions_sql}
     from
       terraform_resource as b
-      left join ecr_non_public_policies as d on d.name = concat(b.type || ' ' || b.name)
+      left join ecr_non_public_policies as d on d.name = b.address
     where
       type = 'aws_ecr_repository_policy';
   EOQ
