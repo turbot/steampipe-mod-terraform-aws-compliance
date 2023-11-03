@@ -1,3 +1,9 @@
+## v0.21 [2023-11-03]
+
+_Breaking changes_
+
+- Updated the plugin dependency section of the mod to use `min_version` instead of `version`. ([#94](https://github.com/turbot/steampipe-mod-terraform-aws-compliance/pull/94))
+
 ## v0.20 [2023-10-03]
 
 _Enhancements_
