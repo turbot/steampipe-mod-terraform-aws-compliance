@@ -123,3 +123,71 @@ query "neptune_snapshot_encrypted_with_kms_cmk" {
       type = 'aws_neptune_cluster_snapshot';
   EOQ
 }
+
+query "neptune_cluster_backup_retention_period_7" {
+  sql = <<-EOQ
+    select
+      address as resource,
+      case
+        when (attributes_std -> 'backup_retention_period') is null then 'alarm'
+        when ((attributes_std ->> 'backup_retention_period'))::int >= 7 then 'ok'
+        else 'alarm'
+      end as status,
+      split_part(address, '.', 2) || case
+        when (attributes_std -> 'backup_retention_period') is null then ' backup retention not set'
+        else ' backup retention set to ' || (attributes_std ->> 'backup_retention_period')
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_neptune_cluster';
+  EOQ
+}
+
+query "neptune_cluster_copy_tags_to_snapshot_enabled" {
+  sql = <<-EOQ
+    select
+      address as resource,
+      case
+        when (attributes_std -> 'copy_tags_to_snapshot') is null then 'alarm'
+        when (attributes_std -> 'copy_tags_to_snapshot')::bool then 'ok'
+        else 'alarm'
+      end status,
+      split_part(address, '.', 2) || case
+        when (attributes_std -> 'copy_tags_to_snapshot') is null then ' ''copy_tags_to_snapshot'' not set'
+        when (attributes_std -> 'copy_tags_to_snapshot')::bool then ' ''copy_tags_to_snapshot'' enabled'
+        else ' ''copy_tags_to_snapshot'' disabled'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_neptune_cluster';
+  EOQ
+}
+
+query "neptune_cluster_iam_authentication_enabled" {
+  sql = <<-EOQ
+    select
+      address as resource,
+      case
+        when (attributes_std -> 'iam_database_authentication_enabled') is null then 'alarm'
+        when (attributes_std -> 'iam_database_authentication_enabled')::bool then 'ok'
+        else 'alarm'
+      end status,
+      split_part(address, '.', 2) || case
+        when (attributes_std -> 'iam_database_authentication_enabled') is null then ' ''iam_database_authentication_enabled'' disabled'
+        when (attributes_std -> 'iam_database_authentication_enabled')::bool then ' ''iam_database_authentication_enabled'' enabled'
+        else ' ''iam_database_authentication_enabled'' disabled'
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_neptune_cluster';
+  EOQ
+}

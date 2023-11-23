@@ -10,11 +10,12 @@ benchmark "docdb" {
 
   children = [
     control.docdb_cluster_audit_logs_enabled,
+    control.docdb_cluster_backup_retention_period_7,
     control.docdb_cluster_encrypted_with_kms,
     control.docdb_cluster_log_exports_enabled,
     control.docdb_cluster_paramater_group_logging_enabled,
     control.docdb_cluster_parameter_group_tls_enabled,
-    control.docdb_global_cluster_encrypted
+    control.docdb_global_cluster_encrypted,
   ]
 
   tags = merge(local.docdb_compliance_common_tags, {
@@ -66,6 +67,14 @@ control "docdb_cluster_parameter_group_tls_enabled" {
   title       = "DocDB TLS should be enabled"
   description = "This control checks whether DocDB TLS is enabled through its parameter group."
   query       = query.docdb_cluster_parameter_group_tls_enabled
+
+  tags = local.docdb_compliance_common_tags
+}
+
+control "docdb_cluster_backup_retention_period_7" {
+  title       = "DocDB cluster backup retention period should be at least 7 days"
+  description = "This control checks whether DocDB cluster backup retention is set to 7 or greater than 7."
+  query       = query.docdb_cluster_backup_retention_period_7
 
   tags = local.docdb_compliance_common_tags
 }
