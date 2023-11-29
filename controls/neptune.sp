@@ -17,7 +17,7 @@ benchmark "neptune" {
     control.neptune_cluster_instance_publicly_accessible,
     control.neptune_cluster_logging_enabled,
     control.neptune_snapshot_encrypted_with_kms_cmk,
-    control.neptune_snapshot_storage_encryption_enabled,
+    control.neptune_snapshot_storage_encryption_enabled
   ]
 
   tags = merge(local.neptune_compliance_common_tags, {

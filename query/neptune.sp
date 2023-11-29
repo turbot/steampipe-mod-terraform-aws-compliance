@@ -179,8 +179,8 @@ query "neptune_cluster_iam_authentication_enabled" {
         else 'alarm'
       end status,
       split_part(address, '.', 2) || case
-        when (attributes_std -> 'iam_database_authentication_enabled') is null then ' ''iam_database_authentication_enabled'' disabled'
-        when (attributes_std -> 'iam_database_authentication_enabled')::bool then ' ''iam_database_authentication_enabled'' enabled'
+        when (attributes_std -> 'iam_database_authentication_enabled') is null then ' IAM database authentication disabled'
+        when (attributes_std -> 'iam_database_authentication_enabled')::bool then ' IAM database authentication enabled'
         else ' ''iam_database_authentication_enabled'' disabled'
       end || '.' as reason
       ${local.tag_dimensions_sql}

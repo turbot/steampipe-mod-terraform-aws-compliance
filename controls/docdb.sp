@@ -15,7 +15,7 @@ benchmark "docdb" {
     control.docdb_cluster_log_exports_enabled,
     control.docdb_cluster_paramater_group_logging_enabled,
     control.docdb_cluster_parameter_group_tls_enabled,
-    control.docdb_global_cluster_encrypted,
+    control.docdb_global_cluster_encrypted
   ]
 
   tags = merge(local.docdb_compliance_common_tags, {
