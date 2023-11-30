@@ -151,3 +151,25 @@ query "docdb_cluster_parameter_group_tls_enabled" {
       type = 'aws_docdb_cluster_parameter_group';
   EOQ
 }
+
+query "docdb_cluster_backup_retention_period_7" {
+  sql = <<-EOQ
+    select
+      address as resource,
+      case
+        when (attributes_std -> 'backup_retention_period') is null then 'alarm'
+        when ((attributes_std ->> 'backup_retention_period'))::int >= 7 then 'ok'
+        else 'alarm'
+      end as status,
+      split_part(address, '.', 2) || case
+        when (attributes_std -> 'backup_retention_period') is null then ' backup retention not set'
+        else ' backup retention set to ' || (attributes_std ->> 'backup_retention_period')
+      end || '.' as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_docdb_cluster';
+  EOQ
+}

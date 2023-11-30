@@ -212,3 +212,32 @@ query "lambda_function_environment_encryption_enabled" {
       type = 'aws_lambda_function';
   EOQ
 }
+
+query "lambda_permission_restricted_service_permission" {
+  sql = <<-EOQ
+    select
+      address as resource,
+      split_part((attributes_std ->> 'principal'), '.', 2),
+      case
+        when not (split_part((attributes_std ->> 'principal'), '.', 2) = 'amazonaws' and split_part((attributes_std ->> 'principal'), '.', 3)= 'com') then 'info'
+        when split_part((attributes_std ->> 'principal'), '.', 2) = 'amazonaws'
+          and split_part((attributes_std ->> 'principal'), '.', 3)= 'com'
+          and ((attributes_std -> 'source_arn') is not null
+            or (attributes_std -> 'source_account') is not null ) then 'ok'
+        else 'alarm'
+      end as status,
+      split_part(address, '.', 2) || case
+        when not (split_part((attributes_std ->> 'principal'), '.', 2) = 'amazonaws' and split_part((attributes_std ->> 'principal'), '.', 3) = 'com') then ' principal not set as service'
+        when split_part((attributes_std ->> 'principal'), '.', 2) = 'amazonaws'
+          and split_part((attributes_std ->> 'principal'), '.', 3)= 'com'
+          and ((attributes_std -> 'source_arn') is not null
+            or (attributes_std -> 'source_account') is not null ) then ' permissions to AWS services restricted by SourceArn or SourceAccount'
+        else  ' permissions to AWS services not restricted by SourceArn or SourceAccount'
+      end || '.' as reason
+      ${local.common_dimensions_sql}
+    from
+      terraform_resource
+    where
+      type = 'aws_lambda_permission';
+  EOQ
+}
