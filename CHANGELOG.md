@@ -1,3 +1,12 @@
+## v0.22 [2023-11-30]
+
+_What's new?_
+
+- Added 5 new controls across the benchmarks for the following services: ([#98](https://github.com/turbot/steampipe-mod-terraform-aws-compliance/pull/98))
+  - `DocumentDB`
+  - `Lambda`
+  - `Neptune`
+
 ## v0.21 [2023-11-03]
 
 _Breaking changes_
