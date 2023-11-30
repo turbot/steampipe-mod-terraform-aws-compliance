@@ -1,3 +1,14 @@
+## v0.22 [2023-11-30]
+
+_What's new?_
+
+- Added the following controls across the benchmarks: ([#98](https://github.com/turbot/steampipe-mod-terraform-aws-compliance/pull/98))
+  - `docdb_cluster_backup_retention_period_7`
+  - `lambda_permission_restricted_service_permission`
+  - `neptune_cluster_backup_retention_period_7`
+  - `neptune_cluster_copy_tags_to_snapshot_enabled`
+  - `neptune_cluster_iam_authentication_enabled`
+
 ## v0.21 [2023-11-03]
 
 _Breaking changes_
