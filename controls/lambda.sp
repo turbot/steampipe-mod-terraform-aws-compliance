@@ -17,7 +17,8 @@ benchmark "lambda" {
     control.lambda_function_url_auth_type_configured,
     control.lambda_function_use_latest_runtime,
     control.lambda_function_variables_no_sensitive_data,
-    control.lambda_function_xray_tracing_enabled
+    control.lambda_function_xray_tracing_enabled,
+    control.lambda_permission_restricted_service_permission
   ]
 
   tags = merge(local.lambda_compliance_common_tags, {
@@ -109,6 +110,14 @@ control "lambda_function_environment_encryption_enabled" {
   title       = "Lambda functions variable encryption should be enabled"
   description = "Ensure that functions environment variables encryption is enabled."
   query       = query.lambda_function_environment_encryption_enabled
+
+  tags = local.lambda_compliance_common_tags
+}
+
+control "lambda_permission_restricted_service_permission" {
+  title       = "Lambda permissions should restrict service permission by source account or source arn"
+  description = "Ensure that Lambda permissions restricts service permission by source account or source arn."
+  query       = query.lambda_permission_restricted_service_permission
 
   tags = local.lambda_compliance_common_tags
 }
