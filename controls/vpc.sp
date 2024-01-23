@@ -257,10 +257,9 @@ control "vpc_security_group_restrict_ingress_rdp_all" {
   tags = local.vpc_compliance_common_tags
 }
 
-
 control "vpc_security_group_restrict_ingress_ssh_all" {
   title       = "VPC security groups should restrict ingress SSH access from 0.0.0.0/0"
-  description = "AWS Elastic Compute Cloud (AWS EC2) Security Groups can help manage network access by providing stateful filtering of ingress and egress network traffic to AWS resources."
+  description = "AWS Elastic Compute Cloud (AWS EC2) Security Groups can help manage network access by providing stateful filtering of ingress and egress network traffic to AWS resources. It is recommended that no security group allows unrestricted SSH access from 0.0.0.0/0."
   query       = query.vpc_security_group_restrict_ingress_ssh_all
 
   tags = local.vpc_compliance_common_tags
