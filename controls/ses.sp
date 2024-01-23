@@ -18,8 +18,8 @@ benchmark "ses" {
 }
 
 control "ses_configuration_set_tls_enforced" {
-  title       = "SES configuration set should encforce TLS usage"
-  description = "This controls ensures that TLS is enforced for SES configuration set. Enforcing TLS usage in SES configuration set is essential in securing email communications, ensuring data privacy, and maintaining compliance with various data protection standards."
+  title       = "SES configuration set should enforce TLS usage"
+  description = "This control ensures that TLS is enforced for SES configuration set. Enforcing TLS usage in SES configuration set is essential in securing email communications, ensuring data privacy, and maintaining compliance with various data protection standards."
   query       = query.ses_configuration_set_tls_enforced
 
   tags = local.ses_compliance_common_tags
