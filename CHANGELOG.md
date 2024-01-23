@@ -2,10 +2,10 @@
 
 _What's new?_
 
-- Added the following controls across the benchmarks. ([#88](https://github.com/turbot/steampipe-mod-terraform-aws-compliance/pull/88) [#102](https://github.com/turbot/steampipe-mod-terraform-aws-compliance/pull/102))
+- Added the following controls across `Simple Email Service` and `VPC` benchmarks. ([#88](https://github.com/turbot/steampipe-mod-terraform-aws-compliance/pull/88) [#102](https://github.com/turbot/steampipe-mod-terraform-aws-compliance/pull/102))
+  - `ses_configuration_set_tls_enforced`
   - `vpc_security_group_restrict_ingress_rdp_all`
   - `vpc_security_group_restrict_ingress_ssh_all`
-  - `ses_configuration_set_tls_enforced`
 
 ## v0.22 [2023-11-30]
 
