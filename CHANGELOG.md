@@ -1,3 +1,9 @@
+## v0.24 [2024-02-15]
+
+_Bug fixes_
+
+- Removed duplicate control `rds_db_cluster_encrypted_with_kms_cmk`. ([#105](https://github.com/turbot/steampipe-mod-terraform-aws-compliance/pull/105))
+
 ## v0.23 [2024-01-23]
 
 _What's new?_
