@@ -36,7 +36,7 @@ Finally, install the mod:
 mkdir dashboards
 cd dashboards
 powerpipe mod init
-powerpipe mod install github.com/turbot/powerpipe-mod-terraform-aws-compliance
+powerpipe mod install github.com/turbot/steampipe-mod-terraform-aws-compliance
 ```
 
 ### Browsing Dashboards
