@@ -11,7 +11,7 @@ Run compliance and security controls to detect Terraform AWS resources deviating
 - **[Benchmarks and controls →](https://hub-powerpipe-io-git-development-turbot.vercel.app/mods/turbot/terraform_aws_compliance/controls)**
 - **[Named queries →](https://hub-powerpipe-io-git-development-turbot.vercel.app/mods/turbot/terraform_aws_compliance/queries)**
 
-## Getting started
+## Getting Started
 
 ### Installation
 
