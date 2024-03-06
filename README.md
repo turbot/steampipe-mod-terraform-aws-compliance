@@ -1,22 +1,24 @@
 # Terraform AWS Compliance Mod for Powerpipe
 
 > [!IMPORTANT]
-> Steampipe mods are [migrating to Powerpipe format](https://powerpipe.io) to gain new features. This mod currently works with both Steampipe and Powerpipe, but will only support Powerpipe from v1.x onward.
+> [Powerpipe](https://powerpipe.io) is now the preferred way to run this mod! [Migrating from Steampipe →](https://powerpipe.io/blog/migrating-from-steampipe)
+>
+> All v0.x versions of this mod will work in both Steampipe and Powerpipe, but v1.0.0 onwards will be in Powerpipe format only.
 
 140+ compliance and security controls to test your Terraform AWS resources against security best practices prior to deployment in your AWS accounts.
 
 Run checks in a dashboard:
 
-![image](https://raw.githubusercontent.com/turbot/steampipe-mod-terraform-aws-compliance/add-new-checks/docs/terraform_aws_compliance_dashboard.png)
+![image](https://raw.githubusercontent.com/turbot/steampipe-mod-terraform-aws-compliance/main/docs/terraform_aws_compliance_dashboard.png)
 
 Or in a terminal:
 
-![image](https://raw.githubusercontent.com/turbot/steampipe-mod-terraform-aws-compliance/add-new-checks/docs/terraform_aws_compliance_console_output.png)
+![image](https://raw.githubusercontent.com/turbot/steampipe-mod-terraform-aws-compliance/main/docs/terraform_aws_compliance_console_output.png)
 
 ## Documentation
 
-- **[Benchmarks and controls →](https://hub-powerpipe-io-git-development-turbot.vercel.app/mods/turbot/terraform_aws_compliance/controls)**
-- **[Named queries →](https://hub-powerpipe-io-git-development-turbot.vercel.app/mods/turbot/terraform_aws_compliance/queries)**
+- **[Benchmarks and controls →](https://hub.powerpipe.io/mods/turbot/terraform_aws_compliance/controls)**
+- **[Named queries →](https://hub.powerpipe.io/mods/turbot/terraform_aws_compliance/queries)**
 
 ## Getting Started
 
@@ -34,8 +36,6 @@ This mod also requires [Steampipe](https://steampipe.io) with the [Terraform plu
 brew install turbot/tap/steampipe
 steampipe plugin install terraform
 ```
-
-This mod uses the credentials configured in the [Steampipe Terraform plugin](https://hub.steampipe.io/plugins/turbot/terraform#configuration).
 
 Finally, install the mod:
 
@@ -89,8 +89,8 @@ The benchmark queries use common properties (like `path` and `connection_name`) 
 It's easiest to setup your vars file, starting with the sample:
 
 ```sh
-cp powerpipe.ppvar.example powerpipe.ppvars
-vi powerpipe.ppvars
+cp steampipe.spvars.example steampipe.spvars
+vi steampipe.spvars
 ```
 
 Alternatively you can pass variables on the command line:
